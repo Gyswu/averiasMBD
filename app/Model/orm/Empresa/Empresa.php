@@ -12,7 +12,7 @@ use Nextras\Orm\Relationships\OneHasMany;
  * @property    string|null   $nif
  * @property    int    $telefono
  * @property    string|null   $direccion
- * @property    OneHasMany|Historico[] $historicos {1:m Historico::$empresa}
+ * @property    OneHasMany|Usuario[] $usuarios {1:m Usuario::$empresa}
  */
 
  class Empresa extends Entity {

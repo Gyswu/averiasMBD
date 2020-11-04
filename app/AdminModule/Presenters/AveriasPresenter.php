@@ -2,7 +2,7 @@
 
 namespace App\AdminModule\Presenters;
 
-use App\Forms\AlumnosFormFactory;
+use App\Forms\AveriasFormFactory;
 
 use App\Model\Orm\Averias;
 
@@ -14,27 +14,29 @@ use Nette\SmartObject;
 
 class AveriasPresenter extends BaseAdminPresenter {
 
-    /** @var $averiaEditada Averia */
-    //private $averiaEditada;
+    /*@var $averiaEditada Averia*/
+    
+    private $averiaEditada;
 
-    /*public function renderDefault($idClase): void {
+    public function renderDefault ($idAveria): void {
+
+        $this->template->averias = $this->orm->averias->findAll();
         
         $this->template->rol = $this->getDbUser()->rol;
         
-         if(!$idClase){
+         if (!$idAveria) {$this->template->todosLosCentros = $this->orm->averias->findAll();} 
+         
+         else {
+             
+            $this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechaInicio', ICollection::DESC);
+                    
+        }
 
-                $this->template->todosLosCentros = $this->orm->centros->findAll();
-            } else {
-
-            $this->template->alumnos = $this->orm->alumnos->findBy(['claseid' => $idClase])->orderBy('primerapellidoalumno', ICollection::DESC);
-            $this->template->clasex = $this->orm->clases->getById($idClase);
-            }
-
-    }*/
+    }
 
 // _____________________________ EDITAR _______________________________________________
 
-    public function actionEditar( $idAveria) {
+    public function actionEdit( $idAveria) {
         
         $averia = $this->orm->averias->getById($idAveria);
         
@@ -62,11 +64,11 @@ class AveriasPresenter extends BaseAdminPresenter {
             
             $averiax = $this->orm->averias->getById($id);
 
-            $averiax->inicioAveria = $values->inicioAveria;
+            $averiax->fechaInicio = $values->fechaInicio;
             
-            $averiax->finalAveria = $values->finalAveria;
+            $averiax->fechaFinal = $values->fechaFinal;
             
-            $averiax->cumplimentado = $values->cumplimentado;
+            $averiax->descripcion = $values->descripcion;
 
             $averiax->aparato = $values->aparato;
 
@@ -76,49 +78,20 @@ class AveriasPresenter extends BaseAdminPresenter {
 
             $averiax->numeroSerie = $values->numeroSerie;
 
-            $averiax->garantia = $values->garantia;
+            $averiax->resolucion = $values->resolucion;
+
+            $averiax->horas = $values->horas;
             
             $this->orm->persistAndFlush($averiax);
             
             $this->flashMessage('Averia editada correctamente', 'success');
         }
          
-        catch( \Exception $e ) {
+        catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
         
-            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
-        
-        }
-        $this->redirect('Alumnos:default', $this->claseEdit->id);
+        $this->redirect('Averias:default', $this->averiaEdit->id);
     }
 
-//-
-//IMPORTAR
-//-
-    /*public function createComponentImportarAlumnosForm(){
-        $form = ( new AlumnosFormFactory())->createImport();
-        $form->onSuccess[] = [ $this, 'onSuccessImportarAlumnos' ];
-
-        return $form;
-    }
-
-    public function onSuccessImportarAlumnos(Form $form, \stdClass $values ): void {
-     try{
-         $archivo = $values->import->getContents();
-         $xml = simplexml_load_string($archivo);
-
-             foreach ($xml->aulas->aula as $aula){
-                $p = $aula->attributes()->codigo;
-                d($p);
-             }
-
-         dd($xml->aulas->aula[0]);
-
-     } catch( \Exception $e ) {
-
-         $this->flashMessage("Error: " . $e->getMessage(), 'danger');
-     }
-        $this->redirect('this');
-    }*/
 //-
 //AÑADIR
 //-
@@ -151,23 +124,25 @@ class AveriasPresenter extends BaseAdminPresenter {
 
             $averiax = new Averia();
             
-            $averiax->inicioAveria = $values->inicioAveria;
+            $averiax->fechaInicio = $values->fechaInicio;
             
-            $averiax->finalAveria = $values->finalAveria;
+            $averiax->fechaFinal = $values->fechaFinal;
             
-            $averiax->cumplimentado = $values->cumplimentado;
+            $averiax->descripcion = $values->descripcion;
 
             $averiax->aparato = $values->aparato;
-            
+
             $averiax->marca = $values->marca;
-            
+
             $averiax->modelo = $values->modelo;
 
             $averiax->numeroSerie = $values->numeroSerie;
 
-            $averiax->garantia = $values->garantia;
+            $averiax->resolucion = $values->resolucion;
+
+            $averiax->horas = $values->horas;
            
-            $this->orm->persistAndFlush($clasex);
+            $this->orm->persistAndFlush($averiax);
             
             $this->flashMessage('Averia añadida correctamente', 'success');
         
@@ -178,13 +153,13 @@ class AveriasPresenter extends BaseAdminPresenter {
         $this->redirect('this');
     }
 
-    //____________________BORRAR_____________________________________
+//____________________BORRAR_____________________________________
     
     public function actionBorrarAverias ($idAveria){
 
         try {
             
-            if( !$averia = $this->orm->averias->getById($idAveria) ) {$this->flashMessage("La averia no existe", "danger");};
+            if (!$averia = $this->orm->averias->getById($idAveria)) {$this->flashMessage("La averia no existe", "danger");};
             
             $this->orm->averias->removeAndFlush($averia);
             
@@ -199,3 +174,33 @@ class AveriasPresenter extends BaseAdminPresenter {
     }
 
 }
+
+
+//-
+//IMPORTAR
+//-
+    /*public function createComponentImportarAlumnosForm(){
+        $form = ( new AlumnosFormFactory())->createImport();
+        $form->onSuccess[] = [ $this, 'onSuccessImportarAlumnos' ];
+
+        return $form;
+    }
+
+    public function onSuccessImportarAlumnos(Form $form, \stdClass $values ): void {
+     try{
+         $archivo = $values->import->getContents();
+         $xml = simplexml_load_string($archivo);
+
+             foreach ($xml->aulas->aula as $aula){
+                $p = $aula->attributes()->codigo;
+                d($p);
+             }
+
+         dd($xml->aulas->aula[0]);
+
+     } catch( \Exception $e ) {
+
+         $this->flashMessage("Error: " . $e->getMessage(), 'danger');
+     }
+        $this->redirect('this');
+    }*/

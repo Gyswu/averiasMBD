@@ -59,6 +59,7 @@ class Roles implements IAuthorizator {
                     self::SECCION_ADMIN  => [], //array de permisos vacío = todos los permisos
                     self::SECCION_USUARIOS => [],
                     self::SECCION_AVERIAS => [],
+                    self::SECCION_EMPRESAS => [],
 
                 ],
                 self::ROL_OPERARIOS    => [

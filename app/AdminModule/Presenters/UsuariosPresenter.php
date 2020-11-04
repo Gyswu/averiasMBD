@@ -77,22 +77,6 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
             $usuario->telefono = $values->telefono;
 
-            
-            /*$alumno = $this->orm->alumnos->getById($values->alumno);
-            
-            $centro = $this->orm->centros->getById($values->centro);
-            
-            if ($alumno){
-                $usuario->alumno = $alumno;
-                $centro->usuarios->add($usuario);
-            }
-
-            if ($centro){
-                $centro->usuarios->add($usuario);
-            }*/
-
-
-
             $this->orm->persistAndFlush($usuario);
 
             

@@ -1,0 +1,133 @@
+{block content}
+   
+    <div class="container">
+   
+        <div class="row">
+   
+            <h1 n:block="tittle">GESTION DE AVERIAS</h1>
+   
+        </div>
+   
+        <div class="row">
+   
+            <div class="col col-lg-6">
+{*                <!--{ifset $alumnos}-->*}
+{*                <h2>Averias</h2>*}
+{*                <!--{else}-->*}
+{*                <h2>Todos las averias</h2>*}
+{*                <!--{/ifset}-->*}
+            
+            </div>
+
+                <!--{ifset $clasex->id}
+                
+                <div class="col col-lg-3">
+                    <a n:href="Averias:add idClase => $clasex->id" class="btn btn-xs btn-success">Añadir Averia</a>
+            </div>
+            
+                {/ifset}-->
+
+        </div>
+        
+        <div class = "row">
+            
+            <div class="col col-lg-12">
+            
+                <table class="table">
+            
+                    <thead class="thead-dark">
+
+                        <tr>
+            
+{*                        <!--{if $rol == "admin"}-->*}
+{*                        *}
+{*                            <th> Id </th>*}
+{*                        *}
+{*                        <!-- {/if} -->*}
+                
+                            <th> Usuario </th>
+                        
+                            <th> Fecha Inicio </th>
+                        
+                            <th> Fecha Final </th>
+
+                            <th> Descripcion </th>
+
+                            <th> Aparato </th>
+
+                            <th> Marca </th>
+
+                            <th> Modelo </th>
+
+                            <th> Numero de Serie </th>
+
+                            <th> Resolucion </th>
+
+                            <th> Horas </th>
+                    
+                        </tr>
+                    
+                    </thead>
+                    
+                    <tbody>
+                    
+{*                    <!--{ifset $alumnos}-->*}
+                        
+                        {foreach $averias as $averia}
+                        
+                            <tr>
+                            <!--{if $rol == "admin"}-->
+                                
+                                <td> {$averia->id} </td>
+
+                                <td> {$averia->usuario->nombre} </td>
+
+                                <td> {$averia->fechaInicio} </td>
+
+                                <td> {$averia->fechaFinal} </td>
+
+                                <td> {$averia->descripcion} </td>
+
+                                <td> {$averia->aparato} </td>
+
+                                <td> {$averia->marca} </td>
+
+                                <td> {$averia->modelo} </td>
+
+                                <td> {$averia->numeroSerie} </td>
+
+                                <td> {$averia->resolucion} </td>
+
+                                <td> {$averia->horas} </td>
+                            
+                            <!--{/if}-->
+                            
+                                <td>
+                                
+                                    <a n:href="Averias:edit $averia->id" class = "btn btn-xs btn-primary"> Editar </a>
+                                
+{*                                    <!--<a n:href="Comedor:historicoalumno $alumno->id" class="btn btn-xs btn-primary">Historico</a>-->*}
+{*                                *}
+{*                                    <!--{if $rol == "admin"}-->*}
+{*                                *}
+{*                                        <a n:href="Averias:borrarAverias $averia->id" class = "btn btn-xs btn-danger del">Borrar</a>*}
+{*                                *}
+{*                                    <!--{/if}-->*}
+                            
+                                </td>
+                        
+                            </tr>
+                        
+                        {/foreach}
+        
+                    </tbody>
+                
+                </table>
+            
+            </div>
+        
+        </div>
+
+    </div>
+
+{/block}

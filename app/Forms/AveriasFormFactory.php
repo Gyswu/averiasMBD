@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace App\Forms;
 
-use App\Model\Orm\Averia;
+use App\Model\Orm\Averias;
 
 use Nette;
 
@@ -14,7 +14,7 @@ final class AveriasFormFactory {
 
     use Nette\SmartObject;
 
-    public function createNuevo(Averia $averia) {
+    public function createNuevo (Averias $averia) {
         
         $form = $this->create();
         
@@ -22,18 +22,28 @@ final class AveriasFormFactory {
         
         return $form;
     }
+    public function createEdit (Averias $averia) {
 
+        $form = $this->create();
+
+        $form->setDefaults($averia->toArray(2));
+
+        return $form;
+    }
+    
     public function create(): Form {
 
         $form = ( new FormFactory() )->create();
 
         $form->addHidden('id', 'Id de la averia');
 
-        $form->addText('inicioAveria', 'Inicio de la averia')->setRequired();
+        $form->addText('usuario', 'Usuario')->setRequired();
 
-        //$form->addText('finalAveria', 'Final de la averia')->setRequired();
+        $form->addText('fechaInicio', 'Inicio de la averia')->setRequired();
 
-        $form->addText('cumplimentado', 'Cumplimentado')->setRequired();
+        $form->addText('fechaFinal', 'Final de la averia')->setRequired();
+
+        $form->addText('descripcion', 'Descripcion')->setRequired();
 
         $form->addText('aparato', 'Aparato');
 
@@ -43,7 +53,9 @@ final class AveriasFormFactory {
 
         $form->addText('numeroSerie', 'Numero de serie');
 
-        $form->addText('garantia', 'Garantia');
+        $form->addText('resolucion', 'Resolucion');
+
+        $form->addText('horas', 'Horas');
 
         $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 

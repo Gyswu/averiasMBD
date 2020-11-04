@@ -10,7 +10,8 @@ use Nextras\Orm\Relationships\OneHasMany;
  *
  * @property    int    $id  {primary}
  * @property    string|null   $nif
- * @property    int    $telefono
+ * @property    string         $nombre
+ * @property    int|null    $telefono
  * @property    string|null   $direccion
  * @property    OneHasMany|Usuario[] $usuarios {1:m Usuario::$empresa}
  */

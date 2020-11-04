@@ -17,8 +17,12 @@
             </div>
     
             <div class="col col-lg-6">
-    
-                <a n:href="Usuarios:add" class="btn btn-xs btn-success">Añadir Usuario</a>
+
+                {ifset $empresa}
+                    <a n:href="Usuarios:add $empresa->id" class="btn btn-xs btn-success">Añadir Usuario</a>
+                {else}
+                    <a n:href="Usuarios:add" class="btn btn-xs btn-success">Añadir Usuario</a>
+                {/ifset}
     
             </div>
     
@@ -33,18 +37,19 @@
                     <thead class="thead-dark">
     
                     <tr>
-    
-                        <th>ID</th>
-                        
+                        {if $rol == 'admin'}
+                        <th>Empresa</th>
+                        {/if}
                         <th>Nombre</th>
-                        
+                        <th>Apellidos</th>
                         <th>Correo</th>
-                        
-                        <th>Contraseña Encriptada</th>
-                        
                         <th>Rol</th>
                         
-                        <th>Telefono</th> 
+                        <th>Telefono</th>
+
+                        <th>Extension</th>
+
+                        <th>Opciones</th>
                        
                     </tr>
                     
@@ -53,53 +58,21 @@
                     <tbody>
                     
                     {foreach $usuarios as $usuario}
-                    
-                        {if $usuario->rol == 'feo'}
-                    
-                            {else}
+
+
                     
                         <tr>
-                    
-                            <td> {$usuario->id} </td>
-                    
+
+                            {if $rol == 'admin'}
+                                <td>{$usuario->empresa->nombre}</td>
+                            {/if}
                             <td> {$usuario->nombre} </td>
-
+                            <td> {$usuario->apellidos}</td>
                             <td> {$usuario->correo} </td>
-
-                            <td> {$usuario->password} </td>
-                            
                             <td> {$usuario->rol} </td>
-
                             <td> {$usuario->telefono} </td>
-                    
-                            <!--{ifset $usuario->alumno}
-                    
-                                <td>
-                    
-                                    {$usuario->alumno->nombrealumno} {$usuario->alumno->primerapellidoalumno} {$usuario->alumno->segundoapellidoalumno}
-                    
-                                </td>
-
-                                <td>
-                                    {$usuario->correo}
-                                </td>
-                                <td>
-                                    {$usuario->alumno->claseid->nombreclase}
-                                </td>
-                            {else}
-                                <td>{$usuario->nombre}</td>
-                                <td>{$usuario->correo}</td>
-                                <td></td>
-                            {/ifset}
-
-                            {ifset $usuario->centro}
-                                <td>
-                                    {$usuario->centro->nombre}
-                                </td>
-                            {else}
-                                <td> -</td>
-                            {/ifset}-->
-                            
+                            <td>{$usuario->extensiontelefono}</td>
+                        {if $rol == 'admin'}
                             <td>
                             
                                 <a n:href="Usuarios:editar $usuario->id" class="btn btn-xs btn-primary ">Editar</a>
@@ -107,9 +80,9 @@
                                 <a n:href="Usuarios:borrarUsuario $usuario->id" class="btn btn-xs btn-danger del">Borrar</a>
                             
                             </td>
-                        
+                        {/if}
                         </tr>
-                    {/if}
+
                     
                 {/foreach}
             

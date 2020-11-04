@@ -39,30 +39,18 @@
 
                         <tr>
             
-{*                        <!--{if $rol == "admin"}-->*}
-{*                        *}
-{*                            <th> Id </th>*}
-{*                        *}
-{*                        <!-- {/if} -->*}
-                
+                            {if $rol == "admin"}
+                                <th> Empresa </th>
+                            {/if}
                             <th> Usuario </th>
-                        
                             <th> Fecha Inicio </th>
-                        
                             <th> Fecha Final </th>
-
                             <th> Descripcion </th>
-
                             <th> Aparato </th>
-
                             <th> Marca </th>
-
                             <th> Modelo </th>
-
                             <th> Numero de Serie </th>
-
                             <th> Resolucion </th>
-
                             <th> Horas </th>
                     
                         </tr>
@@ -76,9 +64,9 @@
                         {foreach $averias as $averia}
                         
                             <tr>
-                            <!--{if $rol == "admin"}-->
-                                
-{*                                <td> {$averia->id} </td>*}
+                            {if $rol == "admin"}
+                                <td>{$averia->usuario->empresa->nombre}</td>
+                            {/if}
 
                                 <td> {$averia->usuario->correo} </td>
 
@@ -100,19 +88,8 @@
 
                                 <td> {$averia->horas} </td>
                             
-                            <!--{/if}-->
-                            
                                 <td>
-                                
                                     <a n:href="Averias:edit $averia->id" class = "btn btn-xs btn-primary"> Editar </a>
-                                
-{*                                    <!--<a n:href="Comedor:historicoalumno $alumno->id" class="btn btn-xs btn-primary">Historico</a>-->*}
-{*                                *}
-{*                                    <!--{if $rol == "admin"}-->*}
-{*                                *}
-{*                                        <a n:href="Averias:borrarAverias $averia->id" class = "btn btn-xs btn-danger del">Borrar</a>*}
-{*                                *}
-{*                                    <!--{/if}-->*}
                             
                                 </td>
                         

@@ -13,7 +13,11 @@
         </div>
         <div class="row">
             <div class="col col-lg-6">
-                {control masUsuariosForm}
+                {ifset $empresaId}
+                    {control masUsuariosForm-$empresaId}
+                {else}
+                    {control masUsuariosForm}
+                {/ifset}
             </div>
         </div>
     </div>

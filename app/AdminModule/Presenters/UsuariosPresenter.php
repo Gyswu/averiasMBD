@@ -10,6 +10,7 @@ use App\Model\DuplicateNameException;
 
 use App\Model\Orm\Alumno;
 
+use App\Model\Orm\Empresa;
 use App\Model\Orm\Usuario;
 
 use Nette\Application\UI\Form;
@@ -31,11 +32,18 @@ class UsuariosPresenter extends BaseAdminPresenter {
     /** @var Passwords */
     private $passwords;
 
-    public function renderDefault ($claseID): void {
+    public function renderDefault ($empresaId): void {
+
+        if(!isset($empresaId)){
+            $this->template->usuarios = $this->orm->usuarios->findAll();
+            $this->template->rol = $this->getDbUser()->rol;
+        } else {
+            $this->template->empresa = $this->orm->empresa->getById($empresaId);
+            $this->template->usuarios = $this->orm->empresa->getById($empresaId)->usuarios;
+            $this->template->rol = $this->getDbUser()->rol;
+        }
         
-        $this->template->usuarios = $this->orm->usuarios->findAll();
-        
-        $this->template->rol = $this->getDbUser()->rol;
+
     }
 
 // ______________________________________________________________ EDITAR  ________________________________________
@@ -66,16 +74,20 @@ class UsuariosPresenter extends BaseAdminPresenter {
             $usuario = $this->orm->usuarios->getById($values->id);
             
             $usuario->nombre = $values->nombre;
+
+            $usuario->apellidos = $values->apellidos;
             
             $usuario->correo = $values->correo;
+
+            $usuario->telefono = $values->telefono;
+
+            $usuario->extensiontelefono = $values->extensiontelefono;
             
             if ($values->password) {$usuario->password = $values->password;}
             
             $usuario->password = $this->passwords->hash($usuario->password);
             
             $usuario->rol = $values->rol;
-
-            $usuario->telefono = $values->telefono;
 
             $this->orm->persistAndFlush($usuario);
 
@@ -95,9 +107,14 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
 // ______________________________________________________________ AÑADIR ________________________________________
 
-    public function actionAdd() {
-        
-        $rol = $this->getDbUser()->rol;
+    public function actionAdd($empresaId) {
+
+        if(isset($empresaId)){
+            $rol = $this->getDbUser()->rol;
+            $this->template->empresaId = $empresaId;
+        } else {
+            $rol = $this->getDbUser()->rol;
+        }
         
         if( $rol == 'admin') {} 
         
@@ -105,9 +122,9 @@ class UsuariosPresenter extends BaseAdminPresenter {
     
     }
 
-    public function createComponentMasUsuariosForm(){
-        
+    public function createComponentMasUsuariosForm($empresaId){
         $usuario = new Usuario();
+
         
         $form = ( new UsuariosFormFactory() )->createNuevo();
         
@@ -138,19 +155,6 @@ class UsuariosPresenter extends BaseAdminPresenter {
             $usuario->rol = $values->rol;
 
             $usuario->telefono = $values->telefono;
-
-            
-            /*$alumno = $this->orm->alumnos->getById($values->alumno);
-            $centro = $this->orm->centros->getById($values->centro);
-            if ($alumno){
-                $usuario->alumno = $alumno;
-                $centro->usuarios->add($usuario);
-            }
-
-            if ($centro){
-                $centro->usuarios->add($usuario);
-            }*/
-
 
 
             $this->orm->persistAndFlush($usuario);

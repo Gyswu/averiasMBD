@@ -25,11 +25,11 @@ class Roles implements IAuthorizator {
     //Roles
     const ROL_ADMIN = 'admin';
 
-    const ROL_CLIENTE = "cliente";
+    const ROL_CLIENTE = "empleado";
 
     const ROL_JEFE_EMPRESA = "jefe";
 
-    const ROL_OPERARIOS = "operarios";
+    const ROL_OPERARIOS = "operario";
 
 
     //Permisos

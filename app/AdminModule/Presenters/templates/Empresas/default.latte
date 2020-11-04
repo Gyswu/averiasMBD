@@ -51,7 +51,9 @@
                 <td>{$empresa->nombre}</td>
                 <td>{$empresa->telefono}</td>
                 <td>{$empresa->direccion}</td>
-                <td><a n:href="Empresas:edit $empresa->id" class="btn btn-xs btn-primary ">Editar</a>
+                <td>
+                    <a n:href="Usuarios:default $empresa->id" class="btn btn-xs btn-primary ">Usuarios</a>
+                    <a n:href="Empresas:edit $empresa->id" class="btn btn-xs btn-primary ">Editar</a>
                     <a n:href="Empresas:borrar $empresa->id" class="btn btn-xs btn-danger ">Borrar</a>
                 </td>
             </tr>

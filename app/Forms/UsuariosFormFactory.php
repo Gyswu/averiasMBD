@@ -19,7 +19,7 @@ final class UsuariosFormFactory {
     }
     
     public function createEdit(Usuario $usuario) {
-        $form = $this->createx();
+        $form = $this->create();
         $form->setDefaults($usuario->toArray(2));
         return $form;
     }
@@ -31,7 +31,15 @@ final class UsuariosFormFactory {
 
         $form->addText('nombre', 'Nombre del Usuario')->setRequired();
 
+        $form->addText('apellidos', 'Apellidos')->setRequired();
+
         $form->addEmail('correo', 'Correo electronico')->setRequired();
+
+        $form->addInteger('telefono', 'Telefono')
+            ->addRule($form::MIN_LENGTH, 'Telefono demasiado corto', '9')
+            ->addRule($form::MAX_LENGTH, 'Telefono demasiado largo', '9');
+
+        $form->addInteger('extensiontelefono', 'Extensión telefonica');
 
         $form->addPassword('password', 'Contraseña')
 
@@ -41,8 +49,9 @@ final class UsuariosFormFactory {
 
         $form->addSelect('rol', 'Rol',[
             'operario' => 'Operario',
-            'administrador' => 'Administrador',
-            'jefeEmpresa' => 'JefeEmpresa'
+            'empleado' => 'Empleado',
+            'admin' => 'Administrador',
+            'jefe' => 'JefeEmpresa'
         ]);
         $form->addSubmit('send', 'Guardar')
             ->setHtmlAttribute("class", 'btn btn-success');

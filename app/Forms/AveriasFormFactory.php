@@ -39,9 +39,9 @@ final class AveriasFormFactory {
 
         $form->addText('usuario', 'Usuario')->setRequired();
 
-        $form->addText('fechaInicio', 'Inicio de la averia')->setRequired();
+        $form->addText('fechainicio', 'Inicio de la averia')->setRequired();
 
-        $form->addText('fechaFinal', 'Final de la averia')->setRequired();
+        $form->addText('fechafinal', 'Final de la averia')->setRequired();
 
         $form->addText('descripcion', 'Descripcion')->setRequired();
 
@@ -51,7 +51,7 @@ final class AveriasFormFactory {
 
         $form->addText('modelo', 'Modelo');
 
-        $form->addText('numeroSerie', 'Numero de serie');
+        $form->addText('numeroserie', 'Numero de serie');
 
         $form->addText('resolucion', 'Resolucion');
 

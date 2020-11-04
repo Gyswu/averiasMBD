@@ -133,6 +133,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
             $usuario->password = $values->password;
             
             $usuario->password = $this->passwords->hash($usuario->password);
+
             
             $usuario->rol = $values->rol;
 

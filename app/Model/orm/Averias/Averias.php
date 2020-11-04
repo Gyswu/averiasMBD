@@ -9,13 +9,13 @@ use Nextras\Orm\Entity\Entity;
  *
  * @property    int    $id  {primary}
  * @property    Usuario         $usuario   {m:1 Usuario::$averias}
- * @property    string          $fechaInicio
- * @property    string          $fechaFinal
+ * @property    string          $fechainicio
+ * @property    string          $fechafinal
  * @property    string          $descripcion
  * @property    string|null     $aparato
  * @property    string|null     $marca
  * @property    string|null     $modelo
- * @property    string|null     $numeroSerie
+ * @property    string|null     $numeroserie
  * @property    string|null     $resolucion
  * @property    float|null      $horas
  * @property    int|null        $estado

@@ -10,13 +10,15 @@ use App\Forms\EmpresasFormFactory;
 
 class EmpresasPresenter extends BaseAdminPresenter {
 
-//    /** @var $empresaEditada Empresa */
-//    private $empresaEditada;
+    /** @var $empresaEditada Empresa */
+    private $empresaEditada;
 
     public function renderDefault(){
         $this->template->empresas = $this->orm->empresa->findAll();
     }
 
+
+//   _______________________AÑADIR EMPRESA ____________________________________
     public function actionAdd(){
 
     }
@@ -51,6 +53,52 @@ class EmpresasPresenter extends BaseAdminPresenter {
             }
 
             $this->redirect('this');
+    }
+
+//    _______________________EDITAR EMPRESA__________________________________
+
+    public function actionEdit($idEmpresa){
+
+        $this->empresaEditada = $this->orm->empresa->getById($idEmpresa);
+
+        $this->template->empresa = $this->empresaEditada;
+
+    }
+
+    public function createComponentEditarEmpresaForm(){
+
+        $form = (new EmpresasFormFactory())->createEdit($this->empresaEditada);
+        $form->onSuccess[] = [$this, 'onSuccessEditarEmpresa'];
+
+        return $form;
+    }
+
+    public function onSuccessEditarEmpresa(Form $form, \stdClass $values) :void{
+        $empresa = $this->orm->empresa->getById($this->empresaEditada->id);
+
+        try{
+            $empresa->nif = $values->nif;
+            $empresa->nombre = $values->nombre;
+            $empresa->telefono = $values->telefono;
+            $empresa->direccion = $values->direccion;
+
+            $this->orm->persistAndFlush($empresa);
+            $this->flashMessage('Empresa editada correctamente', 'success');
+
+        } catch( Model\DuplicateNameException $e ) {
+
+            $form['nif']->addError('Este nif ya existe');
+
+            return;
+            }
+
+            $this->redirect('this');
+    }
+
+//    ___________________ ELIMINAR EMPRESA ___________________
+    public function actionBorrar($idEmpresa){
+        $this->flashMessage('La empresa no puede ser borrada', 'danger');
+        $this->redirect('Empresas:default');
     }
 
 }

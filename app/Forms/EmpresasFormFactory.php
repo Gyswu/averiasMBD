@@ -16,7 +16,7 @@ final class EmpresasFormFactory {
     }
     
     public function createEdit(Empresa $empresa) {
-        $form = $this->createx();
+        $form = $this->create();
         $form->setDefaults($empresa->toArray(2));
         return $form;
     }

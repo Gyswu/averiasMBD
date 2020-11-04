@@ -17,7 +17,7 @@ use Nextras\Orm\Relationships\OneHasMany;
  * @property    string|null   $password
  * @property    string|null   $rol
  * @property    int|null    $telefono
- * @property    int|null    $extensionTelefono
+ * @property    int|null    $extensiontelefono
  */
 class Usuario extends Entity {
 

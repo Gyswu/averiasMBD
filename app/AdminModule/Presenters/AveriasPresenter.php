@@ -14,7 +14,7 @@ use Nette\SmartObject;
 
 class AveriasPresenter extends BaseAdminPresenter {
 
-    /*@var $averiaEditada Averia*/
+    /** @var $averiaEditada Averia*/
     
     private $averiaEditada;
 
@@ -28,7 +28,7 @@ class AveriasPresenter extends BaseAdminPresenter {
          
          else {
              
-            $this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechaInicio', ICollection::DESC);
+            $this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechainicio', ICollection::DESC);
                     
         }
 
@@ -64,9 +64,9 @@ class AveriasPresenter extends BaseAdminPresenter {
             
             $averiax = $this->orm->averias->getById($id);
 
-            $averiax->fechaInicio = $values->fechaInicio;
+            $averiax->fechainicio = $values->fechainicio;
             
-            $averiax->fechaFinal = $values->fechaFinal;
+            $averiax->fechafinal = $values->fechafinal;
             
             $averiax->descripcion = $values->descripcion;
 
@@ -76,11 +76,15 @@ class AveriasPresenter extends BaseAdminPresenter {
 
             $averiax->modelo = $values->modelo;
 
-            $averiax->numeroSerie = $values->numeroSerie;
+            $averiax->numeroserie = $values->numeroserie;
 
             $averiax->resolucion = $values->resolucion;
 
             $averiax->horas = $values->horas;
+
+            $this->averiaEditada = $averiax;
+
+//            dd($averiax);
             
             $this->orm->persistAndFlush($averiax);
             
@@ -89,7 +93,7 @@ class AveriasPresenter extends BaseAdminPresenter {
          
         catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
         
-        $this->redirect('Averias:default', $this->averiaEdit->id);
+        $this->redirect('Averias:default', $this->averiaEditada->id);
     }
 
 //-

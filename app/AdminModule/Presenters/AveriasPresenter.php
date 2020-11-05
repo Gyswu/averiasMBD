@@ -109,7 +109,7 @@ class AveriasPresenter extends BaseAdminPresenter {
 
 //__________________AÑADIR____________________________
 
-    public function createComponentMasAveriasForm(){
+    public function createComponentAddAveriaForm(){
         
         $averia = new Averias();
         
@@ -120,7 +120,7 @@ class AveriasPresenter extends BaseAdminPresenter {
         return $form;
     }
 
-    public function onSuccessMasAverias (Form $form, \stdClass $values ): void {
+    public function onSuccessAddAveria (Form $form, \stdClass $values ): void {
         
         try {
             
@@ -145,6 +145,20 @@ class AveriasPresenter extends BaseAdminPresenter {
             $averiax->resolucion = $values->resolucion;
 
             $averiax->horas = $values->horas;
+
+            
+            /*$usuario = new Usuarios();
+            
+            $usuario->nombre = $nombre;
+            
+            $usuario->correo = $correo;
+            
+            $usuario->telefono = $telefono;
+            
+            $usuario->usuario = $this->orm->usuarios->getById($this->getDbUser()->id);*/
+
+            
+            $this->orm->persistAndFlush($usuario);
            
             $this->orm->persistAndFlush($averiax);
             
@@ -159,22 +173,11 @@ class AveriasPresenter extends BaseAdminPresenter {
 
 //____________________BORRAR_____________________________________
     
-    public function actionBorrarAverias ($idAveria){
-
-        try {
-            
-            if (!$averia = $this->orm->averias->getById($idAveria)) {$this->flashMessage("La averia no existe", "danger");};
-            
-            $this->orm->averias->removeAndFlush($averia);
-            
-            $this->flashMessage("Averia eliminada", "success");
+    public function actionBorrar( $idAveria){
         
-        } catch( \Exception $e ) {
-            
-            $this->flashMessage("Error al eliminar la averia, contacte con el administrador",'danger');
-        }
+        $this->flashMessage('La averia no puede ser borrada', 'danger');
         
-        $this->redirect('Averias:default', $idAveria);
+        $this->redirect('Averias:default');
     }
 
 }

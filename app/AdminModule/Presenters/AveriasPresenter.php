@@ -21,30 +21,18 @@ class AveriasPresenter extends BaseAdminPresenter {
     public function renderDefault ($idAveria): void {
 
         $this->template->averias = $this->orm->averias->findAll();
-        
-        $this->template->rol = $this->getDbUser()->rol;
-        
-         if (!$idAveria) {$this->template->todosLosCentros = $this->orm->averias->findAll();} 
-         
-         else {
-             
-            $this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechainicio', ICollection::DESC);
-                    
-        }
-
+    
     }
 
 // _____________________________ EDITAR _______________________________________________
 
     public function actionEdit( $idAveria) {
-        
-        $averia = $this->orm->averias->getById($idAveria);
-        
-        $this->averiaEditada = $averia;
-        
-        $this->template->averia = $averia;
+
+        $this->averiaEditada = $this->orm->averias->getById($idAveria);
+                
+        $this->template->averia = $this->averiaEditada;
     }
-    
+
     public function createComponentEditarAveriaForm() {
 
         $form = ( new AveriasFormFactory() )->createEdit($this->averiaEditada);
@@ -96,24 +84,16 @@ class AveriasPresenter extends BaseAdminPresenter {
         $this->redirect('Averias:default', $this->averiaEditada->id);
     }
 
-//-
-//AÑADIR
-//-
-    /*public function actionAdd($idClase) {
-        $clase = $this->orm->clases->getById($idClase);
-        $this->claseEdit = $clase;
-        //
-        $this->template->item = $clase;
-        $this->template->clase = $clase;
-    }*/
-
 //__________________AÑADIR____________________________
+
+
+    public function actionAdd() {}
 
     public function createComponentAddAveriaForm(){
         
         $averia = new Averias();
         
-        $form = ( new AveriasFormFactory() )->createNuevo($averia, $this->averia->id);
+        $form = ( new AveriasFormFactory() )->createNuevo();
         
         $form->onSuccess[] = [ $this, 'onSuccessMasAverias' ];
 
@@ -147,19 +127,13 @@ class AveriasPresenter extends BaseAdminPresenter {
             $averiax->horas = $values->horas;
 
             
-            /*$usuario = new Usuarios();
+            $usuario = new Usuarios();
             
-            $usuario->nombre = $nombre;
-            
-            $usuario->correo = $correo;
-            
-            $usuario->telefono = $telefono;
-            
-            $usuario->usuario = $this->orm->usuarios->getById($this->getDbUser()->id);*/
+            $usuario->usuario = $this->orm->usuarios->getById($this->getDbUser()->id);
 
-            
-            $this->orm->persistAndFlush($usuario);
+            $averiax->usuario->add($usuario);
            
+            
             $this->orm->persistAndFlush($averiax);
             
             $this->flashMessage('Averia añadida correctamente', 'success');
@@ -173,7 +147,7 @@ class AveriasPresenter extends BaseAdminPresenter {
 
 //____________________BORRAR_____________________________________
     
-    public function actionBorrar( $idAveria){
+    public function actionBorrar ($idAveria){
         
         $this->flashMessage('La averia no puede ser borrada', 'danger');
         

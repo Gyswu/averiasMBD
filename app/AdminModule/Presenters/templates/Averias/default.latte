@@ -19,13 +19,15 @@
             
             </div>
 
-                <!--{ifset $clasex->id}
+               {* <!--{ifset $clasex->id} *}
                 
                 <div class="col col-lg-3">
-                    <a n:href="Averias:add idClase => $clasex->id" class="btn btn-xs btn-success">Añadir Averia</a>
-            </div>
+
+                    <a n:href="Averias:add" class="btn btn-xs btn-success">Añadir Averia</a>
+
+                </div>
             
-                {/ifset}-->
+                {*{/ifset}-->*}
 
         </div>
         
@@ -76,7 +78,7 @@
                         {foreach $averias as $averia}
                         
                             <tr>
-                            <!--{if $rol == "admin"}-->
+                            {*{if $rol == "admin"}*}
                                 
 {*                                <td> {$averia->id} </td>*}
 
@@ -100,12 +102,15 @@
 
                                 <td> {$averia->horas} </td>
                             
-                            <!--{/if}-->
+                            {*{/if}*}
                             
                                 <td>
                                 
                                     <a n:href="Averias:edit $averia->id" class = "btn btn-xs btn-primary"> Editar </a>
-                                
+
+                                    <a n:href="Averias: $averia->id" class = "btn btn-xs btn-primary"> Borrar </a>
+
+
 {*                                    <!--<a n:href="Comedor:historicoalumno $alumno->id" class="btn btn-xs btn-primary">Historico</a>-->*}
 {*                                *}
 {*                                    <!--{if $rol == "admin"}-->*}

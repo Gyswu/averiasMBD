@@ -14,11 +14,9 @@ final class AveriasFormFactory {
 
     use Nette\SmartObject;
 
-    public function createNuevo (Averias $averia) {
+    public function createNuevo () {
         
         $form = $this->create();
-        
-        $form->setDefaults($averia->toArray(2));
         
         return $form;
     }
@@ -36,8 +34,6 @@ final class AveriasFormFactory {
         $form = ( new FormFactory() )->create();
 
         $form->addHidden('id', 'Id de la averia');
-
-        $form->addText('usuario', 'Usuario')->setRequired();
 
         $form->addText('fechainicio', 'Inicio de la averia')->setRequired();
 

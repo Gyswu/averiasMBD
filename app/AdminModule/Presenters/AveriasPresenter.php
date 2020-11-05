@@ -6,6 +6,8 @@ use App\Forms\AveriasFormFactory;
 
 use App\Model\Orm\Averias;
 
+use App\Model\Orm\Usuario;
+
 use Nette\Application\UI\Form;
 
 use Nextras\Orm\Collection\ICollection;
@@ -95,7 +97,7 @@ class AveriasPresenter extends BaseAdminPresenter {
         
         $form = ( new AveriasFormFactory() )->createNuevo();
         
-        $form->onSuccess[] = [ $this, 'onSuccessMasAverias' ];
+        $form->onSuccess[] = [ $this, 'onSuccessAddAveria' ];
 
         return $form;
     }
@@ -103,14 +105,15 @@ class AveriasPresenter extends BaseAdminPresenter {
     public function onSuccessAddAveria (Form $form, \stdClass $values ): void {
         
         try {
-            
-            $averiax = $this->averiaEdit;
 
-            $averiax = new Averia();
+            $averiax = new Averias();
+
+            $usuariox = new Usuario();
             
-            $averiax->fechaInicio = $values->fechaInicio;
+
+            $averiax->fechainicio = $values->fechainicio;
             
-            $averiax->fechaFinal = $values->fechaFinal;
+            $averiax->fechafinal = $values->fechafinal;
             
             $averiax->descripcion = $values->descripcion;
 
@@ -120,21 +123,20 @@ class AveriasPresenter extends BaseAdminPresenter {
 
             $averiax->modelo = $values->modelo;
 
-            $averiax->numeroSerie = $values->numeroSerie;
+            $averiax->numeroserie = $values->numeroserie;
 
             $averiax->resolucion = $values->resolucion;
 
             $averiax->horas = $values->horas;
+            
 
-            
-            $usuario = new Usuarios();
-            
-            $usuario->usuario = $this->orm->usuarios->getById($this->getDbUser()->id);
+            $usuariox = $this->orm->usuarios->getById($this->getDbUser()->id);
 
-            $averiax->usuario->add($usuario);
-           
-            
-            $this->orm->persistAndFlush($averiax);
+
+
+            $usuariox->averias->add($averiax);
+
+            $this->orm->persistAndFlush($usuariox);
             
             $this->flashMessage('Averia añadida correctamente', 'success');
         

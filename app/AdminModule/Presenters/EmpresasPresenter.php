@@ -11,23 +11,22 @@ use App\Forms\EmpresasFormFactory;
 class EmpresasPresenter extends BaseAdminPresenter {
 
     /** @var $empresaEditada Empresa */
+
     private $empresaEditada;
 
-    public function renderDefault(){
-        $this->template->empresas = $this->orm->empresa->findAll();
-    }
+    public function renderDefault(){$this->template->empresas = $this->orm->empresa->findAll();}
 
 
 //   _______________________AÑADIR EMPRESA ____________________________________
-    public function actionAdd(){
 
-    }
+    public function actionAdd(){}
 
     public function createComponentAddEmpresaForm(){
 
         $empresa = new Empresa();
 
         $form = (new EmpresasFormFactory())->createNuevo();
+
         $form->onSuccess[] = [$this, 'onSuccessAddEmpresa'];
 
         return $form;
@@ -57,7 +56,7 @@ class EmpresasPresenter extends BaseAdminPresenter {
 
 //    _______________________EDITAR EMPRESA__________________________________
 
-    public function actionEdit($idEmpresa){
+    public function actionEdit ($idEmpresa) {
 
         $this->empresaEditada = $this->orm->empresa->getById($idEmpresa);
 
@@ -96,8 +95,11 @@ class EmpresasPresenter extends BaseAdminPresenter {
     }
 
 //    ___________________ ELIMINAR EMPRESA ___________________
-    public function actionBorrar($idEmpresa){
+
+    public function actionBorrar ($idEmpresa){
+
         $this->flashMessage('La empresa no puede ser borrada', 'danger');
+
         $this->redirect('Empresas:default');
     }
 

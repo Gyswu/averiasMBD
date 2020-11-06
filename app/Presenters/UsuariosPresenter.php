@@ -5,43 +5,63 @@ namespace App\Presenters;
 //USUARIO SERÁ CAPAZ DE VER SUS AVERIAS, HISTORICO DE LAS AVERIAS, CREAR AVERIA 
 
 use App\Forms\AlumnosFormFactory;
+
 use App\Model\Orm\Usuarios;
+
+use App\Model\Orm\Empresas;
+
 use Nette\Application\UI\Form;
+
 use Nextras\Orm\Collection\ICollection;
 
 class UsuariosPresenter extends BasePresenter {
 
-    /** @var $alumnoEditado Alumno */
+    /** @var $usuarioEditado Usuario */
+
     private $usuarioEditado;
 
-    /** @var $claseEdit Clase */
-    private $claseEdit;
+    public function renderDefault ($usuarioID): void {
 
-    public function renderDefault($claseID): void {
+        if (!$usuarioID) {
 
-        if(!$claseID){
-            if(!$this->getDbUser()->centro){
+            if(!$this->getDbUser()->empresa){
+
                 $this->flashMessage("Error: Contacte con el administrador", 'danger');
+
                 $this->redirect('Homepage:default');
             }
+
             $idCentro = $this->getDbUser()->centro->id;
+
             $this->template->clases = $this->orm->clases->findBy(['centro' => $idCentro]);
 
         } else {
-        $this->template->alumnos = $this->orm->alumnos->findBy(['claseid' => $claseID])->orderBy('primerapellidoalumno', ICollection::ASC);
-        $fecha = date("d-m-Y");
-        $today = 0;
 
-        $clase = $this->orm->clases->getById($claseID);
+            $this->template->usuarios = $this->orm->usuarios->findBy(['idEmpresa' => $this])->orderBy('apellidos', ICollection::ASC);
+
+            //$fecha = date("d-m-Y");
+
+            //$today = 0;
+
+
+            /*$clase = $this->orm->clases->getById($claseID);
+
             foreach ($clase->historicos as $historico){
+
                 if($historico->fecha === $fecha){
+
                     $today++;
+
                 }
+
             }
-            $this->template->today = $today;
+            $this->template->today = $today;*/
         }
+
         $this->template->centro = $this->getDbUser()->centro;
+
         $this->template->clase = $this->orm->clases->getById($claseID);
+
         $this->template->date = date("D");
 
 

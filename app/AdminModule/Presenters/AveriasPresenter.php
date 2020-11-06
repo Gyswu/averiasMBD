@@ -20,6 +20,8 @@ class AveriasPresenter extends BaseAdminPresenter {
     
     private $averiaEditada;
 
+   //mostrar todas las averias
+
     public function renderDefault ($idAveria): void {
 
         $this->template->averias = $this->orm->averias->findAll();
@@ -45,12 +47,16 @@ class AveriasPresenter extends BaseAdminPresenter {
     }
     
     public function onSuccessEditarAveria (Form $form, \stdClass $values ): void {
-        
+
+        //Instanciar Objeto de averias, para ir sacando los datos
+
         $averiax = new Averias();
         
         try {
             
             $id = $values->id;
+
+            //accede al orm, tabla de averias y llama a funcion para sacar id que ya esta creada por orm
             
             $averiax = $this->orm->averias->getById($id);
 
@@ -75,6 +81,8 @@ class AveriasPresenter extends BaseAdminPresenter {
             $this->averiaEditada = $averiax;
 
 //            dd($averiax);
+
+            //se guardan todos los datos del objeto averia y los sube a la base de datos ya editados
             
             $this->orm->persistAndFlush($averiax);
             

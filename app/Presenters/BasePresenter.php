@@ -13,25 +13,29 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter {
     
     /** @var Orm\Orm @inject */
+
     public $orm;
     
     protected function startup() {
 
         $this->getUser()->setAuthorizator(new \App\Model\Roles());
-        if( !$this->user->isLoggedIn() && !in_array($this->presenter->getName(), [ 'Sign' ]) ) {
+
+        if (!$this->user->isLoggedIn() && !in_array($this->presenter->getName(), [ 'Sign' ]) ) {
+
             $this->flashMessage('Debes iniciar sesión primero');
+
             $this->redirect(':Sign:in');
 
         }
-        if($this->getDbUser()){
-            if($this->getDbUser()->rol == "admin"){
-                $this->template->imgcentro = "";
-            } else {
-            $this->template->imgcentro = $this->getDbUser()->centro->imagen;
-            }
-        } else {
-            $this->template->imgcentro = "";
-        }
+
+        if ($this->getDbUser()) {
+
+            if ($this->getDbUser()->rol == "admin") {$this->template->imgcentro = "";}
+
+            else {$this->template->imgcentro = $this->getDbUser()->centro->imagen;}
+
+        } else {$this->template->imgcentro = "";}
+
         $this->template->activeUser =  $this->getDbUser();
         parent::startup();
         //
@@ -44,9 +48,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
      *
      * @return Orm\Usuario|NULL
      */
-    protected function getDbUser() {
-        return $this->orm->usuarios->getById($this->user->getId());
-    }
+    protected function getDbUser() {return $this->orm->usuarios->getById($this->user->getId());}
     
     /**
      * Devuelve si el acceso está permitido al pasar la sección y el permiso

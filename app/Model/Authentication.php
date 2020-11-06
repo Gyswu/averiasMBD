@@ -8,11 +8,7 @@ use App\Model\Orm\Usuario;
 use Nette;
 use Nette\Security\Passwords;
 
-/**
- * Users management.
- */
-final class Authentication implements Nette\Security\IAuthenticator
-{
+final class Authentication implements Nette\Security\IAuthenticator {
 
     use Nette\SmartObject;
 
@@ -27,8 +23,7 @@ final class Authentication implements Nette\Security\IAuthenticator
     private $passwords;
 
 
-    public function __construct(Orm $orm, Passwords $passwords)
-    {
+    public function __construct (Orm $orm, Passwords $passwords) {
 
         $this->orm = $orm;
 
@@ -40,8 +35,8 @@ final class Authentication implements Nette\Security\IAuthenticator
      * Performs an authentication.
      * @throws Nette\Security\AuthenticationException
      */
-    public function authenticate(array $credentials): Nette\Security\IIdentity
-    {
+
+    public function authenticate (array $credentials): Nette\Security\IIdentity {
 
         [$email, $password] = $credentials;
 

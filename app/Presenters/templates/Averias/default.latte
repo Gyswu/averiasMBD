@@ -5,7 +5,7 @@
         </div>
         <div class="row">
             <div class="col col-lg-6">
-                <h2>VER AVERIAS</h2>
+                <h2>VER AVERIAS DE USUARIO X</h2>
             </div>
             <div class="col col-lg-6">
                 <a n:href="Averias:add" class="btn btn-xs btn-success"> Añadir averia</a>
@@ -60,136 +60,17 @@
                                 <td> {$averia -> garantia} </td>
 
 
-
-
-
-
-                                
-                                <!--<td>
-                                    {$alumno->nombrealumno} {$alumno->primerapellidoalumno} {$alumno->segundoapellidoalumno}
-                                </td>-->
-
-                                <!--<td>
-                                    {ifset $alumno->alergiasalumno}
-                                        {$alumno->alergiasalumno}
-                                    {else}
-                                        Ninguna
-                                    {/ifset}
-                                </td>
-                                <td>
-                                    {switch $date}
-                                        {case Mon}
-                                        {if $alumno->mon}
-                                            <a href="Alumnos:editar $clase->id, $alumno->id" class="btn btn-xs btn-success">Si</a>
-                                        {else}
-                                            <a href="Alumnos:borrarAlumno $clase->id, $alumno->id" class="btn btn-xs btn-danger">No</a>
-                                        {/if}
-                                    {case Tue}
-                                        {if $alumno->tue}
-                                            <a href="Alumnos:editar $clase->id, $alumno->id" class="btn btn-xs btn-success">Si</a>
-                                        {else}
-                                            <a href="Alumnos:borrarAlumno $clase->id, $alumno->id" class="btn btn-xs btn-danger">No</a>
-                                        {/if}
-                                    {case Wed}
-                                        {if $alumno->wed}
-                                            <a href="Alumnos:editar $clase->id, $alumno->id" class="btn btn-xs btn-success">Si</a>
-                                        {else}
-                                            <a href="Alumnos:borrarAlumno $clase->id, $alumno->id" class="btn btn-xs btn-danger">No</a>
-                                        {/if}
-                                    {case Thu}
-                                        {if $alumno->thu}
-                                            <a href="Alumnos:editar $clase->id, $alumno->id" class="btn btn-xs btn-success">Si</a>
-                                        {else}
-                                            <a href="Alumnos:borrarAlumno $clase->id, $alumno->id" class="btn btn-xs btn-danger">No</a>
-                                        {/if}
-                                    {case Fri}
-                                        {if $alumno->fri}
-                                            <a href="Alumnos:editar $clase->id, $alumno->id" class="btn btn-xs btn-success">Si</a>
-                                        {else}
-                                            <a href="Alumnos:borrarAlumno $clase->id, $alumno->id" class="btn btn-xs btn-danger">No</a>
-                                        {/if}
-                                    {case Sat}
-                                        Los sabados no hay comedor
-                                    {case Sun}
-                                        {if $alumno->mon}
-                                            <a href="Alumnos:editar $clase->id, $alumno->id" class="btn btn-xs btn-success">Si</a>
-                                        {else}
-                                            <a href="Alumnos:borrarAlumno $clase->id, $alumno->id" class="btn btn-xs btn-danger">No</a>
-                                        {/if}
-                                    {/switch}
-                                </td>-->
                             </tr>
                         {/foreach}
-                    <!--{else}
-                        {foreach $clases as $clasex}
-                            {foreach $clasex->alumnos as $alumno}
-                                <tr>
-                                    <td>
-                                        <img src="/images/defaultprofile.jpg" alt="Default profile" class="img-fluid rounded">
-                                    </td>
-                                    <td>
-                                        {$alumno->nombrealumno} {$alumno->primerapellidoalumno} {$alumno->segundoapellidoalumno}
-                                    </td>
-                                    <td>
-                                        {$clasex->nombreclase}
-                                    </td>
-                                    <td>
-                                        {ifset $alumno->alergiasalumno}
-                                            {$alumno->alergiasalumno}
-                                        {else}
-                                            Ninguna
-                                        {/ifset}
-                                    </td>
-                                    <td>
-                                        {switch $date}
-                                            {case Mon}
-                                            {if $alumno->mon}
-                                                <a href="" class="btn btn-xs btn-success">Si</a>
-                                            {else}
-                                                <a href="" class="btn btn-xs btn-danger">No</a>
-                                            {/if}
-                                        {case Tue}
-                                            {if $alumno->tue}
-                                                <a href="" class="btn btn-xs btn-success">Si</a>
-                                            {else}
-                                                <a href="" class="btn btn-xs btn-danger">No</a>
-                                            {/if}
-                                        {case Wed}
-                                            {if $alumno->wed}
-                                                <a href="" class="btn btn-xs btn-success">Si</a>
-                                            {else}
-                                                <a href="" class="btn btn-xs btn-danger">No</a>
-                                            {/if}
-                                        {case Thu}
-                                            {if $alumno->thu}
-                                                <a href="" class="btn btn-xs btn-success">Si</a>
-                                            {else}
-                                                <a href="" class="btn btn-xs btn-danger">No</a>
-                                            {/if}
-                                        {case Fri}
-                                            {if $alumno->fri}
-                                                <a href="" class="btn btn-xs btn-success">Si</a>
-                                            {else}
-                                                <a href="" class="btn btn-xs btn-danger">No</a>
-                                            {/if}
-                                        {case Sat}
-                                            Los sabados no hay comedor
-                                        {case Sun}
-                                            {if $alumno->mon}
-                                                <a href="" class="btn btn-xs btn-success">Si</a>
-                                            {else}
-                                                <a href="" class="btn btn-xs btn-danger del">No</a>
-                                            {/if}
-                                        {/switch}
-                                    </td>
-                                </tr>
-                            {/foreach}
-                        {/foreach}
-                    {/ifset}-->
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
+
         <!--<div class="row">
             <div class="col col-lg-12">
 

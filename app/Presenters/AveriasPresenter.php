@@ -6,6 +6,7 @@ use App\Forms\AveriasFormFactory;
 
 use App\Model\Orm\Averias;
 
+use App\Model\Orm\Usuario;
 use Nette\Application\UI\Form;
 
 class AveriasPresenter extends BasePresenter {
@@ -110,7 +111,7 @@ class AveriasPresenter extends BasePresenter {
 
             $averiax = new Averias();
 
-            $usuariox = new Usuario();
+
 
 
             $averiax->fechainicio = $values->fechainicio;

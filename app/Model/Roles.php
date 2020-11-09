@@ -25,7 +25,7 @@ class Roles implements IAuthorizator {
 
     const ROL_ADMIN = 'admin';
 
-    const ROL_CLIENTE = "cliente";
+    const ROL_USER = "user";
 
     const ROL_JEFE_EMPRESA = "jefe";
 
@@ -91,11 +91,13 @@ class Roles implements IAuthorizator {
 
                 ],
 
-                self::ROL_CLIENTE  => [
+                self::ROL_USER  => [
 
                     self::SECCION_USUARIOS => [],
 
-                    self::SECCION_HISTORICOS  => [],
+                    self::SECCION_AVERIAS => [],
+
+                    self::SECCION_EMPRESAS => []
 
                 ],
 

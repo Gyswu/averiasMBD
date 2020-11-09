@@ -2,9 +2,9 @@
 
 namespace App\Presenters;
 
-//USUARIO SERÁ CAPAZ DE VER SUS AVERIAS, HISTORICO DE LAS AVERIAS, CREAR AVERIA 
+//USUARIO SERÁ CAPAZ DE VER SUS AVERIAS, HISTORICO DE LAS AVERIAS, CREAR AVERIA
 
-use App\Forms\AlumnosFormFactory;
+use App\Forms\UsuariosFormFactory;
 
 use App\Model\Orm\Usuarios;
 
@@ -31,9 +31,9 @@ class UsuariosPresenter extends BasePresenter {
                 $this->redirect('Homepage:default');
             }
 
-            $idCentro = $this->getDbUser()->centro->id;
+            //$idCentro = $this->getDbUser()->centro->id;
 
-            $this->template->clases = $this->orm->clases->findBy(['centro' => $idCentro]);
+            //$this->template->clases = $this->orm->clases->findBy(['centro' => $idCentro]);
 
         } else {
 
@@ -58,13 +58,68 @@ class UsuariosPresenter extends BasePresenter {
             $this->template->today = $today;*/
         }
 
-        $this->template->centro = $this->getDbUser()->centro;
+        //$this->template->centro = $this->getDbUser()->centro;
 
-        $this->template->clase = $this->orm->clases->getById($claseID);
+        //$this->template->clase = $this->orm->clases->getById($claseID);
 
-        $this->template->date = date("D");
+        //$this->template->date = date("D");
 
 
+    }
+
+    /*___________________EDITAR________________________________________*/
+
+    public function actionEditar( $idUsuario ) {
+
+        $this->usuarioEditado = $this->orm->usuarios->getById($idUsuario);
+
+        $this->template->usuario = $this->usuarioEditado;
+
+    }
+
+    public function createComponentEditarUsuarioForm() {
+
+        $form = ( new UsuariosFormFactory() )->createEdit($this->usuarioEditado);
+
+        $form->onSuccess[] = [ $this, 'onSuccessEditarUsuario' ];
+
+        return $form;
+    }
+
+    public function onSuccessEditarUsuario (Form $form, \stdClass $values ): void {
+
+        Nette\Utils\Validators::assert($values->correo, 'email');
+
+        try {
+
+            $usuario = $this->orm->usuarios->getById($values->id);
+
+            $usuario->nombre = $values->nombre;
+
+            $usuario->correo = $values->correo;
+
+            if ($values->password) {$usuario->password = $values->password;}
+
+            $usuario->password = $this->passwords->hash($usuario->password);
+
+            $usuario->rol = $values->rol;
+
+            $usuario->telefono = $values->telefono;
+
+            $this->orm->persistAndFlush($usuario);
+
+
+            $this->flashMessage('Usuario añadido correctamente', 'success');
+
+        } catch( Model\DuplicateNameException $e ) {
+
+            $form['email']->addError('Este correo ya existe, por favor elige otro o recupera tu contraseña.');
+
+            return;
+
+        }
+
+        $this->redirect('this');
     }
 
     /*public function actionEnviarComedor($claseID){

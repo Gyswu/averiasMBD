@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\Forms;
-use App\Model\Roles;
 use Nette\Application\UI\Form;
 use Nette\Security\User;
 
@@ -34,29 +33,25 @@ final class SignPresenter extends BasePresenter
      */
     protected function createComponentSignInForm(): Form
     {
-        return $this->signInFactory->create(function (User $user): void {
+        return $this->signInFactory->create (function (User $user): void {
+
             $this->restoreRequest($this->backlink);
-            if($user->isInRole('admin')){
-                $this->redirect(':Admin:Homepage:');
-            }elseif($user->isInRole('user')){
-                $this->redirect(':User:Homepage:');
-            }elseif($user->isInRole(Roles::ROL_DIRECTOR)){
-                $this->redirect(':Admin:Clases:');
-            }elseif($user->isInRole(Roles::ROL_PROFESOR)){
-                $this->redirect(':Admin:Clases:');
-            }
+
+            if ($user->isInRole('admin')) {$this->redirect(':Admin:Homepage:');}
+
+            elseif ($user->isInRole('user')) {$this->redirect(':Usuarios:default:');}
+
             $this->redirect('Homepage:');
+
         });
     }
 
     /**
      * Sign-up form factory.
      */
-    protected function createComponentSignUpForm(): Form
-    {
-        return $this->signUpFactory->create(function (): void {
-            $this->redirect('Homepage:');
-        });
+    protected function createComponentSignUpForm(): Form {
+
+        return $this->signUpFactory->create(function (): void {$this->redirect('Homepage:');});
     }
 
 

@@ -5,6 +5,7 @@ namespace App\Presenters;
 
 use App\Model\Menu;
 use App\Model\Orm;
+use App\Model\Roles;
 use Nette;
 
 /**
@@ -18,7 +19,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
     
     protected function startup() {
 
-        $this->getUser()->setAuthorizator(new \App\Model\Roles());
+        $this->getUser()->setAuthorizator(new Roles());
 
         if (!$this->user->isLoggedIn() && !in_array($this->presenter->getName(), [ 'Sign' ]) ) {
 
@@ -28,13 +29,13 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
 
         }
 
-        if ($this->getDbUser()) {
+        /**if ($this->getDbUser()) {
 
-            if ($this->getDbUser()->rol == "admin") {$this->template->imgcentro = "";}
+            if ($this->getDbUser()->rol == "user") {$this->template->imgcentro = "";}
 
             else {$this->template->imgcentro = $this->getDbUser()->centro->imagen;}
 
-        } else {$this->template->imgcentro = "";}
+        } else {$this->template->imgcentro = "";}*/
 
         $this->template->activeUser =  $this->getDbUser();
         parent::startup();

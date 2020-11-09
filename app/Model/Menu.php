@@ -10,11 +10,11 @@ class Menu {
         
         $menu = [
 
-            [
+            /*[
                 'nombre'  => 'Empresas',
                 'mostrar' => $user->isAllowed(Roles::SECCION_EMPRESAS),
                 'nhref'   => 'Empresas:default',
-            ],
+            ],*/
             [
                 'nombre'  => 'Usuarios',
                 'mostrar' => $user->isAllowed(Roles::SECCION_USUARIOS),

@@ -9,14 +9,15 @@ use Nette\Application\UI\Form;
 
 final class HomepagePresenter extends BaseAdminPresenter {
 
-    //APARTADO DE CENTROS
     public function renderdefault(): void {
         $rol = $this->getDbUser()->rol;
         $name = $this->getDbUser()->nombre;
         $this->flashMessage('Miercoles 1 de Julio a las 20:00 se incluirán funciones adicionales en el software y arreglos de todos los errores actuales', 'success');
-        if($rol == 'alumno'){
+
+        if ($rol == 'user'){
+
             $this->flashMessage('Bienvenido '. $name, 'success');
-            $this->redirect('Usuarios:perfilalumno');
+           $this->redirect('Usuarios:default');
         }
 
     }

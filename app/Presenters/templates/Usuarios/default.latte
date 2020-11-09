@@ -20,7 +20,7 @@
 
                     <tbody>
 
-                        {foreach $usuarios as usuario}
+                        {foreach $usuarios as $usuario}
 
                         <!-- Solo se permite editar algun dato como correo, apellidos o telefono, y no se deberia poder borrar?? -->
 
@@ -38,13 +38,7 @@
 
                                 <td> Telefono: {$usuario->telefono} </td>
 
-                                <td>
-
-                                   <a n:href="Usuarios:edit $usuario->id" class="btn btn-xs btn-primary"> </a>
-
-                                   <!--<a n:href="Centros:borrarCentro $centro->id" class="btn btn-xs btn-danger del">Borrar</a>-->
-
-                                </td>
+                                <td> <a n:href = "Usuarios:edit $usuario->id" class = "btn btn-xs btn-primary"> </a> </td>
 
                             </tr>
 

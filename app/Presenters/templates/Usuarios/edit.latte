@@ -1,20 +1,20 @@
 {block content}
+
     <div class="container">
-        <div class="row">
-            <h1 n:block="tittle">EDITAR INFORMACION DE USUARIO</h1>
+
+        <div class="row"> <h1 n:block="tittle"> EDITAR INFORMACION DE USUARIO </h1> </div>
+
+        <div class = "row">
+
+            <div class = "col col-lg-6"> <h2> Editar Usuario </h2> </div>
+
+            <div class = "col col-lg-6"> <a n:href = "Usuarios:default" class = "btn btn-info"> Volver </a> </div>
+
         </div>
-        <div class="row">
-            <div class="col col-lg-6">
-                <h2>Editar Usuario</h2>
-            </div>
-            <div class="col col-lg-6">
-                <a n:href="Usuarios:default" class="btn btn-info">Volver</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-lg-6">
-                {control editarUsuarioForm}
-            </div>
+
+        <div class = "row">
+
+            <div class="col col-lg-6"> {control editarUsuarioForm} </div>
         </div>
         <div class="row">
             <div class="col col-lg-12">

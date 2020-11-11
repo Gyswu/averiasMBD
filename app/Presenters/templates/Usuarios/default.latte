@@ -1,0 +1,55 @@
+{block content}
+
+    <div class = "container">
+
+        <br>
+
+        <div class = "row"> <h1 n:block = "title"> MI PERFIL </h1> </div>
+
+        <br>
+
+        <div class = "row">
+
+            <div class = "col col-lg-12">
+
+                <table class = "table">
+
+                    <tbody>
+
+                        {foreach $usuarios as $usuario}
+
+                            <tr>
+
+                                <td> Nombre: {$usuario->nombre} </td>
+
+                                <td> Apellidos: {$usuario->apellidos}</td>
+
+                                <td> Correo: {$usuario->correo} </td>
+
+                                <td> Rol: {$usuario->rol} </td>
+
+                                <td> Telefono: {$usuario->telefono} </td>
+
+                                <td> Extension: {$usuario->extensiontelefono} </td>
+
+                                <td>
+
+                                    <a n:href = "Usuarios:editar $usuario->id" class="btn btn-xs btn-primary ">Editar</a>
+
+                                </td>
+
+                            </tr>
+
+                        {/foreach}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{/block}

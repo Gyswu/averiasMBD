@@ -1,10 +1,15 @@
 <?php
+
 declare( strict_types = 1 );
 
 namespace App\Forms;
 
 use App\Model\Orm\Usuario;
+
+//use App\Model\Orm\Empresa;
+
 use Nette;
+
 use Nette\Application\UI\Form;
 
 final class UsuariosFormFactory {
@@ -23,6 +28,8 @@ final class UsuariosFormFactory {
         $form->setDefaults($usuario->toArray(2));
         return $form;
     }
+
+
     
     public function create(): Form {
         $form = ( new FormFactory() )->create();
@@ -48,10 +55,8 @@ final class UsuariosFormFactory {
             ->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
 
         $form->addSelect('rol', 'Rol',[
-            'operario' => 'Operario',
-            'cliente' => 'Empleado',
+            'cliente' => 'Cliente',
             'admin' => 'Administrador',
-            'jefe' => 'JefeEmpresa'
         ]);
         $form->addSubmit('send', 'Guardar')
             ->setHtmlAttribute("class", 'btn btn-success');

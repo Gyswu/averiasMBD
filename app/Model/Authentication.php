@@ -11,8 +11,7 @@ use Nette\Security\Passwords;
 /**
  * Users management.
  */
-final class Authentication implements Nette\Security\IAuthenticator
-{
+final class Authentication implements Nette\Security\IAuthenticator {
 
     use Nette\SmartObject;
 
@@ -40,7 +39,7 @@ final class Authentication implements Nette\Security\IAuthenticator
      * Performs an authentication.
      * @throws Nette\Security\AuthenticationException
      */
-    public function authenticate(array $credentials): Nette\Security\IIdentity
+    public function authenticate (array $credentials): Nette\Security\IIdentity
     {
 
         [$email, $password] = $credentials;
@@ -86,19 +85,21 @@ final class Authentication implements Nette\Security\IAuthenticator
      * Adds new user.
      * @throws DuplicateNameException
      */
-    public function add(Usuario $usuario): void
-    {
+    public function add (Usuario $usuario): void {
+
         Nette\Utils\Validators::assert($usuario->correo, 'email');
+
         try {
-            if ($this->orm->usuarios->getBy(['correo' => $usuario->correo])) {
-                throw new DuplicateNameException;
-            }
+
+            if ($this->orm->usuarios->getBy(['correo' => $usuario->correo])) {throw new DuplicateNameException;}
+
             $usuario->password = $this->passwords->hash($usuario->password);
+
             $usuario->rol = Roles::ROL_ADMIN;
+
             $this->orm->persistAndFlush($usuario);
-        } catch (Nette\Database\UniqueConstraintViolationException $e) {
-            throw new DuplicateNameException;
-        }
+
+        } catch (Nette\Database\UniqueConstraintViolationException $e) {throw new DuplicateNameException;}
     }
 
 }

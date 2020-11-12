@@ -89,14 +89,13 @@ class AveriasPresenter extends BasePresenter
 
             $this->averiaEditada = $averiax;
 
-//            dd($averiax);
+            //dd($averiax);
 
             $this->orm->persistAndFlush($averiax);
 
             $this->flashMessage('Averia editada correctamente', 'success');
-        } catch (\Exception $e) {
-            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
-        }
+
+        } catch (\Exception $e) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
 
         $this->redirect('Averias:default', $this->averiaEditada->id);
     }

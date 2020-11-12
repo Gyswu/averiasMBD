@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 namespace App\AdminModule\Presenters;
 
 use App\Forms\AlumnosFormFactory;
@@ -11,6 +14,7 @@ use App\Model\DuplicateNameException;
 use App\Model\Orm\Alumno;
 
 use App\Model\Orm\Empresa;
+
 use App\Model\Orm\Usuario;
 
 use Nette\Application\UI\Form;
@@ -34,12 +38,18 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
     public function renderDefault ($empresaId): void {
 
-        if(!isset($empresaId)){
+        if (!isset($empresaId)) {
+
             $this->template->usuarios = $this->orm->usuarios->findAll();
+
             $this->template->rol = $this->getDbUser()->rol;
+
         } else {
+
             $this->template->empresa = $this->orm->empresa->getById($empresaId);
+
             $this->template->usuarios = $this->orm->empresa->getById($empresaId)->usuarios;
+
             $this->template->rol = $this->getDbUser()->rol;
         }
         
@@ -70,7 +80,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
         Nette\Utils\Validators::assert($values->correo, 'email');
         
         try {
-            
+
             $usuario = $this->orm->usuarios->getById($values->id);
             
             $usuario->nombre = $values->nombre;
@@ -123,8 +133,8 @@ class UsuariosPresenter extends BaseAdminPresenter {
     }
 
     public function createComponentMasUsuariosForm($empresaId){
-        $usuario = new Usuario();
 
+        $usuario = new Usuario();
         
         $form = ( new UsuariosFormFactory() )->createNuevo();
         
@@ -138,11 +148,13 @@ class UsuariosPresenter extends BaseAdminPresenter {
         Nette\Utils\Validators::assert($values->correo, 'email');
         
         try {
+
+            //
         
             if ($this->orm->usuarios->getBy(['correo' => $values->correo])) {throw new DuplicateNameException;}
             
             $usuario = new Usuario();
-            
+
             $usuario->nombre = $values->nombre;
             
             $usuario->correo = $values->correo;
@@ -150,7 +162,6 @@ class UsuariosPresenter extends BaseAdminPresenter {
             $usuario->password = $values->password;
             
             $usuario->password = $this->passwords->hash($usuario->password);
-
             
             $usuario->rol = $values->rol;
 

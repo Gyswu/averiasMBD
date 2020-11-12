@@ -1,11 +1,6 @@
 <?php
 
-
-
-
 namespace App\AdminModule\Presenters;
-
-use App\Forms\AlumnosFormFactory;
 
 use App\Forms\UsuariosFormFactory;
 
@@ -14,7 +9,6 @@ use App\Model\DuplicateNameException;
 use App\Model\Orm\Alumno;
 
 use App\Model\Orm\Empresa;
-
 use App\Model\Orm\Usuario;
 
 use Nette\Application\UI\Form;
@@ -117,14 +111,15 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
 // ______________________________________________________________ AÑADIR ________________________________________
 
-    public function actionAdd($empresaId) {
+    public function actionAdd ($empresaId) {
 
-        if(isset($empresaId)){
+        if (isset($empresaId)){
+
             $rol = $this->getDbUser()->rol;
+
             $this->template->empresaId = $empresaId;
-        } else {
-            $rol = $this->getDbUser()->rol;
-        }
+
+        } else {$rol = $this->getDbUser()->rol;}
         
         if( $rol == 'admin') {} 
         
@@ -148,12 +143,15 @@ class UsuariosPresenter extends BaseAdminPresenter {
         Nette\Utils\Validators::assert($values->correo, 'email');
         
         try {
-
-            //
         
             if ($this->orm->usuarios->getBy(['correo' => $values->correo])) {throw new DuplicateNameException;}
-            
+
             $usuario = new Usuario();
+
+            $empresa = new Empresa();
+
+
+            $empresa = $this->orm->empresa->getById($values->empresa);
 
             $usuario->nombre = $values->nombre;
             

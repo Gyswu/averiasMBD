@@ -4,9 +4,8 @@ declare( strict_types = 1 );
 
 namespace App\Forms;
 
+use App\Model\Orm\Empresa;
 use App\Model\Orm\Usuario;
-
-//use App\Model\Orm\Empresa;
 
 use Nette;
 
@@ -19,22 +18,29 @@ final class UsuariosFormFactory {
     use Nette\SmartObject;
 
     public function createNuevo() {
+
         $form = $this->create();
+
         return $form;
     }
     
-    public function createEdit(Usuario $usuario) {
+    public function createEdit (Usuario $usuario) {
+
         $form = $this->create();
+
         $form->setDefaults($usuario->toArray(2));
+
         return $form;
     }
-
 
     
     public function create(): Form {
+
         $form = ( new FormFactory() )->create();
 
         $form->addHidden('id', 'Id de Usuario');
+
+        $form->addSelect('empresa', 'Selecciona tu empresa:',);
 
         $form->addText('nombre', 'Nombre del Usuario')->setRequired();
 
@@ -55,11 +61,14 @@ final class UsuariosFormFactory {
             ->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
 
         $form->addSelect('rol', 'Rol',[
+
             'cliente' => 'Cliente',
+
             'admin' => 'Administrador',
+
         ]);
-        $form->addSubmit('send', 'Guardar')
-            ->setHtmlAttribute("class", 'btn btn-success');
+
+        $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 
         return $form;
     }

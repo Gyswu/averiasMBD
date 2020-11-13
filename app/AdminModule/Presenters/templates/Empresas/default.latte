@@ -1,73 +1,93 @@
 {block content}
 
-    <div class="container">
+    <div class = "container">
 
-    <div class="row">
+    <br>
 
-        <h1 n:block="title">Empresas</h1>
+    <div class = "row">
+
+        <h1 n:block = "title"> Empresas </h1>
 
     </div>
 
-    <div class="row">
+    <br>
 
-        <div class="col col-lg-12">
+    <div class = "row">
 
-            <a n:href="Empresas:add" class="btn btn-xs btn-success">Añadir Empresa</a>
+        <div class = "col col-lg-12">
+
+            <a n:href = "Empresas:add" class = "btn btn-xs btn-success"> Añadir Empresa </a>
 
         </div>
 
     </div>
 
-    <div class="row">
+    <br>
 
-    <div class="col col-lg-12">
+    <div class = "row">
 
-    <table class="table">
+    <div class = "col col-lg-12">
 
-    <thead class="thead-dark">
+    <table class = "table">
+
+    <thead class = "thead-dark">
 
     <tr>
 
-        <th>ID</th>
+        <th> ID </th>
 
-        <th>Nif</th>
+        <th> Nif </th>
 
-        <th>Nombre</th>
+        <th> Nombre </th>
 
-        <th>Telefono</th>
+        <th> Telefono </th>
 
-        <th>Direccion</th>
-        <th></th>
+        <th> Direccion </th>
+
+        <th> </th>
 
     </tr>
 
     </thead>
 
     <tbody>
+
         {foreach $empresas as $empresa}
+
             <tr>
-                <td>{$empresa->id}</td>
-                <td>{$empresa->nif}</td>
-                <td>{$empresa->nombre}</td>
-                <td>{$empresa->telefono}</td>
-                <td>{$empresa->direccion}</td>
+
+                <td> {$empresa->id} </td>
+
+                <td> {$empresa->nif} </td>
+
+                <td> {$empresa->nombre} </td>
+
+                <td> {$empresa->telefono} </td>
+
+                <td> {$empresa->direccion} </td>
+
                 <td>
-                    <a n:href="Usuarios:default $empresa->id" class="btn btn-xs btn-primary ">Usuarios</a>
-                    <a n:href="Empresas:edit $empresa->id" class="btn btn-xs btn-primary ">Editar</a>
-                    <a n:href="Empresas:borrar $empresa->id" class="btn btn-xs btn-danger ">Borrar</a>
+
+                    <a n:href = "Usuarios:default $empresa->id" class = "btn btn-xs btn-primary"> Usuarios </a>
+
+                    <a n:href = "Empresas:edit $empresa->id" class="btn btn-xs btn-primary"> Editar </a>
+
+                    <a n:href = "Empresas:borrar $empresa->id" class="btn btn-xs btn-danger"> Borrar </a>
+
                 </td>
+
             </tr>
+
         {/foreach}
 
     </tbody>
 
-    </table>
+   </table>
 
-    </div>
+  </div>
 
-    </div>
+ </div>
 
-    </div>
-
+</div>
 
 {/block}

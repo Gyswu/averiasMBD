@@ -23,6 +23,20 @@ class EmpresasPresenter extends BaseAdminPresenter {
 
     }
 
+    /*public function filterEmpresa() {
+
+        $filter = $this->getComponent('Empresa1')->getValues(TRUE);
+
+        $this->template->empresas = $this->orm->empresa
+
+            ->order('id DESC')
+
+            ->where('done', '0')
+
+            ->where('workTag1', $filter['workTag1']);
+
+    }*/
+
     public function createComponentAddEmpresaForm(){
 
         $empresa = new Empresa();

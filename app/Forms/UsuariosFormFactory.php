@@ -40,7 +40,7 @@ final class UsuariosFormFactory {
 
         $form->addHidden('id', 'Id de Usuario');
 
-        $form->addSelect('empresa', 'Selecciona tu empresa:',);
+        $form->addInteger('idEmpresa', 'Selecciona tu empresa:');
 
         $form->addText('nombre', 'Nombre del Usuario')->setRequired();
 

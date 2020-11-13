@@ -144,14 +144,14 @@ class UsuariosPresenter extends BaseAdminPresenter {
         
         try {
         
-            if ($this->orm->usuarios->getBy(['correo' => $values->correo])) {throw new DuplicateNameException;}
+            //if ($this->orm->usuarios->getBy(['correo' => $values->correo])) {throw new DuplicateNameException;}
 
             $usuario = new Usuario();
 
             $empresa = new Empresa();
 
 
-            $empresa = $this->orm->empresa->getById($values->empresa);
+            $empresa->id = $values->id;
 
             $usuario->nombre = $values->nombre;
             
@@ -164,6 +164,8 @@ class UsuariosPresenter extends BaseAdminPresenter {
             $usuario->rol = $values->rol;
 
             $usuario->telefono = $values->telefono;
+
+
 
 
             $this->orm->persistAndFlush($usuario);
@@ -229,7 +231,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
     
     public function onSuccessEditarPerfilUsuario (Form $form, \stdClass $values ): void {
         
-        $usuariox = new Alumno();
+        $usuariox = new Usuario();
         
         try {
             

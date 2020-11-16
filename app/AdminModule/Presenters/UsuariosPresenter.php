@@ -153,6 +153,9 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
             $empresa->id = $values->id;
 
+            $empresa->nombre = $values->nombre;
+
+
             $usuario->nombre = $values->nombre;
             
             $usuario->correo = $values->correo;
@@ -166,7 +169,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
             $usuario->telefono = $values->telefono;
 
 
-
+            $e = $this->orm->persist($empresa);
 
             $this->orm->persistAndFlush($usuario);
 

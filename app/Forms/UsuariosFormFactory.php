@@ -4,8 +4,11 @@ declare( strict_types = 1 );
 
 namespace App\Forms;
 
-use App\Model\Orm\Empresa;
+use App\Model\Orm\Orm;
+
 use App\Model\Orm\Usuario;
+
+use App\Model\Orm\Empresa;
 
 use Nette;
 
@@ -14,6 +17,9 @@ use Nette\Application\UI\Form;
 final class UsuariosFormFactory {
 
     private const PASSWORD_MIN_LENGTH = 7;
+
+    /** @var Orm */
+    private $orm;
     
     use Nette\SmartObject;
 
@@ -31,6 +37,7 @@ final class UsuariosFormFactory {
         $form->setDefaults($usuario->toArray(2));
 
         return $form;
+
     }
 
     
@@ -38,9 +45,11 @@ final class UsuariosFormFactory {
 
         $form = ( new FormFactory() )->create();
 
-        $form->addHidden('id', 'Id de Usuario');
+        $arr = [1 => "Product A", 2 => "Product B", 3 => "Product C"];
 
-        $form->addInteger('idEmpresa', 'Selecciona tu empresa:');
+        $form->addSelect('empresas', 'Elige tu empresa: ', $arr)->setDefaultValue(1);
+
+        $form->addHidden('id', 'Id de Usuario');
 
         $form->addText('nombre', 'Nombre del Usuario')->setRequired();
 

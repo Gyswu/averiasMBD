@@ -123,9 +123,9 @@ class UsuariosPresenter extends BasePresenter {
 
     }
 
-    public function createComponentMasUsuariosForm($empresaId){
-        $usuario = new Usuario();
+    public function createComponentMasUsuariosForm ($empresaId){
 
+        $usuario = new Usuario();
 
         $form = ( new UsuariosFormFactory() )->createNuevo();
 
@@ -144,6 +144,14 @@ class UsuariosPresenter extends BasePresenter {
 
             $usuario = new Usuario();
 
+            $empresa = new Empresa();
+
+
+            $empresa->id = $values->id;
+
+            $empresa->nombre = $values->nombre;
+
+
             $usuario->nombre = $values->nombre;
 
             $usuario->correo = $values->correo;
@@ -156,6 +164,8 @@ class UsuariosPresenter extends BasePresenter {
             $usuario->rol = $values->rol;
 
             $usuario->telefono = $values->telefono;
+
+
 
 
             $this->orm->persistAndFlush($usuario);

@@ -123,18 +123,18 @@ class UsuariosPresenter extends BasePresenter {
 
     }
 
-    public function createComponentMasUsuariosForm ($empresaId){
+    public function createComponentAddUsuarioForm ($empresaId){
 
         $usuario = new Usuario();
 
         $form = ( new UsuariosFormFactory() )->createNuevo();
 
-        $form->onSuccess[] = [ $this, 'onSuccessMasUsuarios' ];
+        $form->onSuccess[] = [ $this, 'onSuccessAddUsuarios' ];
 
         return $form;
     }
 
-    public function onSuccessMasUsuarios(Form $form, \stdClass $values ): void {
+    public function onSuccessAddUsuario (Form $form, \stdClass $values ): void {
 
         Nette\Utils\Validators::assert($values->correo, 'email');
 
@@ -144,12 +144,12 @@ class UsuariosPresenter extends BasePresenter {
 
             $usuario = new Usuario();
 
-            $empresa = new Empresa();
+            //$empresa = new Empresa();
 
 
-            $empresa->id = $values->id;
+            //$empresa->id = $values->id;
 
-            $empresa->nombre = $values->nombre;
+            //$empresa->nombre = $values->nombre;
 
 
             $usuario->nombre = $values->nombre;

@@ -6,7 +6,7 @@
 
         <div class = "row">
 
-            <h1 n:block = "title"> CREACION DE NUEVO USUARIO </h1>
+            <h1 n:block = "title"> Crear Nuevo Usuario </h1>
 
         </div>
 
@@ -30,11 +30,11 @@
 
                 {ifset $empresaId}
 
-                    {control masUsuariosForm-$empresaId}
+                    {control addUsuarioForm-$empresaId}
 
                 {else}
 
-                    {control masUsuariosForm}
+                    {control addUsuarioForm}
 
                 {/ifset}
 

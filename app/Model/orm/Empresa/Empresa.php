@@ -3,7 +3,12 @@
 namespace App\Model\Orm;
 
 use Nextras\Orm\Entity\Entity;
+
 use Nextras\Orm\Relationships\OneHasMany;
+
+use Nette;
+
+use Nette\Application\UI\Form;
 
 /**
  * Empresa
@@ -16,6 +21,10 @@ use Nextras\Orm\Relationships\OneHasMany;
  * @property    OneHasMany|Usuario[] $usuarios {1:m Usuario::$empresa}
  */
 
- class Empresa extends Entity {
+//orm mas nombre de funcion para llamar a metodo en formfactory
+
+class Empresa extends Entity {
+
+
 
 }

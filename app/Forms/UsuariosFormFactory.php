@@ -1,6 +1,6 @@
 <?php
 
-declare( strict_types = 1 );
+declare(strict_types=1);
 
 namespace App\Forms;
 
@@ -20,19 +20,19 @@ final class UsuariosFormFactory {
 
     /** @var Orm */
     private $orm;
-    
+
     use Nette\SmartObject;
 
-    public function createNuevo() {
+    public function createNuevo (array $empresas) {
 
-        $form = $this->create();
+        $form = $this->create($empresas);
 
         return $form;
     }
-    
-    public function createEdit (Usuario $usuario) {
 
-        $form = $this->create();
+    public function createEdit (Usuario $usuario, array $empresas) {
+
+        $form = $this->create($empresas);
 
         $form->setDefaults($usuario->toArray(2));
 
@@ -40,16 +40,15 @@ final class UsuariosFormFactory {
 
     }
 
-    
-    public function create(): Form {
+    public function create (array $empresas): Form {
 
-        $form = ( new FormFactory() )->create();
+        //$form = (new FormFactory())->create($empresas);
 
-        $arr = [1 => "Product A", 2 => "Product B", 3 => "Product C"];
-
-        $form->addSelect('empresas', 'Elige tu empresa: ', $arr)->setDefaultValue(1);
+        $form = (new FormFactory())->create();
 
         $form->addHidden('id', 'Id de Usuario');
+
+        $form->addSelect('empresas', 'Elige tu empresa: ', $empresas)->setDefaultValue(1);
 
         $form->addText('nombre', 'Nombre del Usuario')->setRequired();
 
@@ -58,18 +57,15 @@ final class UsuariosFormFactory {
         $form->addEmail('correo', 'Correo electronico')->setRequired();
 
         $form->addInteger('telefono', 'Telefono')
-
             ->addRule($form::MIN_LENGTH, 'Telefono demasiado corto', '9')
-
             ->addRule($form::MAX_LENGTH, 'Telefono demasiado largo', '9');
 
         $form->addInteger('extensiontelefono', 'Extensión telefonica');
 
         $form->addPassword('password', 'Contraseña')
-
             ->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
 
-        $form->addSelect('rol', 'Rol',[
+        $form->addSelect('rol', 'Rol', [
 
             'cliente' => 'Cliente',
 

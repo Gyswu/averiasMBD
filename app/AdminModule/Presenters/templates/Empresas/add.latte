@@ -33,3 +33,51 @@
     </div>
 
 {/block}
+
+{block content}
+
+    <div class = "container">
+
+        <br>
+
+        <div class = "row">
+
+            <h1 n:block = "title"> Crear Nuevo Usuario </h1>
+
+        </div>
+
+        <br>
+
+        <div class = "row">
+
+            <div class = "col col-lg-6">
+
+                <a n:href = "Usuarios:default" class="btn btn-xs btn-primary"> Volver </a>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class = "row">
+
+            <div class = "col col-lg-6">
+
+                {ifset $empresaId}
+
+                    {control masUsuariosForm-$empresaId}
+
+                {else}
+
+                    {control masUsuariosForm}
+
+                {/ifset}
+
+            </div>
+
+        </div>
+
+    </div>
+
+{/block}

@@ -53,7 +53,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
 // ______________________________________________________________ EDITAR  ________________________________________
 
-    public function actionEdit ( $idUsuario ) {
+    public function actionEditar ( $idUsuario ) {
 
         $this->usuarioEditado = $this->orm->usuarios->getById($idUsuario);
 
@@ -63,7 +63,9 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
     public function createComponentEditarUsuarioForm() {
 
-        $form = ( new UsuariosFormFactory() )->createEdit($this->usuarioEditado);
+        $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id','nombre');
+
+        $form = ( new UsuariosFormFactory() )->createEdit($this->usuarioEditado, $empresasarray);
 
         $form->onSuccess[] = [ $this, 'onSuccessEditarUsuario' ];
 
@@ -154,12 +156,9 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
             $usuario = new Usuario();
 
-            $empresa = new Empresa();
 
+            $empresa = $this->orm->empresa->getById($values->empresa);
 
-            $empresa->id = $values->id;
-
-            $empresa->nombre = $values->nombre;
 
             $usuario->nombre = $values->nombre;
 
@@ -173,10 +172,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
             $usuario->telefono = $values->telefono;
 
-
-            $empresa->usuarios->add($empresa);
-
-            $empresa = $this->orm->empresa->getById($values->empresa);
+            $empresa->usuarios->add($usuario);
 
             $this->orm->persistAndFlush($empresa);
 

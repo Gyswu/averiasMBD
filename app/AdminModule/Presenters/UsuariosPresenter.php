@@ -137,7 +137,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
         $usuario = new Usuario();
 
-        $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id','nombre');
+        $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
 
         $form = ( new UsuariosFormFactory() )->createNuevo($empresasarray);
 
@@ -171,6 +171,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
             $usuario->rol = $values->rol;
 
             $usuario->telefono = $values->telefono;
+
 
             $empresa->usuarios->add($usuario);
 

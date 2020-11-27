@@ -19,6 +19,7 @@ final class UsuariosFormFactory {
     private const PASSWORD_MIN_LENGTH = 7;
 
     /** @var Orm */
+
     private $orm;
 
     use Nette\SmartObject;
@@ -48,7 +49,7 @@ final class UsuariosFormFactory {
 
         $form->addHidden('id', 'Id de Usuario');
 
-        $form->addSelect('empresa', 'Elige tu empresa: ', $empresas)->setDefaultValue(1);
+        $form->addSelect('empresa', ': ', $empresas)->setDefaultValue(1);
 
         $form->addText('nombre', 'Nombre del Usuario')->setRequired();
 
@@ -57,13 +58,14 @@ final class UsuariosFormFactory {
         $form->addEmail('correo', 'Correo electronico')->setRequired();
 
         $form->addInteger('telefono', 'Telefono')
+
             ->addRule($form::MIN_LENGTH, 'Telefono demasiado corto', '9')
+
             ->addRule($form::MAX_LENGTH, 'Telefono demasiado largo', '9');
 
         $form->addInteger('extensiontelefono', 'Extensión telefonica');
 
-        $form->addPassword('password', 'Contraseña')
-            ->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
+        $form->addPassword('password', 'Contraseña')->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
 
         $form->addSelect('rol', 'Rol', [
 

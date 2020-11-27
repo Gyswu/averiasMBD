@@ -6,6 +6,7 @@ namespace App\Forms;
 
 use App\Model\Orm\Averias;
 
+use App\Model\Orm\Empresa;
 use Nette;
 
 use Nette\Application\UI\Form;
@@ -14,30 +15,48 @@ final class AveriasFormFactory {
 
     use Nette\SmartObject;
 
-    public function createNuevo (Averias $averia) {
+    /*public function createNuevo (Averias $averia, array $empresas) {
         
-        $form = $this->create();
+        //$form = $this->create();
+
+        $form = $this->create($empresas);
         
         $form->setDefaults($averia->toArray(2));
         
         return $form;
-    }
-    public function createEdit (Averias $averia) {
+    }*/
 
-        $form = $this->create();
+    public function createNuevo (array $empresas) {
+
+        //$form = $this->create();
+
+        $form = $this->create($empresas);
+
+        //$form->setDefaults($averia->toArray(2));
+
+        return $form;
+    }
+
+    public function createEdit (Averias $averia, array $empresas) {
+
+        //$form = $this->create();
+
+        $form = $this->create($empresas);
 
         $form->setDefaults($averia->toArray(2));
 
         return $form;
     }
     
-    public function create(): Form {
+    public function create (array $empresas): Form {
 
         $form = ( new FormFactory() )->create();
 
         $form->addHidden('id', 'Id de la averia');
 
-        $form->addText('usuario', 'Usuario')->setRequired();
+        //$form->addText('usuario', 'Usuario')->setRequired();
+
+        $form->addSelect('empresa', 'Elige la empresa con la averia: ', $empresas)->setDefaultValue(1);
 
         $form->addText('fechainicio', 'Inicio de la averia')->setRequired();
 

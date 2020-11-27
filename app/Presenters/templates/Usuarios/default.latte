@@ -4,7 +4,31 @@
 
         <br>
 
-        <div class = "row"> <h1 n:block = "title"> MI PERFIL </h1> </div>
+        <div class = "row">
+
+            <h1 n:block = "title"> Usuarios </h1>
+
+        </div>
+
+        <br>
+
+        <div class = "row">
+
+            <div class = "col col-lg-6">
+
+                {ifset $empresa}
+
+                    <a n:href = "Usuarios:add $empresa->id" class = "btn btn-xs btn-success"> Añadir Usuario </a>
+
+                    {else}
+
+                        <a n:href = "Usuarios:add" class = "btn btn-xs btn-success"> Añadir Usuario </a>
+
+                {/ifset}
+
+            </div>
+
+        </div>
 
         <br>
 
@@ -14,29 +38,71 @@
 
                 <table class = "table">
 
+                    <thead class = "thead-dark">
+
+                        <tr>
+
+                            {if $rol == 'admin'}
+
+                                <th> Empresa </th>
+
+                            {/if}
+
+                            <th> Nombre </th>
+
+                            <th> Apellidos </th>
+
+                            <th> Correo </th>
+
+                            <th> Rol </th>
+
+                            <th> Telefono </th>
+
+                            <th> Extension </th>
+
+                            <th> Opciones </th>
+
+                        </tr>
+
+                    </thead>
+
                     <tbody>
 
                         {foreach $usuarios as $usuario}
 
+
+
                             <tr>
 
-                                <td> Nombre: {$usuario->nombre} </td>
+                                {if $rol == 'admin'}
 
-                                <td> Apellidos: {$usuario->apellidos}</td>
+                                    <td> {$usuario->empresa->nombre} </td>
 
-                                <td> Correo: {$usuario->correo} </td>
+                                {/if}
 
-                                <td> Rol: {$usuario->rol} </td>
+                                    <td> {$usuario->nombre} </td>
 
-                                <td> Telefono: {$usuario->telefono} </td>
+                                    <td> {$usuario->apellidos}</td>
 
-                                <td> Extension: {$usuario->extensiontelefono} </td>
+                                    <td> {$usuario->correo} </td>
 
-                                <td>
+                                    <td> {$usuario->rol} </td>
 
-                                    <a n:href = "Usuarios:editar $usuario->id" class="btn btn-xs btn-primary ">Editar</a>
+                                    <td> {$usuario->telefono} </td>
 
-                                </td>
+                                    <td>{$usuario->extensiontelefono}</td>
+
+                                {if $rol == 'admin'}
+
+                                    <td>
+
+                                        <a n:href = "Usuarios:editar $usuario->id" class = "btn btn-xs btn-primary"> Editar </a>
+
+                                        <a n:href = "Usuarios:borrarUsuario $usuario->id" class = "btn btn-xs btn-danger del"> Borrar </a>
+
+                                    </td>
+
+                                {/if}
 
                             </tr>
 

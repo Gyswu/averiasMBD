@@ -96,26 +96,22 @@ class AveriasPresenter extends BaseAdminPresenter {
         $this->redirect('Averias:default', $this->averiaEditada->id);
     }
 
-//-
-//AÑADIR
-//-
-    /*public function actionAdd($idClase) {
-        $clase = $this->orm->clases->getById($idClase);
-        $this->claseEdit = $clase;
-        //
-        $this->template->item = $clase;
-        $this->template->clase = $clase;
-    }*/
 
 //__________________AÑADIR____________________________
 
-    public function createComponentAddAveriaForm(){
+    public function createComponentAddAveriaForm ($empresaId){
         
         $averia = new Averias();
+
+        $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
         
-        $form = ( new AveriasFormFactory() )->createNuevo($averia, $this->averia->id);
-        
-        $form->onSuccess[] = [ $this, 'onSuccessAddAveria' ];
+        //$form = ( new AveriasFormFactory() )->createNuevo($averia, $this->averia->id);
+
+        $form = ( new AveriasFormFactory() )->createNuevo($empresasarray);
+
+        //$form = ( new AveriasFormFactory() )->createNuevo($averia);
+
+        $form->onSuccess[] = [$this, 'onSuccessAddAveria'];
 
         return $form;
     }
@@ -124,10 +120,12 @@ class AveriasPresenter extends BaseAdminPresenter {
         
         try {
             
-            $averiax = $this->averiaEdit;
+            //$averiax = $this->averiaEdit;
+
 
             $averiax = new Averia();
             
+
             $averiax->fechaInicio = $values->fechaInicio;
             
             $averiax->fechaFinal = $values->fechaFinal;

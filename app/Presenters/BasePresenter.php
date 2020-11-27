@@ -25,12 +25,12 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
         }
         if($this->getDbUser()){
             if($this->getDbUser()->rol == "admin"){
-                $this->template->imgcentro = "";
+                //$this->template->imgcentro = "";
             } else {
-            $this->template->imgcentro = $this->getDbUser()->centro->imagen;
+            //$this->template->imgcentro = $this->getDbUser()->centro->imagen;
             }
         } else {
-            $this->template->imgcentro = "";
+            //$this->template->imgcentro = "";
         }
         $this->template->activeUser =  $this->getDbUser();
         parent::startup();

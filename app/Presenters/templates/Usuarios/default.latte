@@ -14,26 +14,6 @@
 
         <div class = "row">
 
-            <div class = "col col-lg-6">
-
-                {ifset $empresa}
-
-                    <a n:href = "Usuarios:add $empresa->id" class = "btn btn-xs btn-success"> Añadir Usuario </a>
-
-                    {else}
-
-                        <a n:href = "Usuarios:add" class = "btn btn-xs btn-success"> Añadir Usuario </a>
-
-                {/ifset}
-
-            </div>
-
-        </div>
-
-        <br>
-
-        <div class = "row">
-
             <div class = "col col-lg-12">
 
                 <table class = "table">
@@ -69,8 +49,6 @@
                     <tbody>
 
                         {foreach $usuarios as $usuario}
-
-
 
                             <tr>
 

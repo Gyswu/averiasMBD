@@ -47,7 +47,9 @@ class AveriasPresenter extends BaseAdminPresenter {
     
     public function createComponentEditarAveriaForm() {
 
-        $form = ( new AveriasFormFactory() )->createEdit($this->averiaEditada);
+        $empresasarray = $this->orm->empresa->findAll()->fetchPairs("id", "nombre");
+
+        $form = ( new AveriasFormFactory() )->createEdit($this->averiaEditada, $empresasarray);
         
         $form->onSuccess[] = [ $this, 'onSuccessEditarAveria' ];
 

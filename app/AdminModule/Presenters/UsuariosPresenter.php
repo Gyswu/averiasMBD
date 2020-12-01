@@ -20,15 +20,18 @@ use Nette;
 
 class UsuariosPresenter extends BaseAdminPresenter {
 
-    public function __construct(Passwords $passwords ) {$this->passwords = $passwords;}
+    public function __construct (Passwords $passwords ) {$this->passwords = $passwords;}
 
     /** @var Usuario */
+
     private $usuarioEditado;
 
     /** @var Model\Authentication */
+
     private $authentication;
 
     /** @var Passwords */
+
     private $passwords;
 
     public function renderDefault ($empresaId): void {

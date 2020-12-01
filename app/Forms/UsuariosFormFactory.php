@@ -49,7 +49,7 @@ final class UsuariosFormFactory {
 
         $form->addHidden('id', 'Id de Usuario');
 
-        $form->addSelect('empresa', ': ', $empresas)->setDefaultValue(1);
+        $form->addSelect('empresa', 'Empresa Perteneciente: ', $empresas)->setDefaultValue(1);
 
         $form->addText('nombre', 'Nombre del Usuario')->setRequired();
 

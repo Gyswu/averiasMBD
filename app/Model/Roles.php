@@ -55,23 +55,40 @@ class Roles implements IAuthorizator {
             
             $acl = [
                 'superadmin' => [], //este puede hacer todo solo por ser el
-                self::ROL_ADMIN      => [
+
+                self::ROL_ADMIN => [
+
                     self::SECCION_ADMIN  => [], //array de permisos vacío = todos los permisos
+
                     self::SECCION_USUARIOS => [],
+
                     self::SECCION_AVERIAS => [],
+
                     self::SECCION_EMPRESAS => [],
 
                 ],
 
                 self::ROL_CLIENTE  => [
+
                     self::SECCION_USUARIOS => [],
-                    self::SECCION_HISTORICOS  => [],
+
+                    self::SECCION_AVERIAS => [],
+
+                    self::SECCION_EMPRESAS => [],
+
+                    //self::SECCION_HISTORICOS  => [],
 
                 ],
-                'guest'      => [
+
+                'guest' => [
+
                     self::SECCION_LOGIN => [],
+
                 ],
+
+
             ];
+
             self::$permissions = $acl; //set the permissions once
         }
         

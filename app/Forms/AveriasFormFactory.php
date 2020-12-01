@@ -54,8 +54,6 @@ final class AveriasFormFactory {
 
         $form->addHidden('id', 'Id de la averia');
 
-        //$form->addText('usuario', 'Usuario')->setRequired();
-
         $form->addSelect('empresa', 'Elige la empresa con la averia: ', $empresas)->setDefaultValue(1);
 
         $form->addText('fechainicio', 'Inicio de la averia')->setRequired();

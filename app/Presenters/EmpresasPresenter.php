@@ -2,8 +2,6 @@
 
 namespace App\Presenters;
 
-use App\Forms\FormFactory;
-
 use App\Model\Orm\Empresa;
 
 use Nette\Application\UI\Form;
@@ -17,9 +15,9 @@ class EmpresasPresenter extends BasePresenter {
 
     private $empresaEditada;
 
-    public function renderDefault(){
+    public function renderDefault ($empresaId) {
 
-        $this->template->empresas = $this->orm->empresa->findAll();
+        $this->template->empresa = $this->orm->empresa->getById($empresaId);
 
         if ($this->user->isInRole('cliente')) {
 
@@ -27,39 +25,45 @@ class EmpresasPresenter extends BasePresenter {
 
             $this->redirect('Homepage:default');
 
-        } else if ($this->user->isInRole('encargado')) {
+        } elseif ($this->user->isInRole('encargado')) {
 
-            $this->redirect('Empresas:default');
-
+            $this->template->empresa = $this->getDbUser()->empresa;
         }
     }
 
-
 //   _______________________AÑADIR EMPRESA ____________________________________
-    public function actionAdd(){
 
-    }
+    //public function actionAdd(){}
 
     public function createComponentAddEmpresaForm(){
 
         $empresa = new Empresa();
 
         $form = (new EmpresasFormFactory())->createNuevo();
+
         $form->onSuccess[] = [$this, 'onSuccessAddEmpresa'];
 
         return $form;
     }
 
-    public function onSuccessAddEmpresa(Form $form, \stdClass $values ) :void{
+    public function onSuccessAddEmpresa (Form $form, \stdClass $values ) :void{
+
         $empresa = new Empresa();
+
         try{
+
             $empresa->id = $values->id;
+
             $empresa->nif = $values->nif;
+
             $empresa->nombre = $values->nombre;
+
             $empresa->telefono = $values->telefono;
+
             $empresa->direccion = $values->direccion;
 
             $this->orm->persistAndFlush($empresa);
+
             $this->flashMessage('Empresa añadida correctamente', 'success');
 
         } catch( Model\DuplicateNameException $e ) {

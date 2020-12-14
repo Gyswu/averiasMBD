@@ -16,23 +16,19 @@
 
                 <tbody>
 
-                {*Mostrar solo la empresa del usuario logeado*}
-
-                    {foreach $empresas as $empresa}
-
                         <tr>
 
-                            <td> NIF: {$empresa->nif}</td>
+                            <td> NIF: {$empresa->nif}  </td>
 
-                            <td> NOMBRE: {$empresa->nombre}</td>
+                            <td> NOMBRE: {$empresa->nombre} </td>
 
                             <td> TELEFONO: {$empresa->telefono} </td>
 
-                            <td> DIRECCION: {$empresa->direccion}</td>
+                            <td> DIRECCION: {$empresa->direccion} </td>
 
                             <td>
 
-                                <a n:href = "Usuarios:default $empresa->id" class = "btn btn-xs btn-primary"> Usuarios </a>
+                               <a n:href = "Usuarios:default $empresa->id" class = "btn btn-xs btn-primary"> Usuarios </a>
 
                                 <a n:href = "Empresas:edit $empresa->id" class = "btn btn-xs btn-primary "> Editar </a>
 
@@ -41,8 +37,6 @@
                             </td>
 
                         </tr>
-
-                    {/foreach}
 
                 </tbody>
 

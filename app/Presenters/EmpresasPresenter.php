@@ -3,18 +3,35 @@
 namespace App\Presenters;
 
 use App\Forms\FormFactory;
+
 use App\Model\Orm\Empresa;
+
 use Nette\Application\UI\Form;
+
 use App\Forms\EmpresasFormFactory;
 
 
 class EmpresasPresenter extends BasePresenter {
 
     /** @var $empresaEditada Empresa */
+
     private $empresaEditada;
 
     public function renderDefault(){
+
         $this->template->empresas = $this->orm->empresa->findAll();
+
+        if ($this->user->isInRole('cliente')) {
+
+            $this->flashMessage('No tienes permiso para acceder a este apartado, solicita acceso al Administrador', 'success');
+
+            $this->redirect('Homepage:default');
+
+        } else if ($this->user->isInRole('encargado')) {
+
+            $this->redirect('Empresas:default');
+
+        }
     }
 
 

@@ -9,21 +9,13 @@ final class HomepagePresenter extends BasePresenter {
     
     public function renderDefault() {
          
-        $this->template->date = date("D");
+        //$this->template->date = date("D");
         
         $user = $this->getDbUser();
         
-        if($user->rol == "director"){
-        
-            $this->flashMessage('Bienvenido director '. $user->nombre , 'success');
-        
-            $this->redirect('Clases:default');
-        
-        } elseif($user->rol == "profesor"){
-        
-            $this->flashMessage('Bienvenido profesor '. $user->nombre , 'success');
-        
-            $this->redirect('Clases:default');
+        if ($user->rol == "encargado"){
+
+            $this->redirect('Averias:default');
         
         }
     

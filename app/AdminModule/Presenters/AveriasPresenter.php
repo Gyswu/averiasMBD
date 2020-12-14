@@ -10,8 +10,6 @@ use Nette\Application\UI\Form;
 
 use Nextras\Orm\Collection\ICollection;
 
-use Nette\SmartObject;
-
 class AveriasPresenter extends BaseAdminPresenter {
 
     /** @var $averiaEditada Averia*/
@@ -122,11 +120,9 @@ class AveriasPresenter extends BaseAdminPresenter {
         
         try {
             
-            //$averiax = $this->averiaEdit;
-
+            $averiax = $this->averiaEdit;
 
             $averiax = new Averia();
-            
 
             $averiax->fechaInicio = $values->fechaInicio;
             

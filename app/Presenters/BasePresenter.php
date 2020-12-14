@@ -20,11 +20,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
         $this->getUser()->setAuthorizator(new \App\Model\Roles());
         if( !$this->user->isLoggedIn() && !in_array($this->presenter->getName(), [ 'Sign' ]) ) {
             $this->flashMessage('Debes iniciar sesión primero');
-            $this->redirect(':Sign:in');
+            $this->redirect(':');
 
         }
         if($this->getDbUser()){
-            if($this->getDbUser()->rol == "admin"){
+            if($this->getDbUser()->rol == "encargado"){
                 //$this->template->imgcentro = "";
             } else {
             //$this->template->imgcentro = $this->getDbUser()->centro->imagen;
@@ -69,11 +69,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
     
             if($this->user->isLoggedIn()){
     
-                $this->redirect(":Homepage:default");
+                $this->redirect(":Averias:default");
     
             }
     
-            $this->redirect(":Sign:in");
+            $this->redirect(":Homepage:default");
     
         }
     

@@ -73,6 +73,8 @@ final class UsuariosFormFactory {
 
             'admin' => 'Administrador',
 
+            'encargado' => 'Encargado'
+
         ]);
 
         $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');

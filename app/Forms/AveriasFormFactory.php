@@ -15,46 +15,27 @@ final class AveriasFormFactory {
 
     use Nette\SmartObject;
 
-    /*public function createNuevo (Averias $averia, array $empresas) {
-        
-        //$form = $this->create();
+    public function createNuevo () {
 
-        $form = $this->create($empresas);
-        
-        $form->setDefaults($averia->toArray(2));
-        
-        return $form;
-    }*/
-
-    public function createNuevo (array $empresas) {
-
-        //$form = $this->create();
-
-        $form = $this->create($empresas);
-
-        //$form->setDefaults($averia->toArray(2));
+        $form = $this->create();
 
         return $form;
     }
 
-    public function createEdit (Averias $averia, array $empresas) {
+    public function createEdit (Averias $averia) {
 
-        //$form = $this->create();
-
-        $form = $this->create($empresas);
+        $form = $this->create();
 
         $form->setDefaults($averia->toArray(2));
 
         return $form;
     }
     
-    public function create (array $empresas): Form {
+    public function create (): Form {
 
         $form = ( new FormFactory() )->create();
 
         $form->addHidden('id', 'Id de la averia');
-
-        $form->addSelect('empresa', 'Elige la empresa con la averia: ', $empresas)->setDefaultValue(1);
 
         $form->addText('fechainicio', 'Inicio de la averia')->setRequired();
 

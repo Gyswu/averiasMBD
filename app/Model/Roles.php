@@ -21,11 +21,13 @@ class Roles implements IAuthorizator {
     const SECCION_EMPRESAS = 'empresas';
 
 
-
     //Roles
+
     const ROL_ADMIN = 'admin';
 
     const ROL_CLIENTE = "cliente";
+
+    const ROL_ENCARGADO = "encargado";
 
 
     //Permisos
@@ -38,11 +40,15 @@ class Roles implements IAuthorizator {
 
     const PERMISO_ADD = 'add';
 
+
     private static $permissions;
     
     public function getRoles() {
+
         $roles = [];
+
         foreach( self::getPermisos() as $permiso => $x ) {
+
             $roles[] = $permiso;
         }
         
@@ -54,6 +60,7 @@ class Roles implements IAuthorizator {
         if( !self::$permissions ) {
             
             $acl = [
+
                 'superadmin' => [], //este puede hacer todo solo por ser el
 
                 self::ROL_ADMIN => [
@@ -70,13 +77,17 @@ class Roles implements IAuthorizator {
 
                 self::ROL_CLIENTE  => [
 
+                    self::SECCION_AVERIAS => [],
+
+                ],
+
+                self::ROL_ENCARGADO  => [
+
                     self::SECCION_USUARIOS => [],
 
                     self::SECCION_AVERIAS => [],
 
                     self::SECCION_EMPRESAS => [],
-
-                    //self::SECCION_HISTORICOS  => [],
 
                 ],
 
@@ -97,12 +108,14 @@ class Roles implements IAuthorizator {
     
     public function isAllowed( $role, $resource, $privilege ): bool {
 
-        if( $role === 'superadmin' ) {
-            return true;
-        }
+        if( $role === 'superadmin' ) {return true;}
+
         //
+
         $acl = self::getPermisos();
-        if(isset($acl[ $role ][ $resource ]) && count($acl[ $role ][ $resource ]) === 0 ) {
+
+        if (isset($acl[ $role ][ $resource ]) && count($acl[ $role ][ $resource ]) === 0 ) {
+
             return true;
         }
         

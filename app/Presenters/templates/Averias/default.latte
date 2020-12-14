@@ -10,7 +10,11 @@
 
         <div class = "row">
 
-            <div class = "col col-lg-6"> <a n:href = "Averias:add" class = "btn btn-xs btn-success"> Añadir averia </a> </div>
+            <div class = "col col-lg-12"> <a n:href = "Averias:add" class = "btn btn-xs btn-success"> Añadir averia </a> </div>
+
+            <br>
+
+            <br>
 
         </div>
 
@@ -25,7 +29,7 @@
                     <thead class = "thead-dark">
                     
                         <tr>
-                        
+
                             <th> Inicio Averia </th>
                         
                             <th> Final Averia </th>
@@ -53,6 +57,7 @@
                         {foreach $averias as $averia}
                             
                             <tr>
+
                                 <td> {$averia -> fechainicio} </td>
 
                                 <td> {$averia -> fechafinal} </td>

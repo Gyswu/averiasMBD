@@ -4,11 +4,7 @@ namespace App\AdminModule\Presenters;
 
 use App\Forms\UsuariosFormFactory;
 
-use App\Model\DuplicateNameException;
-
 use App\Model\Orm\Alumno;
-
-use App\Model\Orm\Empresa;
 
 use App\Model\Orm\Usuario;
 

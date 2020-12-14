@@ -9,60 +9,58 @@ use App\Model\Roles;
 use Nette\Application\UI\Form;
 use Nette\Security\User;
 
-final class SignPresenter extends BasePresenter
-{
+final class SignPresenter extends BasePresenter {
     /** @persistent */
+
     public $backlink = '';
 
     /** @var Forms\SignInFormFactory */
+
     private $signInFactory;
 
     /** @var Forms\SignUpFormFactory */
+
     private $signUpFactory;
 
 
-    public function __construct(Forms\SignInFormFactory $signInFactory, Forms\SignUpFormFactory $signUpFactory)
-    {
+    public function __construct (Forms\SignInFormFactory $signInFactory, Forms\SignUpFormFactory $signUpFactory) {
+
         $this->signInFactory = $signInFactory;
+
         $this->signUpFactory = $signUpFactory;
-
     }
 
+    protected function createComponentSignInForm(): Form {
 
-    /**
-     * Sign-in form factory.
-     */
-    protected function createComponentSignInForm(): Form
-    {
         return $this->signInFactory->create(function (User $user): void {
+
             $this->restoreRequest($this->backlink);
-            if($user->isInRole('admin')){
-                $this->redirect(':Admin:Homepage:');
-            }//elseif($user->isInRole('cliente')){
-                //$this->redirect(':User:Homepage:');
-            //}//elseif($user->isInRole(Roles::ROL_DIRECTOR)){
-                //$this->redirect(':Admin:Clases:');
-            //}elseif($user->isInRole(Roles::ROL_PROFESOR)){
-             //   $this->redirect(':Admin:Clases:');
-            //}
-            //$this->redirect('Homepage:');
-        });
-    }
 
-    /**
-     * Sign-up form factory.
-     */
-    protected function createComponentSignUpForm(): Form
-    {
-        return $this->signUpFactory->create(function (): void {
+            if ($user->isInRole('admin')) {$this->redirect(':Admin:Homepage:');}
+
+            elseif ($user->isInRole('cliente')) {$this->redirect('Averias:default');}
+
+            elseif ($user->isInRole('encargado')) {$this->redirect(':Averias:default');}
+
             $this->redirect('Homepage:');
+
         });
     }
 
+    protected function createComponentSignUpForm(): Form {
 
-    public function actionOut(): void
-    {
+        return $this->signUpFactory->create(function (): void {
+
+            $this->redirect('Homepage:');
+
+        });
+    }
+
+    public function actionOut(): void {
+
         $this->getUser()->logout(true);
+
         $this->redirect(':Sign:in');
+
     }
 }

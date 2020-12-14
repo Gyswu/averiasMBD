@@ -26,42 +26,25 @@ class Menu {
                 'nhref'   => 'Averias:default',
             ]
 
-            /*[
-                'nombre'  => 'Historico',
-                'mostrar' => $user->isAllowed(Roles::SECCION_HISTORICOS),
-                'nhref'   => 'Historico:default',
-            ]*/
-
         ];
         
         return $menu;
     }
+
     public static function getMenuUser (User $user) {
 
         $menu = [
             [
-                'nombre'  => 'Empresas',
+                'nombre'  => 'Empresa',
                 'mostrar' => $user->isAllowed(Roles::SECCION_EMPRESAS),
                 'nhref'   => 'Empresas:default',
             ],
-
-            /*[
-                'nombre'  => 'Usuarios',
-                'mostrar' => $user->isAllowed(Roles::SECCION_USUARIOS),
-                'nhref'   => 'Usuarios:default',
-            ]*/
 
             [
                 'nombre'  => 'Averias',
                 'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
                 'nhref'   => 'Averias:default',
             ]
-
-            /*[
-                'nombre'  => 'Historico',
-                'mostrar' => $user->isAllowed(Roles::SECCION_HISTORICOS),
-                'nhref'   => 'Historico:default',
-            ]*/
 
         ];
 

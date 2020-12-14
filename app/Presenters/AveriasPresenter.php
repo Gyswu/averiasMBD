@@ -6,6 +6,7 @@ use App\Forms\AveriasFormFactory;
 
 use App\Model\Orm\Averias;
 
+use App\Model\Orm\Usuario;
 use Nette\Application\UI\Form;
 
 use Nextras\Orm\Collection\ICollection;
@@ -19,15 +20,16 @@ class AveriasPresenter extends BasePresenter
 
     private $averiaEditada;
 
-    public function renderDefault($idAveria): void
-    {
+    public function renderDefault($idAveria): void {
 
         $this->template->averias = $this->orm->averias->findAll();
 
         $this->template->rol = $this->getDbUser()->rol;
 
         if (!$idAveria) {
+
             $this->template->todosLosCentros = $this->orm->averias->findAll();
+
         } else {
 
             $this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechainicio', ICollection::DESC);
@@ -38,7 +40,7 @@ class AveriasPresenter extends BasePresenter
 
 // _____________________________ EDITAR _______________________________________________
 
-    public function actionEdit($idAveria)
+    public function actionEdit ($idAveria)
     {
 
         $averia = $this->orm->averias->getById($idAveria);
@@ -48,8 +50,7 @@ class AveriasPresenter extends BasePresenter
         $this->template->averia = $averia;
     }
 
-    public function createComponentEditarAveriaForm()
-    {
+    public function createComponentEditarAveriaForm() {
 
         $form = (new AveriasFormFactory())->createEdit($this->averiaEditada);
 
@@ -100,43 +101,31 @@ class AveriasPresenter extends BasePresenter
         $this->redirect('Averias:default', $this->averiaEditada->id);
     }
 
-//-
-//AÑADIR
-//-
-    /*public function actionAdd($idClase) {
-        $clase = $this->orm->clases->getById($idClase);
-        $this->claseEdit = $clase;
-        //
-        $this->template->item = $clase;
-        $this->template->clase = $clase;
-    }*/
-
 //__________________AÑADIR____________________________
 
-    public function createComponentAddAveriaForm()
-    {
+    public function createComponentAddAveriaForm() {
 
         $averia = new Averias();
 
-        $form = (new AveriasFormFactory())->createNuevo($averia);
+        $form = ( new AveriasFormFactory() )->createNuevo();
 
         $form->onSuccess[] = [$this, 'onSuccessAddAveria'];
 
         return $form;
     }
 
-    public function onSuccessAddAveria (Form $form, \stdClass $values): void
-    {
+    public function onSuccessAddAveria (Form $form, \stdClass $values): void {
 
         try {
 
-            $averiax = $this->averiaEdit;
+            $averiax = new Averias();
 
-            $averiax = new Averia();
+            $usuariox = new Usuario();
 
-            $averiax->fechaInicio = $values->fechaInicio;
 
-            $averiax->fechaFinal = $values->fechaFinal;
+            $averiax->fechainicio = $values->fechainicio;
+
+            $averiax->fechafinal = $values->fechafinal;
 
             $averiax->descripcion = $values->descripcion;
 
@@ -146,13 +135,18 @@ class AveriasPresenter extends BasePresenter
 
             $averiax->modelo = $values->modelo;
 
-            $averiax->numeroSerie = $values->numeroSerie;
+            $averiax->numeroserie = $values->numeroserie;
 
             $averiax->resolucion = $values->resolucion;
 
             $averiax->horas = $values->horas;
 
-            $this->orm->persistAndFlush($averiax);
+
+            $usuariox = $this->orm->usuarios->getById($this->getDbUser()->id);
+
+            $usuariox->averias->add($averiax);
+
+            $this->orm->persistAndFlush($usuariox);
 
             $this->flashMessage('Averia añadida correctamente', 'success');
 

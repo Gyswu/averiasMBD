@@ -17,7 +17,7 @@ final class AveriasFormFactory {
 
     public function createNuevo () {
 
-        $form = $this->create();
+        $form = $this->createnew();
 
         return $form;
     }
@@ -30,7 +30,7 @@ final class AveriasFormFactory {
 
         return $form;
     }
-    
+
     public function create (): Form {
 
         $form = ( new FormFactory() )->create();
@@ -54,6 +54,27 @@ final class AveriasFormFactory {
         $form->addText('resolucion', 'Resolucion');
 
         $form->addText('horas', 'Horas');
+
+        $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
+
+        return $form;
+    }
+
+    public function createnew (): Form {
+
+        $form = ( new FormFactory() )->create();
+
+        $form->addHidden('id', 'Id de la averia');
+
+        $form->addText('descripcion', 'Descripcion')->setRequired();
+
+        $form->addText('aparato', 'Aparato');
+
+        $form->addText('marca', 'Marca');
+
+        $form->addText('modelo', 'Modelo');
+
+        $form->addText('numeroserie', 'Numero de serie');
 
         $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 

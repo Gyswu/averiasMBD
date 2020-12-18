@@ -8,43 +8,65 @@
 
     <nav class = "navbar navbar-expand-lg navbar-light bg-light">
 
-        <a class="navbar-brand" n:href="Homepage:default"> Home </a>
+        <a class = "navbar-brand" n:href = "Homepage:default"> Home </a>
 
-        <button class = "navbar-toggler" type="button" data-toggle="collapse"
+        <button class = "navbar-toggler" type = "button" data-toggle = "collapse"
 
-                data-target=".dual-collapse2"
+                data-target = ".dual-collapse2"
 
-                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-controls = "navbarSupportedContent" aria-expanded = "false"
 
-                aria-label="Toggle navigation">
+                aria-label = "Toggle navigation">
 
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"> </span>
 
         </button>
 
-        <div class="collapse navbar-collapse w-100 order-0 dual-collapse2" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+        <div class = "collapse navbar-collapse w-100 order-0 dual-collapse2" id = "navbarSupportedContent">
+
+            <ul class = "navbar-nav mr-auto">
 
                 {foreach $menu as $datos}
+
                     {if $datos['mostrar']}
+
                         <li class="nav-item">
-                            <a class="nav-link" n:href="$datos['nhref']">{$datos['nombre']}<span
-                                        class="sr-only">(current)</span></a>
+
+                            <a class = "nav-link" n:href = "$datos['nhref']"> {$datos['nombre']}
+
+                                <span class = "sr-only"> (current) </span>
+
+                            </a>
+
                         </li>
+
                     {/if}
+
                 {/foreach}
+
             </ul>
+
         </div>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
+
+        <div class = "navbar-collapse collapse w-100 order-3 dual-collapse2">
+
+            <ul class = "navbar-nav ml-auto">
+
+                <li class = "nav-item">
+
                     {if $usuarioDb}
-                        <a class="nav-link" n:href=":Sign:out">{$usuarioDb->correo} (<b>Salir</b>)</a>
+
+                        <a class = "nav-link" n:href = ":Sign:out"> {$usuarioDb->correo} (<b>Salir</b>)</a>
                     {else}
                         Invitado
                     {/if}
+
                 </li>
+
             </ul>
+
         </div>
+
     </nav>
+
 {/block}

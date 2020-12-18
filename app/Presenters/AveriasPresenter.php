@@ -13,28 +13,23 @@ use Nextras\Orm\Collection\ICollection;
 
 use Nette\SmartObject;
 
-class AveriasPresenter extends BasePresenter
-{
+class AveriasPresenter extends BasePresenter {
 
     /** @var $averiaEditada Averia */
 
     private $averiaEditada;
 
-    public function renderDefault($idAveria): void {
+    public function renderDefault ($idAveria): void {
 
         $this->template->averias = $this->orm->averias->findAll();
 
         $this->template->rol = $this->getDbUser()->rol;
 
-        if (!$idAveria) {
+        $this->template->averias = $this->getDbUser()->averias;
 
-            $this->template->todosLosCentros = $this->orm->averias->findAll();
+        //if (!$idAveria) {$this->template->averias = $this->orm->averias->findAll();}
 
-        } else {
-
-            $this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechainicio', ICollection::DESC);
-
-        }
+        //else {$this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechainicio', ICollection::DESC);}
 
     }
 
@@ -123,9 +118,7 @@ class AveriasPresenter extends BasePresenter
             $usuariox = new Usuario();
 
 
-            $averiax->fechainicio = $values->fechainicio;
-
-            $averiax->fechafinal = $values->fechafinal;
+            $averiax->fechainicio = date('d/m/Y');
 
             $averiax->descripcion = $values->descripcion;
 
@@ -137,11 +130,6 @@ class AveriasPresenter extends BasePresenter
 
             $averiax->numeroserie = $values->numeroserie;
 
-            $averiax->resolucion = $values->resolucion;
-
-            $averiax->horas = $values->horas;
-
-
             $usuariox = $this->orm->usuarios->getById($this->getDbUser()->id);
 
             $usuariox->averias->add($averiax);
@@ -151,7 +139,6 @@ class AveriasPresenter extends BasePresenter
             $this->flashMessage('Averia añadida correctamente', 'success');
 
         } catch (\Exception $e) {
-
             $this->flashMessage("Error: " . $e->getMessage(), 'danger');
         }
 

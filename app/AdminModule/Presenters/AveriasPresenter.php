@@ -22,11 +22,13 @@ class AveriasPresenter extends BaseAdminPresenter {
         
         $this->template->rol = $this->getDbUser()->rol;
         
-         if (!$idAveria) {$this->template->todosLosCentros = $this->orm->averias->findAll();} 
+         if (!$idAveria) {$this->template->todosLosCentros = $this->orm->averias->findAll();} //TODOSLOSCENTROS?
          
          else {
+
+             //FILTRO??
              
-            $this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechainicio', ICollection::DESC);
+            $this->template->averias = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('id', ICollection::DESC);
                     
         }
 
@@ -93,7 +95,9 @@ class AveriasPresenter extends BaseAdminPresenter {
          
         catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
         
-        $this->redirect('Averias:default', $this->averiaEditada->id);
+        //$this->redirect('Averias:default', $this->averiaEditada->id);
+
+        $this->redirect('Averias:default');
     }
 
 
@@ -119,14 +123,12 @@ class AveriasPresenter extends BaseAdminPresenter {
     public function onSuccessAddAveria (Form $form, \stdClass $values ): void {
         
         try {
+
+            $averiax = new Averia();
             
             $averiax = $this->averiaEdit;
 
-            $averiax = new Averia();
-
-            $averiax->fechaInicio = $values->fechaInicio;
-            
-            $averiax->fechaFinal = $values->fechaFinal;
+            $averiax->fechainicio = date('d/m/Y');
             
             $averiax->descripcion = $values->descripcion;
 
@@ -137,10 +139,6 @@ class AveriasPresenter extends BaseAdminPresenter {
             $averiax->modelo = $values->modelo;
 
             $averiax->numeroSerie = $values->numeroSerie;
-
-            $averiax->resolucion = $values->resolucion;
-
-            $averiax->horas = $values->horas;
            
             $this->orm->persistAndFlush($averiax);
             
@@ -176,10 +174,10 @@ class AveriasPresenter extends BaseAdminPresenter {
 }
 
 
-//-
-//IMPORTAR
-//-
-    /*public function createComponentImportarAlumnosForm(){
+
+/*IMPORTAR
+
+    public function createComponentImportarAlumnosForm(){
         $form = ( new AlumnosFormFactory())->createImport();
         $form->onSuccess[] = [ $this, 'onSuccessImportarAlumnos' ];
 
@@ -203,4 +201,5 @@ class AveriasPresenter extends BaseAdminPresenter {
          $this->flashMessage("Error: " . $e->getMessage(), 'danger');
      }
         $this->redirect('this');
-    }*/
+    }
+*/

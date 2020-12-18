@@ -9,20 +9,25 @@ use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
 
 
-final class RouterFactory
-{
-	use Nette\StaticClass;
+final class RouterFactory {
 
-	public static function createRouter(): RouteList
-	{
+    use Nette\StaticClass;
+
+	public static function createRouter(): RouteList {
+
 		$router = new RouteList;
+
         $router->addRoute('admin/<presenter>/<action>[/<id>]', [
+
             'presenter' => 'Homepage',
+
             'action' => 'default',
+
             'module' => 'Admin'
+
         ]);
+
         $router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');
-        
 
         return $router;
  

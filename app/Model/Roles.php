@@ -119,7 +119,7 @@ class Roles implements IAuthorizator {
             return true;
         }
         
-        return isset($acl[ $role ][ $resource ]) && in_array($privilege, $acl[ $role ][ $resource ]);
+        return isset ($acl[ $role ][ $resource ]) && in_array($privilege, $acl[ $role ][ $resource ]);
     }
     
 }

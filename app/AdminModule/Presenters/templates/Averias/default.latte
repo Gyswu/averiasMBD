@@ -8,23 +8,21 @@
 
          <br>
 
-        <!--<div class = "row">
-
-            <div class = "col col-lg-6"> <a n:href = "Averias:add" class = "btn btn-xs btn-success"> Añadir averia </a> </div>
-
-        </div>-->
-
          <br>
 
         <div class = "row">
 
-            <div class = "col col-lg-12">
+            <!-- <div class = "col col-lg-12"> -->
 
                 <table class = "table">
 
                     <thead class = "thead-dark">
 
                         <tr>
+
+                            <th> Id Averia </th>
+
+                            <th> Empresa </th>
 
                             <th> Inicio Averia </th>
 
@@ -38,11 +36,15 @@
 
                             <th> Modelo </th>
 
-                            <th> Numero de serie </th>
+                            <th> Numero serie </th>
 
-                            <th> Garantia </th>
+                            <th> Horas </th>
 
-                            <th> </th>
+                            <th> Resolucion </th>
+
+                            <th> Estado </th>
+
+                            <th> Accion </th>
 
                         </tr>
 
@@ -53,6 +55,10 @@
                         {foreach $averias as $averia}
 
                             <tr>
+
+                                <td> {$averia -> id} </td>
+
+                                <td> {$averia -> usuario -> empresa -> nombre} </td>
 
                                 <td> {$averia -> fechainicio} </td>
 
@@ -68,7 +74,11 @@
 
                                 <td> {$averia -> numeroserie} </td>
 
+                                <td> {$averia -> horas} </td>
+
                                 <td> {$averia -> resolucion} </td>
+
+                                <td> {$averia -> estado} </td>
 
                                 <td> <a n:href = "Averias:edit $averia->id" class = "btn btn-xs btn-primary "> Editar </a> </td>
 

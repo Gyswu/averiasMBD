@@ -1,10 +1,13 @@
 <?php
+
 declare( strict_types = 1 );
 
 namespace App\Presenters;
 
 use App\Model\Menu;
+
 use App\Model\Orm;
+
 use Nette;
 
 /**
@@ -13,29 +16,33 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter {
     
     /** @var Orm\Orm @inject */
-    public $orm;
+
+public $orm;
     
     protected function startup() {
 
         $this->getUser()->setAuthorizator(new \App\Model\Roles());
+
         if( !$this->user->isLoggedIn() && !in_array($this->presenter->getName(), [ 'Sign' ]) ) {
+
             $this->flashMessage('Debes iniciar sesión primero');
-            $this->redirect(':');
+
+            $this->redirect('Sign:in');
 
         }
-        if($this->getDbUser()){
-            if($this->getDbUser()->rol == "encargado"){
-                //$this->template->imgcentro = "";
-            } else {
-            //$this->template->imgcentro = $this->getDbUser()->centro->imagen;
-            }
-        } else {
-            //$this->template->imgcentro = "";
+
+        if ($this->getDbUser()) {
+
+            $this->getDbUser()->rol == ("encargado");
+
         }
+
         $this->template->activeUser =  $this->getDbUser();
+
         parent::startup();
-        //
+
         $this->template->usuarioDb = $this->getDbUser();
+
         $this->template->menu = Menu::getMenuUser($this->getUser());
     }
     
@@ -45,7 +52,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
      * @return Orm\Usuario|NULL
      */
     protected function getDbUser() {
+
         return $this->orm->usuarios->getById($this->user->getId());
+
     }
     
     /**
@@ -67,13 +76,13 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
     
             $this->flashMessage('No puedes acceder a esta sección, el acceso ha sido reportado','danger');
     
-            if($this->user->isLoggedIn()){
+            if ($this->user->isLoggedIn()){
     
-                $this->redirect(":Averias:default");
+                $this->redirect(":Homepage:default");
     
             }
     
-            $this->redirect(":Homepage:default");
+            $this->redirect(":Sign:in");
     
         }
     

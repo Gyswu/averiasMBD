@@ -10,6 +10,7 @@ use Nette\Application\UI\Form;
 use Nette\Security\User;
 
 final class SignPresenter extends BasePresenter {
+
     /** @persistent */
 
     public $backlink = '';
@@ -51,7 +52,7 @@ final class SignPresenter extends BasePresenter {
 
         return $this->signUpFactory->create(function (): void {
 
-            $this->redirect('Homepage:');
+            $this->redirect('Homepage:default');
 
         });
     }

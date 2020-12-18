@@ -10,7 +10,7 @@ use Nextras\Orm\Entity\Entity;
  * @property    int    $id  {primary}
  * @property    Usuario         $usuario   {m:1 Usuario::$averias}
  * @property    string          $fechainicio
- * @property    string          $fechafinal
+ * @property    string|null     $fechafinal
  * @property    string          $descripcion
  * @property    string|null     $aparato
  * @property    string|null     $marca

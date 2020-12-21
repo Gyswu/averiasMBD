@@ -8,11 +8,19 @@
 
          <br>
 
+         <div class = "row">
+
+            <div class = "col col-lg-12">
+
+                <a n:href = "Averias:add" class = "btn btn-xs btn-success"> Añadir Averia </a>
+
+            </div>
+
+         </div>
+
          <br>
 
         <div class = "row">
-
-            <!-- <div class = "col col-lg-12"> -->
 
                 <table class = "table">
 
@@ -20,31 +28,23 @@
 
                         <tr>
 
-                            <th> Id Averia </th>
+                            <th> ID </th>
+
+                            <th> Usuario </th>
 
                             <th> Empresa </th>
 
-                            <th> Inicio Averia </th>
-
-                            <th> Final Averia </th>
+                            <th> Fecha </th>
 
                             <th> Descripcion </th>
 
-                            <th> Aparato </th>
-
-                            <th> Marca </th>
-
-                            <th> Modelo </th>
-
-                            <th> Numero serie </th>
-
-                            <th> Horas </th>
+                            <th> In situ </th>
 
                             <th> Resolucion </th>
 
-                            <th> Estado </th>
-
                             <th> Accion </th>
+
+                            <th> Estado </th>
 
                         </tr>
 
@@ -58,29 +58,39 @@
 
                                 <td> {$averia -> id} </td>
 
+                                <td> {$averia -> usuario -> nombre} </td>
+
                                 <td> {$averia -> usuario -> empresa -> nombre} </td>
 
                                 <td> {$averia -> fechainicio} </td>
 
-                                <td> {$averia -> fechafinal} </td>
-
                                 <td> {$averia -> descripcion} </td>
 
-                                <td> {$averia -> aparato} </td>
-
-                                <td> {$averia -> marca} </td>
-
-                                <td> {$averia -> modelo} </td>
-
-                                <td> {$averia -> numeroserie} </td>
-
-                                <td> {$averia -> horas} </td>
+                                <td> {$averia -> insitu} </td>
 
                                 <td> {$averia -> resolucion} </td>
 
-                                <td> {$averia -> estado} </td>
+                                <td> <a n:href = "Averias:edit $averia->id" class = "btn btn-xs btn-primary"> Editar </a> </td>
 
-                                <td> <a n:href = "Averias:edit $averia->id" class = "btn btn-xs btn-primary "> Editar </a> </td>
+                                <td>
+
+                                    {switch $averia->estado}
+
+                                        {case 0}
+
+                                            <a n:href = "Averias:proceso $averia->id" class = "btn btn-xs btn-success"> Entrada </a>
+
+                                        {case 1}
+
+                                            <a n:href = "Averias:finalizado $averia->id" class = "btn btn-xs btn-warning"> En Proceso </a>
+
+                                        {case 2}
+
+                                            <a class = "btn btn-xs btn-danger"> Finalizado </a>
+
+                                    {/switch}
+
+                                </td>
 
                             </tr>
 

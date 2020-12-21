@@ -27,16 +27,15 @@ class AveriasPresenter extends BasePresenter {
 
         $this->template->averias = $this->getDbUser()->averias;
 
-        //if (!$idAveria) {$this->template->averias = $this->orm->averias->findAll();}
+        if (!$idAveria) {$this->template->averias = $this->orm->averias->findAll();}
 
-        //else {$this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechainicio', ICollection::DESC);}
+        else {$this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('fechainicio', ICollection::DESC);}
 
     }
 
 // _____________________________ EDITAR _______________________________________________
 
-    public function actionEdit ($idAveria)
-    {
+    public function actionEdit ($idAveria) {
 
         $averia = $this->orm->averias->getById($idAveria);
 
@@ -47,15 +46,14 @@ class AveriasPresenter extends BasePresenter {
 
     public function createComponentEditarAveriaForm() {
 
-        $form = (new AveriasFormFactory())->createEdit($this->averiaEditada);
+        $form = (new AveriasFormFactory())->createAClient($this->averiaEditada);
 
         $form->onSuccess[] = [$this, 'onSuccessEditarAveria'];
 
         return $form;
     }
 
-    public function onSuccessEditarAveria(Form $form, \stdClass $values): void
-    {
+    public function onSuccessEditarAveria (Form $form, \stdClass $values): void {
 
         $averiax = new Averias();
 
@@ -65,12 +63,6 @@ class AveriasPresenter extends BasePresenter {
 
             $averiax = $this->orm->averias->getById($id);
 
-            $averiax->fechainicio = $values->fechainicio;
-
-            $averiax->fechafinal = $values->fechafinal;
-
-            $averiax->descripcion = $values->descripcion;
-
             $averiax->aparato = $values->aparato;
 
             $averiax->marca = $values->marca;
@@ -79,13 +71,7 @@ class AveriasPresenter extends BasePresenter {
 
             $averiax->numeroserie = $values->numeroserie;
 
-            $averiax->resolucion = $values->resolucion;
-
-            $averiax->horas = $values->horas;
-
             $this->averiaEditada = $averiax;
-
-            //dd($averiax);
 
             $this->orm->persistAndFlush($averiax);
 
@@ -98,11 +84,13 @@ class AveriasPresenter extends BasePresenter {
 
 //__________________AÑADIR____________________________
 
-    public function createComponentAddAveriaForm() {
+    public function createComponentAddAveriaForm ($empresaId) {
 
         $averia = new Averias();
 
-        $form = ( new AveriasFormFactory() )->createNuevo();
+        $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
+
+        $form = ( new AveriasFormFactory() )->createAClient($empresasarray);
 
         $form->onSuccess[] = [$this, 'onSuccessAddAveria'];
 
@@ -130,6 +118,8 @@ class AveriasPresenter extends BasePresenter {
 
             $averiax->numeroserie = $values->numeroserie;
 
+            $averiax->estado = 0;
+
             $usuariox = $this->orm->usuarios->getById($this->getDbUser()->id);
 
             $usuariox->averias->add($averiax);
@@ -138,11 +128,9 @@ class AveriasPresenter extends BasePresenter {
 
             $this->flashMessage('Averia añadida correctamente', 'success');
 
-        } catch (\Exception $e) {
-            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
-        }
+        } catch (\Exception $e) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
 
-        $this->redirect('this');
+        $this->redirect('Averias:default');
     }
 }
 

@@ -6,6 +6,7 @@ use App\Forms\AveriasFormFactory;
 
 use App\Model\Orm\Averias;
 
+use App\Model\Orm\Usuario;
 use Nette\Application\UI\Form;
 
 use Nextras\Orm\Collection\ICollection;
@@ -22,14 +23,14 @@ class AveriasPresenter extends BaseAdminPresenter {
         
         $this->template->rol = $this->getDbUser()->rol;
         
-         if (!$idAveria) {$this->template->todosLosCentros = $this->orm->averias->findAll();} //TODOSLOSCENTROS?
-         
+         if (!$idAveria) {$this->template->averias = $this->orm->averias->findAll();} //TODOSLOSCENTROS?
+
          else {
 
              //FILTRO??
-             
+
             $this->template->averias = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('id', ICollection::DESC);
-                    
+
         }
 
     }
@@ -66,11 +67,9 @@ class AveriasPresenter extends BaseAdminPresenter {
             
             $averiax = $this->orm->averias->getById($id);
 
-            $averiax->fechainicio = $values->fechainicio;
-            
-            $averiax->fechafinal = $values->fechafinal;
-            
-            $averiax->descripcion = $values->descripcion;
+            dd($values);
+
+            //$averiax->descripcion = $values->descripcion;
 
             $averiax->aparato = $values->aparato;
 
@@ -82,11 +81,11 @@ class AveriasPresenter extends BaseAdminPresenter {
 
             $averiax->resolucion = $values->resolucion;
 
-            $averiax->horas = $values->horas;
+            $averiax->insitu = $values->insitu;
+
+            $averiax->horasfuera = $values->horasfuera;
 
             $this->averiaEditada = $averiax;
-
-//            dd($averiax);
             
             $this->orm->persistAndFlush($averiax);
             
@@ -94,7 +93,7 @@ class AveriasPresenter extends BaseAdminPresenter {
         }
          
         catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
-        
+
         //$this->redirect('Averias:default', $this->averiaEditada->id);
 
         $this->redirect('Averias:default');
@@ -108,12 +107,8 @@ class AveriasPresenter extends BaseAdminPresenter {
         $averia = new Averias();
 
         $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
-        
-        //$form = ( new AveriasFormFactory() )->createNuevo($averia, $this->averia->id);
 
         $form = ( new AveriasFormFactory() )->createNuevo($empresasarray);
-
-        //$form = ( new AveriasFormFactory() )->createNuevo($averia);
 
         $form->onSuccess[] = [$this, 'onSuccessAddAveria'];
 
@@ -124,12 +119,10 @@ class AveriasPresenter extends BaseAdminPresenter {
         
         try {
 
-            $averiax = new Averia();
-            
-            $averiax = $this->averiaEdit;
+            $averiax = new Averias();
 
             $averiax->fechainicio = date('d/m/Y');
-            
+
             $averiax->descripcion = $values->descripcion;
 
             $averiax->aparato = $values->aparato;
@@ -138,16 +131,25 @@ class AveriasPresenter extends BaseAdminPresenter {
 
             $averiax->modelo = $values->modelo;
 
-            $averiax->numeroSerie = $values->numeroSerie;
+            $averiax->numeroserie = $values->numeroserie;
+
+            $averiax->estado = $values->estado;
+
+            $usuario = $this->orm->usuarios->getById($this->getDbUser()->id);
+
+            $usuario->averias->add($averiax);
            
-            $this->orm->persistAndFlush($averiax);
+            $this->orm->persistAndFlush($usuario);
             
             $this->flashMessage('Averia añadida correctamente', 'success');
         
         } catch( \Exception $e ) {
 
+            dd($e->getMessage());
+
             $this->flashMessage("Error: " . $e->getMessage(), 'danger');
         }
+
         $this->redirect('this');
     }
 
@@ -171,9 +173,45 @@ class AveriasPresenter extends BaseAdminPresenter {
         $this->redirect('Averias:default', $idAveria);
     }
 
+    public function actionProceso ($idAveria) {
+
+        $averia = $this->orm->averias->getById($idAveria);
+
+        $averia->estado = 1;
+
+        $this->orm->persistAndFlush($averia);
+
+        $this->redirect('Averias:default');
+
+        $this->flashMessage('Se ha cambiado el estado correctamente', 'success');
+
+    }
+
+    public function actionFinalizado ($idAveria) {
+
+        $averia = $this->orm->averias->getById($idAveria);
+
+        if (!empty($averia->insitu) && !empty($averia->resolucion)) {
+
+            $averia->estado = 2;
+
+            $this->orm->persistAndFlush($averia);
+
+            $this->redirect('Averias:default');
+
+            $this->flashMessage('Se ha cambiado el estado correctamente', 'success');
+
+        } else {
+
+            $this->flashMessage('Completa el campo de resolucion y horas antes de finalizar', 'danger');
+
+            $this->redirect('Averias:default');
+
+        }
+
+    }
+
 }
-
-
 
 /*IMPORTAR
 

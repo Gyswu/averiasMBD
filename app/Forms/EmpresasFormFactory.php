@@ -17,7 +17,7 @@ final class EmpresasFormFactory {
         return $form;
     }
     
-    public function createEdit(Empresa $empresa) {
+    public function createEdit (Empresa $empresa) {
 
         $form = $this->create();
 

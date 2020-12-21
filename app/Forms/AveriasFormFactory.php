@@ -7,6 +7,7 @@ namespace App\Forms;
 use App\Model\Orm\Averias;
 
 use App\Model\Orm\Empresa;
+
 use Nette;
 
 use Nette\Application\UI\Form;
@@ -15,31 +16,34 @@ final class AveriasFormFactory {
 
     use Nette\SmartObject;
 
-    public function createNuevo () {
+    public function createNuevo (array $empresas) {
 
-        $form = $this->createnew();
+        $form = $this->createNew($empresas);
 
         return $form;
     }
 
-    public function createEdit (Averias $averia) {
+    public function createACliente (array $empresas) {
 
-        $form = $this->create();
+        $form = $this->createAClient($empresas);
+
+        return $form;
+    }
+
+    public function createEdit (Averias $averia, array $empresas) {
+
+        $form = $this->create($empresas);
 
         $form->setDefaults($averia->toArray(2));
 
         return $form;
     }
 
-    public function create (): Form {
+    public function createAClient (): Form {
 
         $form = ( new FormFactory() )->create();
 
         $form->addHidden('id', 'Id de la averia');
-
-        $form->addText('fechainicio', 'Inicio de la averia')->setRequired();
-
-        $form->addText('fechafinal', 'Final de la averia')->setRequired();
 
         $form->addText('descripcion', 'Descripcion')->setRequired();
 
@@ -51,18 +55,53 @@ final class AveriasFormFactory {
 
         $form->addText('numeroserie', 'Numero de serie');
 
-        $form->addText('resolucion', 'Resolucion');
+        $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 
-        $form->addText('horas', 'Horas');
+        return $form;
+    }
+
+    public function create (): Form {
+
+        $form = ( new FormFactory() )->create();
+
+        $form->addHidden('id', 'Id de la averia');
+
+        $form->addText('descripcion', 'Descripcion')->setRequired();
+
+        $form->addText('aparato', 'Aparato');
+
+        $form->addText('marca', 'Marca');
+
+        $form->addText('modelo', 'Modelo');
+
+        $form->addText('numeroserie', 'Numero de serie');
+
+        $form->addText('insitu', 'Horas en taller');
+
+        $form->addText('horasfuera', 'Horas fuera del taller');
+
+        $form->addText('resolucion', 'Resolucion');
 
         $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 
         return $form;
     }
 
-    public function createnew (): Form {
+    public function createNew (array $empresas): Form { //administrador añadir averia
 
-        $form = ( new FormFactory() )->create();
+        $form = ( new FormFactory() )->create($empresas);
+
+        $form->addSelect('estado', 'Estado de la averia', [
+
+            '0' => 'Abierto',
+
+            '1' => 'En Proceso',
+
+            '2' => 'Finalizado'
+
+        ]);
+
+        $form->addSelect('empresa', 'Empresa Perteneciente: ', $empresas)->setDefaultValue(1);
 
         $form->addHidden('id', 'Id de la averia');
 

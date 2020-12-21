@@ -30,23 +30,18 @@
                     
                         <tr>
 
-                            <th> Inicio Averia </th>
-                        
-                            <th> Final Averia </th>
+                            <th> ID </th>
+
+                            <th> Fecha </th>
                         
                             <th> Descripcion </th>
-                        
-                            <th> Aparato </th>
-                        
-                            <th> Marca </th>
 
-                            <th> Modelo </th>
+                            <th> Estado </th>
 
-                            <th> Numero de serie </th>
-                        
-                            <th> Garantia </th>
+                            <th> Estado Averia </th>
 
-                            <th> </th>
+                            <th> Opciones </th>
+
                     
                         </tr>
                     
@@ -58,23 +53,37 @@
 
                             <tr>
 
+                                <td> {$averia -> id} </td>
+
                                 <td> {$averia -> fechainicio} </td>
 
-                                <td> {$averia -> fechafinal} </td>
-
                                 <td> {$averia -> descripcion} </td>
-                                
-                                <td> {$averia -> aparato} </td>
 
-                                <td> {$averia -> marca} </td>
+                                <td>
 
-                                <td> {$averia -> modelo} </td>
+                                    {switch $averia->estado}
 
-                                <td> {$averia -> numeroserie} </td>
+                                        {case 0}
 
-                                <td> {$averia -> resolucion} </td>
+                                            <a class = "btn btn-xs btn-success"> Entrada </a>
 
-                                <td> <a n:href = "Averias:edit $averia->id" class = "btn btn-xs btn-primary "> Editar </a> </td>
+                                        {case 1}
+
+                                            <a class = "btn btn-xs btn-warning"> En Proceso </a>
+
+                                        {case 2}
+
+                                            <a class = "btn btn-xs btn-danger"> Finalizado </a>
+
+                                    {/switch}
+
+                                </td>
+
+                                <td>
+
+                                    <a n:href = "Averias:edit $averia->id" class = "btn btn-xs btn-primary "> Editar </a>
+
+                                </td>
 
                             </tr>
 

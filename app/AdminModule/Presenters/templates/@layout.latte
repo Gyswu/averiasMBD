@@ -56,9 +56,12 @@
 
                     {if $usuarioDb}
 
-                        <a class = "nav-link" n:href = ":Sign:out"> {$usuarioDb->correo} (<b>Salir</b>)</a>
+                        <a class = "nav-link" n:href = ":Sign:out"> {$usuarioDb->nombre} (<b> Salir </b>)</a>
+
                     {else}
+
                         Invitado
+
                     {/if}
 
                 </li>

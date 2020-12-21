@@ -43,8 +43,6 @@ final class UsuariosFormFactory {
 
     public function create (array $empresas): Form {
 
-        //$form = (new FormFactory())->create($empresas);
-
         $form = (new FormFactory())->create();
 
         $form->addHidden('id', 'Id de Usuario');
@@ -65,7 +63,7 @@ final class UsuariosFormFactory {
 
         $form->addInteger('extensiontelefono', 'Extensión telefonica');
 
-        $form->addPassword('password', 'Contraseña')->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
+        $form->addPassword('password', 'Contraseña')->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH)->setRequired();
 
         $form->addSelect('rol', 'Rol', [
 

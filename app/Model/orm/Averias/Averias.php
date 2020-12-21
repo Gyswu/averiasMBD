@@ -17,7 +17,8 @@ use Nextras\Orm\Entity\Entity;
  * @property    string|null     $modelo
  * @property    string|null     $numeroserie
  * @property    string|null     $resolucion
- * @property    float|null      $horas
+ * @property    float|null      $insitu
+ * @property   float|null       $horasfuera
  * @property    int|null        $estado
  */
 class Averias extends Entity {

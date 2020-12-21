@@ -55,27 +55,6 @@ class EmpresasPresenter extends BaseAdminPresenter {
 
     }
 
-    protected function createComponentSearchButton () {
-
-        $form = new Form();
-
-        $form ->addText('search', 'Empresa: ')->setRequired(TRUE);
-
-        $form->addSubmit('send', 'Busqueda');
-
-        $form->onSuccess[] = [$this, 'SearchButtonFormSuccess'];
-
-        return $form;
-
-    }
-
-    public function SearchButtonFormSuccess (Form $form, \stdClass $values) {
-
-        $this->redirect('Empresas:default', $form->getValues()->search);
-
-    }
-
-
     public function onSuccessAddEmpresa (Form $form, \stdClass $values) :void{
 
         $empresa = new Empresa();
@@ -155,7 +134,7 @@ class EmpresasPresenter extends BaseAdminPresenter {
 
 //    ___________________ ELIMINAR EMPRESA ___________________
 
-    public function actionBorrar($idEmpresa){
+    public function actionBorrar ($idEmpresa){
 
         $this->flashMessage('La empresa no puede ser borrada', 'danger');
 

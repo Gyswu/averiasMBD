@@ -1,0 +1,67 @@
+{block content}
+    
+    <div class = "container">
+
+        <br>
+    
+        <div class = "row">
+    
+            <h1 n:block = "title"> Editar Averia {$averia->id}</h1>
+    
+        </div>
+
+        <br>
+    
+        <div class = "row">
+
+            <div class = "col col-lg-6"> <a n:href = "Averias:default" class = "btn btn-info"> Volver </a> </div>
+        
+        </div>
+
+        <br>
+        
+        <div class = "row">
+        
+            <div class = "col col-lg-6">
+
+                {control editarAveriaForm}
+            </div>
+
+            <div class="col col-lg-6">
+                <table class="table table-bordered">
+                    <thead>
+                    <td><h2></h2></td>
+                    <td><h2>Datos empresa</h2></td>
+                    <td><h2>Datos Usuario</h2></td>
+                    </thead>
+                    <tr>
+                        <td>
+                            <h3>Nombre:</h3>
+                        </td>
+                        <td>
+                            {$averia->usuario->empresa->nombre}
+                        </td>
+                        <td>
+                            {$averia->usuario->nombre}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3>Telefono</h3>
+                        </td>
+                        <td>
+                            {$averia->usuario->empresa->telefono}
+                        </td>
+                        <td>
+                            {$averia->usuario->telefono} {$averia->usuario->extensiontelefono}
+                        </td>
+
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+{/block}

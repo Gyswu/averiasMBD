@@ -1,0 +1,93 @@
+{block content}
+
+    <div class = "container">
+
+    <br>
+
+    <div class = "row">
+        <div class="col-12 col-lg-6">
+            <h1 n:block = "title"> Clientes </h1>
+        </div>
+
+        <div class = "col-12 col-lg-6">
+
+            <a n:href = "Empresas:add" class = "btn btn-xs btn-success"> Añadir Cliente </a>
+
+    </div>
+    </div>
+    <br>
+
+    <div class = "row">
+
+        <div class = "col-12 col-lg-12">
+
+            <table class="table">
+
+                <thead class="thead-dark">
+
+                    <tr>
+
+                        <th class="id"> ID </th>
+
+                        <th class="nif"> Nif </th>
+
+                        <th> Nombre </th>
+
+                        <th> Telefono </th>
+
+                        <th> Direccion </th>
+
+                        <th> Contacto </th>
+
+                        <th> Opciones </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {foreach $empresas as $empresa}
+
+                        <tr>
+
+                            <td class="id"> {$empresa->id} </td>
+
+                            <td class="nif"> {$empresa->nif} </td>
+
+                            <td> {$empresa->nombre} </td>
+
+                            <td> {$empresa->telefono} </td>
+
+                            <td> {$empresa->direccion} </td>
+
+                            <td> {$empresa->contacto} </td>
+
+                            <td>
+
+                                <a n:href = "Usuarios:default $empresa->id" class = "btn btn-xs btn-primary"> Usuarios </a>
+                            {if $rol == 'admin'}
+                                <a n:href = "Empresas:edit $empresa->id" class="btn btn-xs btn-primary"> Editar </a>
+                            {elseif$rol == 'encargado'}
+                                <a n:href = "Empresas:edit $empresa->id" class="btn btn-xs btn-primary"> Editar </a>
+                                {/if}
+                            {if $rol == 'admin'}
+                                <a n:href = "Empresas:borrar $empresa->id" class="btn btn-xs btn-danger"> Borrar </a>
+                            {/if}
+                            </td>
+
+                        </tr>
+
+                {/foreach}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+ </div>
+
+</div>
+
+{/block}

@@ -1,0 +1,209 @@
+{block content}
+    <div class="cotnainer">
+        <div class="row">
+            <div class="col col-lg-12">
+                <h1 class="text-center">
+                    Información de la maquina nº #000{$maquina->id}
+                </h1>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-12 col-lg-12 col-md-12">
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <h5>ID</h5>
+                        </td>
+                        <td>
+                            {$maquina->id}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Modelo</h5>
+                        </td>
+                        <td>
+                            {$maquina->modelo}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>IP</h5>
+                        </td>
+                        <td>
+                            {ifset $maquina->ip}
+                                {$maquina->ip}
+                            {else}
+                                Sin IP
+                            {/ifset}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Firmaware</h5>
+                        </td>
+                        <td>
+                            {ifset $maquina->vfirmware}
+                                {$maquina->vfirmware}
+                            {else}
+                                Sin DATOS
+                            {/ifset}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Cliente</h5>
+                        </td>
+                        <td>
+                            {ifset $maquina->empresa}
+                                <a n:href="Empresas:edit $maquina->empresa->id">{$maquina->empresa->nombre}</a>
+                            {else}
+                                Taller
+                            {/ifset}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Proveedor</h5>
+                        </td>
+                        <td>
+                            {ifset $maquina->proveedor}
+                                <a href="">{$maquina->proveedor->nombre}</a>
+                            {else}
+                                Sin DATOS
+                            {/ifset}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Fecha de Compra</h5>
+                        </td>
+                        <td>
+                            {ifset $maquina->fcompra}
+                                {$maquina->fcompra}
+                            {else}
+                                Sin DATOS
+                            {/ifset}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Tipo contador</h5>
+                        </td>
+                        <td>
+                            {if $maquina->tipocontador <= 1}
+                                Normal
+                            {else}
+                                Triple
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Estado</h5>
+                        </td>
+                        <td>
+                            {switch $maquina->estado}
+                                {case 0}
+                                Sin preparar
+                                {case 1}
+                                Puesta a punto
+                                {case 2}
+                                Preparada
+                                {case 3}
+                                In Situ
+                                {case 4}
+                                Out of Service
+                                {case 5}
+                                En taller
+                                {case 6}
+                                Desguace
+                            {/switch}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Origen</h5>
+                        </td>
+                        <td>
+                            {switch $maquina->origen}
+                                {case 0}
+                                Nueva
+                                {case 1}
+                                Ocasión
+                            {else}
+                                Sin determinar
+                            {/switch}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Fecha Inicio Servicio</h5>
+                        </td>
+                        <td>
+                            {ifset $maquina->finicioservicio}
+                                {$maquina->finicioservicio}
+                            {else}
+                                Sin Empezar
+                            {/ifset}
+{*                    Solo si el servicio ha empezado*}
+
+                        </td>
+                    </tr>
+
+                    {ifset $maquina->finicioservicio}
+                        <tr>
+                            <td>
+                                <h5>Fecha Final del Servicio</h5>
+                            </td>
+                            <td>
+                                {ifset $maquina->ffinalservicio}
+                                    {$maquina->ffinalservicio}
+                                {else}
+                                    Sin terminar
+                                {/ifset}
+                            </td>
+                        </tr>
+                    {/ifset}
+                    {ifset $maquina->tcontrato}
+                        <tr>
+                            <td>
+                                <h5>Tipo de contrato</h5>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    {/ifset}
+                    {ifset $maquina->garantia}
+                        <tr>
+                            <td>
+                                <h5>Tipo de Garantia</h5>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    {/ifset}
+                    {ifset $maquina->firmwarebackup}
+                        <tr>
+                            <td>
+                                <h5>Firmware Backup</h5>
+                            </td>
+                            <td>
+                                <a href="http://webapp.mbdinformatica.es/{$maquina->firmwarebackup}">{$maquina->firmwarebackup}</a>
+                            </td>
+                        </tr>
+                    {/ifset}
+                </table>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-12 col-lg-12">
+                <a n:href="Copias:default, value=> $maquina->id , mode=>$mode" class="btn btn-info"><i class="bi bi-clipboard-data"></i> Copias</a>
+                <a href="" class="btn btn-warning"><i class="bi bi-gear-fill"></i> Cambios de piezas</a>
+                <a n:href="Maquinas:edit $maquina->id" class="btn btn-info"><i class="bi bi-pencil-square"></i> Editar</a>
+            </div>
+        </div>
+    </div>
+{/block}

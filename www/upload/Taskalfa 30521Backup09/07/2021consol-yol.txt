@@ -1,0 +1,33 @@
+==================================================
+Product Name      : Internet Explorer
+Product ID        : 00326-00820-16359-AAOEM
+Product Key       : 6N9V7-XV9RR-9MKTQ-HH6CH-M4G3T
+Installation Folder : 
+Service Pack      : 
+Build Number      : 
+Computer Name     : TALLER2
+Modified Time     : 12/11/2020 11:47:08
+==================================================
+
+==================================================
+Product Name      : Microsoft Office Professional 2007
+Product ID        : 81605-870-4584511-65937
+Product Key       : WR8V8-J4C8V-6GXX7-Y6YKF-BJXRG
+Installation Folder : C:\Program Files (x86)\Microsoft Office\Office12\
+Service Pack      : 
+Build Number      : 
+Computer Name     : TALLER2
+Modified Time     : 12/11/2020 11:24:31
+==================================================
+
+==================================================
+Product Name      : Windows 10 Home
+Product ID        : 00326-00820-16359-AAOEM
+Product Key       : 6N9V7-XV9RR-9MKTQ-HH6CH-M4G3T
+Installation Folder : C:\Windows
+Service Pack      : 
+Build Number      : 19042
+Computer Name     : TALLER2
+Modified Time     : 20/04/2021 12:03:40
+==================================================
+

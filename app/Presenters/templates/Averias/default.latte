@@ -1,0 +1,100 @@
+{block content}
+
+    <div class = "container">
+
+         <br>
+
+        <div class = "row"> <h1 n:block = "title"> Averias </h1> </div>
+
+         <br>
+
+        <div class = "row">
+
+            <div class = "col col-lg-12"> <a n:href = "Averias:add" class = "btn btn-xs btn-success"> Añadir averia </a> </div>
+
+            <br>
+
+            <br>
+
+        </div>
+
+        <br>
+
+        <div class = "row">
+
+            <div class = "col col-lg-12">
+
+                <table class = "table">
+
+                    <thead class = "thead-dark">
+                    
+                        <tr>
+
+                            <th> ID </th>
+
+                            <th> Fecha </th>
+                        
+                            <th> Descripcion </th>
+
+                            <th> Estado </th>
+
+                            <th> Opciones </th>
+
+                    
+                        </tr>
+                    
+                    </thead>
+                    
+                    <tbody>
+
+                        {foreach $averias as $averia}
+
+                            <tr>
+
+                                <td> {$averia -> id} </td>
+
+                                <td> {$averia -> fechainicio} </td>
+
+                                <td> {$averia -> descripcion} </td>
+
+                                <td>
+
+                                    {switch $averia->estado}
+
+                                        {case 0}
+
+                                            <a class = "btn btn-xs btn-success" style = "color : white"> Entrada </a>
+
+                                        {case 1}
+
+                                            <a class = "btn btn-xs btn-warning"> En Proceso </a>
+
+                                        {case 2}
+
+                                            <a class = "btn btn-xs btn-danger" style = "color : white"> Finalizado </a>
+
+                                    {/switch}
+
+                                </td>
+
+                                <td>
+
+                                    <a n:href = "Averias:edit $averia->id" class = "btn btn-xs btn-primary "> Editar </a>
+
+                                </td>
+
+                            </tr>
+
+                        {/foreach}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{/block}

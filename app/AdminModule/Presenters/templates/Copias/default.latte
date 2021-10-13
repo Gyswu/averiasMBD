@@ -1,0 +1,417 @@
+{block content}
+    <div class="container">
+        <div class="row">
+                <div class="col-12 col-lg-12">
+{*                    {dd($modo)}*}
+                    {ifset $modo}
+                        {switch $modo}
+
+                            {case 7}
+                                <h1>Todos las entradas de copias</h1>
+                            {case 8}
+                                <h1>Todas las entradas de copias del cliente {$cliente->nombre}</h1>
+                            {case 9}
+                                <h1>Todas las entradas de copias del proveedor {$proveedor->nombre}</h1>
+                            {case 10}
+                                <h1>Todos las entradas de copias de la maquina #000{$copias->id} </h1>
+                        {/switch}
+                        {else}
+                        MAL
+                    {/ifset}
+                </div>
+{*            AÑADIR COPIAS *}
+            {ifset $modo}
+                {if $modo == 10}
+
+                <div class="col-12 col-12-lg">
+                    <a n:href="Copias:add $copias->id" class="btn btn-success"><i class="bi bi-plus-circle-fill"></i> Nuevo registro</a>
+                </div>
+
+                    {/if}
+            {/ifset}
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-12">
+                <table class="table">
+                    <thead>
+                        {switch $modo}
+                            {case 7}
+                            <th class="maquina">
+                                Maquina
+                            </th>
+                            <th class="cliente">
+                                Cliente
+                            </th>
+                            <th class="copiasc">
+                                Copias C
+                            </th>
+                            <th class="copiasc">
+                                Copias BN
+                            </th>
+                            <th class="conpiasl">
+                                Copias L1
+                            </th>
+                            <th class="copiasll">
+                                Copias L2
+                            </th>
+                            <th class="copiaslll">
+                                Copias L3
+                            </th>
+                            <th class="escaneos">
+                                Escaneos
+                            </th>
+                        {case 8}
+                            <th class="maquina">
+                                Maquina
+                            </th>
+                            <th class="copiasc">
+                                Copias C
+                            </th>
+                            <th class="copiasbn">
+                                Copias BN
+                            </th>
+                            <th class="conpiasl">
+                                Copias L1
+                            </th>
+                            <th class="copiasll">
+                                Copias L2
+                            </th>
+                            <th class="copiaslll">
+                                Copias L3
+                            </th>
+                            <th class="escaneos">
+                                Escaneos
+                            </th>
+                        {case 9}
+                            <th class="maquina">
+                                Maquina
+                            </th>
+                            <th class="cliente">
+                                Cliente
+                            </th>
+                            <th class="copiasc">
+                                Copias C
+                            </th>
+                            <th class="copiasbn">
+                                Copias BN
+                            </th>
+                            <th class="conpiasl">
+                                Copias L1
+                            </th>
+                            <th class="copiasll">
+                                Copias L2
+                            </th>
+                            <th class="copiaslll">
+                                Copias L3
+                            </th>
+                            <th class="escaneos">
+                                Escaneos
+                            </th>
+                        {case 10}
+                            <th class="fecha">
+                                Fecha
+                            </th>
+                            {if $copias->tipocontador >= 1}
+                            <th class="copiasc">
+                                Copias C
+                            </th>
+                                {/if}
+                            {if $copias->tipocontador >= 0}
+                            <th class="copiasbn">
+                                Copias BN
+                            </th>
+                                {/if}
+                            {if $copias->tipocontador == 2}
+                            <th class="conpiasl">
+                                Copias L1
+                            </th>
+                            {/if}
+                            {if $copias->tipocontador == 2}
+                            <th class="copiasll">
+                                Copias L2
+                            </th>
+                            {/if}
+                            {if $copias->tipocontador == 2}
+                            <th class="copiaslll">
+                                Copias L3
+                            </th>
+                            {/if}
+                            <th class="escaneos">
+                                Escaneos
+                            </th>
+                            {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
+                                <th>
+                                    Opciones
+                                </th>
+                            {/if}
+                        {/switch}
+                    </thead>
+
+{*                    FIN DE LA CABECERA*}
+
+                        {switch $modo}
+                            {case 7}
+                                {foreach $copias as $copia}
+                                    <tr>
+                                    <td class="maquina">
+                                        {$copia->maquina->modelo}
+                                    </td>
+                                    <td class="cliente">
+                                        {ifset $copia->maquina->empresa->nombre}
+                                            {$copia->maquina->empresa->nombre}
+                                            {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    <td class="copiasc">
+                                        {ifset $copia->copiascl}
+                                            {$copia->copiascl}
+                                            {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    <td class="copiasbn">
+                                        {ifset $copia->copiasbn}
+                                            {$copia->copiasbn}
+                                            {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    <td class="copiasl">
+                                        {ifset $copia->copiasl}
+                                            {$copia->copiasl}
+                                            {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    <td class="copiasll">
+                                        {ifset $copia->copiasll}
+                                            {$copia->copiasll}
+                                            {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    <td class="copiaslll">
+                                        {ifset $copia->copiasll}
+                                            {$copia->copiasll}
+                                            {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    <td class="escaneos">
+                                        {ifset $copia->escaneos}
+                                            {$copia->escaneos}
+                                            {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                        {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
+                                            <td>
+                                                <a n:href="Copias:edit, $copia->id" class="btn btn-info"><i class="bi bi-pencil-square"></i> Editar</a>
+                                                <a n:href="Copias:removeCopia, idcopia => $copia->id, modo => $modo" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</a>
+                                            </td>
+                                        {/if}
+                                </tr>
+                                {/foreach}
+                            {case 8}
+                                {foreach $maquinas as $maquina}
+                                    {foreach $maquina->copias as $copia}
+                                        <tr>
+                                        <td class="maquina">
+                                            {$copia->maquina->modelo}
+                                        </td>
+                                        <td class="cliente">
+                                            {ifset $copia->maquina->empresa->nombre}
+                                                {$copia->maquina->empresa->nombre}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiasc">
+                                            {ifset $copia->copiascl}
+                                                {$copia->copiascl}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiasbn">
+                                            {ifset $copia->copiasbn}
+                                                {$copia->copiasbn}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiasl">
+                                            {ifset $copia->copiasl}
+                                                {$copia->copiasl}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiasll">
+                                            {ifset $copia->copiasll}
+                                                {$copia->copiasll}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiaslll">
+                                            {ifset $copia->copiasll}
+                                                {$copia->copiasll}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="escaneos">
+                                            {ifset $copia->escaneos}
+                                                {$copia->escaneos}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                            {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
+                                                <td>
+                                                    <a n:href="Copias:edit, $copia->id" class="btn btn-info"><i class="bi bi-pencil-square"></i> Editar</a>
+                                                    <a n:href="Copias:removeCopia, idcopia => $copia->id, modo => $modo" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</a>
+                                                </td>
+                                            {/if}
+                                    </tr>
+                                    {/foreach}
+                                {/foreach}
+                            {case 9}
+                                {foreach $maquinas as $maquina}
+                                    {foreach $maquina->copias as $copia}
+                                        <tr>
+                                        <td class="maquina">
+                                            {$copia->maquina->modelo}
+                                        </td>
+                                        <td class="cliente">
+                                            {ifset $copia->maquina->empresa->nombre}
+                                                {$copia->maquina->empresa->nombre}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiasc">
+                                            {ifset $copia->copiascl}
+                                                {$copia->copiascl}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiasbn">
+                                            {ifset $copia->copiasbn}
+                                                {$copia->copiasbn}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiasl">
+                                            {ifset $copia->copiasl}
+                                                {$copia->copiasl}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiasll">
+                                            {ifset $copia->copiasll}
+                                                {$copia->copiasll}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="copiaslll">
+                                            {ifset $copia->copiasll}
+                                                {$copia->copiasll}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                        <td class="escaneos">
+                                            {ifset $copia->escaneos}
+                                                {$copia->escaneos}
+                                            {else}
+                                                N/S
+                                            {/ifset}
+                                        </td>
+                                            {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
+                                                <td>
+                                                    <a n:href="Copias:edit, $copia->id" class="btn btn-info"><i class="bi bi-pencil-square"></i> Editar</a>
+                                                    <a n:href="Copias:removeCopia, idcopia => $copia->id, modo => $modo" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</a>
+                                                </td>
+                                            {/if}
+                                    </tr>
+                                    {/foreach}
+                                {/foreach}
+                            {case 10}
+                                {foreach $copies as $copia}
+                                    <tr>
+                                        <td class="fecha">
+                                            {$copia->fecha}
+                                        </td>
+                                    {if $copias->tipocontador >= 1}
+                                    <td class="copiasc">
+                                        {ifset $copia->copiascl}
+                                            {$copia->copiascl}
+                                        {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    {/if}
+                                    {if $copias->tipocontador >= 0}
+                                    <td class="copiasbn">
+                                        {ifset $copia->copiasbn}
+                                            {$copia->copiasbn}
+                                        {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    {/if}
+                                    {if $copias->tipocontador == 2}
+                                    <td class="copiasl">
+                                        {ifset $copia->copiasl}
+                                            {$copia->copiasl}
+                                        {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    {/if}
+                                    {if $copias->tipocontador == 2}
+                                    <td class="copiasll">
+                                        {ifset $copia->copiasll}
+                                            {$copia->copiasll}
+                                        {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                    {/if}
+                                    {if $copias->tipocontador == 2}
+                                    <td class="copiaslll">
+                                        {ifset $copia->copiasll}
+                                            {$copia->copiasll}
+                                        {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                        {/if}
+                                    <td class="escaneos">
+                                        {ifset $copia->escaneos}
+                                            {$copia->escaneos}
+                                        {else}
+                                            N/S
+                                        {/ifset}
+                                    </td>
+                                        {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
+                                            <td>
+                                                <a n:href="Copias:edit, $copia->id" class="btn btn-info"><i class="bi bi-pencil-square"></i> Editar</a>
+                                                <a n:href="Copias:removeCopia, idcopia => $copia->id, modo => $modo" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</a>
+                                            </td>
+                                        {/if}
+                                <tr>
+                                {/foreach}
+                            {/switch}
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}

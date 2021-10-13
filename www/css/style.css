@@ -1,0 +1,149 @@
+*{-webkit-box-sizing:border-box;box-sizing:border-box}body,html{margin:0;padding:0}
+h1{color:#3484D2}a[href^="#error:"]{background:red;color:white}
+form .required label{font-weight:bold}
+.alert{position:absolute;top:20px;right:20px;width:33vw;z-index:999999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+row{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-ms-flex-wrap:nowrap;flex-wrap:nowrap}
+row .card{border:0;width:450px;margin-right:20px}
+row .card .card-body{position:relative;padding-bottom:50px}
+.row .card .card-body .card-title span{float:right}
+.row .card .card-body ul{
+    padding:0}
+.row .card .card-body .btn{
+    position:absolute;bottom:5px;left:200px}
+
+
+@media screen and (min-width: 1px) {
+    .id{
+        display: none;
+    }
+    .nif{
+        display: none;
+    }
+    .horas{
+        display: none;
+    }
+    .descripcion{
+        display: none;
+    }
+    .resolucion{
+        display: none;
+    }
+    .fecha{
+        display: none;
+    }
+    .proveedor{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .id{
+        display: none;
+    }
+    .nif{
+        display: none;
+    }
+    .horas{
+        display: none;
+    }
+    .descripcion{
+        display: none;
+    }
+    .resolucion{
+        display: none;
+    }
+    .fecha{
+        display: none;
+    }
+    .proveedor{
+        display: none;
+    }
+}
+@media screen and (min-width: 768px) {
+    .id{
+        display: none;
+    }
+    .nif{
+        display: none;
+    }
+    .horas{
+        display: none;
+    }
+    .descripcion{
+        display: none;
+    }
+    .resolucion{
+        display: none;
+    }
+    .fecha{
+        display: none;
+    }
+    .proveedor{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .id{
+        display: none;
+    }
+    .nif{
+        display: none;
+    }
+    .horas{
+        display: none;
+    }
+    .descripcion{
+        display: none;
+    }
+    .resolucion{
+        display: none;
+    }
+    .fecha{
+        display: none;
+    }
+    .proveedor{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .id{
+        display: revert;
+    }
+    .nif{
+        display: revert;
+    }
+    .horas{
+        display: revert;
+    }
+    .descripcion{
+        display: revert;
+    }
+    .resolucion{
+        display: revert;
+    }
+    .fecha{
+        display: revert;
+    }
+    .proveedor{
+        display: revert;
+    }
+}
+
+label{
+    margin-top: 2rem;
+}
+
+.form-group .btn{
+    margin-top: 3rem;
+}
+
+th a i{
+    color: black;
+}
+th a i:hover{
+
+}
+
+/*# sourceMappingURL=style.css.map */

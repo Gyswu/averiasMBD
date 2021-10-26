@@ -4,9 +4,9 @@
 namespace App\Model;
 
 
-class Listas
+class listas
 {
-    public static function getPiezas() :array{
+    public static function getPiezas(){
         $piezas = [
             '0' => 'Rodillos papel',
             '1' => 'Rodillos carga Tambor',
@@ -21,7 +21,7 @@ class Listas
         return $piezas;
     }
 
-    public static function getColores() :array{
+    public static function getColores(){
         $colores = [
             '0' => 'K',
             '1' => 'C',
@@ -31,7 +31,7 @@ class Listas
         return $colores;
     }
 
-    public static function getCajones() :array{
+    public static function getCajones(){
         $cajones = [
             '0' => 'Cajon 1',
             '1' => 'Cajon 2',

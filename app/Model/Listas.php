@@ -20,6 +20,20 @@ class listas
 
         return $piezas;
     }
+    public static function getPieza($num){
+        $piezas = [
+            '0' => 'Rodillos papel',
+            '1' => 'Rodillos carga Tambor',
+            '3' => 'Tambor',
+            '4' => 'Revelador',
+            '5' => 'Fusor',
+            '6' => 'DP',
+            '7' => 'Banda de transferencia',
+
+        ];
+
+        return $piezas[$num];
+    }
 
     public static function getColores(){
         $colores = [

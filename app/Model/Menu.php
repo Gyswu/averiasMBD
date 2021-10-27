@@ -29,6 +29,11 @@ class Menu {
                 'nombre'  => 'Maquinas',
                 'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
                 'nhref'   => 'Maquinas:default',
+            ],
+            [
+                'nombre'  => 'Cambios',
+                'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
+                'nhref'   => 'Piezas:default',
             ]
 
         ];

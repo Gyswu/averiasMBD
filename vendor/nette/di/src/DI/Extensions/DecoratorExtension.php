@@ -32,7 +32,11 @@ final class DecoratorExtension extends Nette\DI\CompilerExtension
 
 	public function beforeCompile()
 	{
+		$this->getContainerBuilder()->resolve();
 		foreach ($this->config as $type => $info) {
+			if (!class_exists($type) && !interface_exists($type)) {
+				throw new Nette\DI\InvalidConfigurationException(sprintf("Decorated class '%s' not found.", $type));
+			}
 			if ($info->inject !== null) {
 				$info->tags[InjectExtension::TAG_INJECT] = $info->inject;
 			}

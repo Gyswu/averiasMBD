@@ -92,6 +92,7 @@
 
 
                     {foreach $maquinas as $maquina}
+                        {if $maquina->modelo !== "blank"}
                         <tr>
                             <td class="id">
                                 {$maquina->id}
@@ -152,6 +153,7 @@
 
                             </td>
                         </tr>
+                            {/if}
                     {/foreach}
                 </table>
             </div>

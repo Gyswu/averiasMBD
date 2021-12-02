@@ -65,7 +65,7 @@ return array (
     'App\\Model\\Menu' => 
     array (
       'file' => '/var/www/nette/app/Model/Menu.php',
-      'time' => 1624877372,
+      'time' => 1635366178,
     ),
     'App\\Model\\UserManager' => 
     array (
@@ -85,7 +85,7 @@ return array (
     'App\\Model\\listas' => 
     array (
       'file' => '/var/www/nette/app/Model/listas.php',
-      'time' => 1625848682,
+      'time' => 1635363646,
     ),
     'App\\Model\\Roles' => 
     array (
@@ -175,7 +175,7 @@ return array (
     'App\\Model\\Orm\\Cambios' => 
     array (
       'file' => '/var/www/nette/app/Model/orm/Cambios/Cambios.php',
-      'time' => 1624873268,
+      'time' => 1635363646,
     ),
     'App\\Model\\Orm\\CambiosMapper' => 
     array (
@@ -252,6 +252,11 @@ return array (
       'file' => '/var/www/nette/app/AdminModule/Presenters/SupportPresenter.php',
       'time' => 1625213035,
     ),
+    'App\\AdminModule\\Presenters\\MaquinasPresenter' => 
+    array (
+      'file' => '/var/www/nette/app/AdminModule/Presenters/MaquinasPresenter.php',
+      'time' => 1628176809,
+    ),
     'App\\AdminModule\\Presenters\\CopiasPresenter' => 
     array (
       'file' => '/var/www/nette/app/AdminModule/Presenters/CopiasPresenter.php',
@@ -260,7 +265,7 @@ return array (
     'App\\AdminModule\\Presenters\\EmpresasPresenter' => 
     array (
       'file' => '/var/www/nette/app/AdminModule/Presenters/EmpresasPresenter.php',
-      'time' => 1625213035,
+      'time' => 1637915401,
     ),
     'App\\AdminModule\\Presenters\\BaseAdminPresenter' => 
     array (
@@ -277,15 +282,19 @@ return array (
       'file' => '/var/www/nette/app/AdminModule/Presenters/AveriasPresenter.php',
       'time' => 1625213035,
     ),
-    'App\\AdminModule\\Presenters\\MaquinasPresenter' => 
+    'App\\AdminModule\\Presenters\\PiezasPresenter' => 
     array (
-      'file' => '/var/www/nette/app/AdminModule/Presenters/MaquinasPresenter.php',
-      'time' => 1628176809,
+      'file' => '/var/www/nette/app/AdminModule/Presenters/PiezasPresenter.php',
+      'time' => 1635366349,
     ),
   ),
   1 => 
   array (
     'App\\AdminModule\\Presenters\\Multiplier' => 1,
     'App\\AdminModule\\Presenters\\MaquinaPresenter' => 1,
+    'App\\Presenters\\AdminePresenter' => 1,
+    'App\\AdminModule\\Presenters\\CambiosxPresenter' => 1,
+    'App\\AdminModule\\Presenters\\CambiosPresenter' => 1,
+    'App\\AdminModule\\Presenters\\Copias' => 1,
   ),
 );

@@ -19,7 +19,7 @@ abstract class Definition
 {
 	use Nette\SmartObject;
 
-	/** @var string */
+	/** @var string|null */
 	private $name;
 
 	/** @var string|null  class or interface name */
@@ -55,9 +55,7 @@ abstract class Definition
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	protected function setType(?string $type)
 	{
 		if ($this->autowired && $this->notifier && $this->type !== $type) {
@@ -66,7 +64,11 @@ abstract class Definition
 		if ($type === null) {
 			$this->type = null;
 		} elseif (!class_exists($type) && !interface_exists($type)) {
-			throw new Nette\InvalidArgumentException("Service '$this->name': Class or interface '$type' not found.");
+			throw new Nette\InvalidArgumentException(sprintf(
+				"Service '%s': Class or interface '%s' not found.",
+				$this->name,
+				$type
+			));
 		} else {
 			$this->type = Nette\DI\Helpers::normalizeClass($type);
 		}
@@ -80,9 +82,7 @@ abstract class Definition
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	final public function setTags(array $tags)
 	{
 		$this->tags = $tags;
@@ -107,9 +107,7 @@ abstract class Definition
 	}
 
 
-	/**
-	 * @return mixed
-	 */
+	/** @return mixed */
 	final public function getTag(string $tag)
 	{
 		return $this->tags[$tag] ?? null;
@@ -125,23 +123,21 @@ abstract class Definition
 		if ($this->notifier && $this->autowired !== $state) {
 			($this->notifier)();
 		}
-		$this->autowired = is_string($state) || is_array($state) ? (array) $state : (bool) $state;
+		$this->autowired = is_string($state) || is_array($state)
+			? (array) $state
+			: (bool) $state;
 		return $this;
 	}
 
 
-	/**
-	 * @return bool|string[]
-	 */
+	/** @return bool|string[] */
 	final public function getAutowired()
 	{
 		return $this->autowired;
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setExported(bool $state = true)
 	{
 		return $this->addTag('nette.exported', $state);
@@ -181,45 +177,35 @@ abstract class Definition
 	/********************* deprecated stuff from former ServiceDefinition ****************d*g**/
 
 
-	/**
-	 * @deprecated Use setType()
-	 */
+	/** @deprecated Use setType() */
 	public function setClass(?string $type)
 	{
 		return $this->setType($type);
 	}
 
 
-	/**
-	 * @deprecated Use getType()
-	 */
+	/** @deprecated Use getType() */
 	public function getClass(): ?string
 	{
 		return $this->getType();
 	}
 
 
-	/**
-	 * @deprecated Use '$def instanceof Nette\DI\Definitions\ImportedDefinition'
-	 */
+	/** @deprecated Use '$def instanceof Nette\DI\Definitions\ImportedDefinition' */
 	public function isDynamic(): bool
 	{
 		return false;
 	}
 
 
-	/**
-	 * @deprecated Use Nette\DI\Definitions\FactoryDefinition or AccessorDefinition
-	 */
+	/** @deprecated Use Nette\DI\Definitions\FactoryDefinition or AccessorDefinition */
 	public function getImplement(): ?string
 	{
 		return null;
 	}
 
 
-	/**
-	 * @deprecated Use getAutowired()
-	 */
+	/** @deprecated Use getAutowired() */
 	public function isAutowired()
 	{
 		return $this->autowired;

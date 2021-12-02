@@ -29,12 +29,17 @@ final class ExtensionsExtension extends Nette\DI\CompilerExtension
 			if (is_int($name)) {
 				$name = null;
 			}
+			$args = [];
 			if ($class instanceof Nette\DI\Definitions\Statement) {
-				$rc = new \ReflectionClass($class->getEntity());
-				$this->compiler->addExtension($name, $rc->newInstanceArgs($class->arguments));
-			} else {
-				$this->compiler->addExtension($name, new $class);
+				[$class, $args] = [$class->getEntity(), $class->arguments];
 			}
+			if (!is_a($class, Nette\DI\CompilerExtension::class, true)) {
+				throw new Nette\DI\InvalidConfigurationException(sprintf(
+					"Extension '%s' not found or is not Nette\\DI\\CompilerExtension descendant.",
+					$class
+				));
+			}
+			$this->compiler->addExtension($name, (new \ReflectionClass($class))->newInstanceArgs($args));
 		}
 	}
 }

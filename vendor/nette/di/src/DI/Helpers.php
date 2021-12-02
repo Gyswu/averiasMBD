@@ -13,6 +13,7 @@ use Nette;
 use Nette\DI\Definitions\Reference;
 use Nette\DI\Definitions\Statement;
 use Nette\Utils\Reflection;
+use Nette\Utils\Type;
 
 
 /**
@@ -42,6 +43,11 @@ final class Helpers
 		} elseif ($var instanceof Statement) {
 			return new Statement(self::expand($var->getEntity(), $params, $recursive), self::expand($var->arguments, $params, $recursive));
 
+		} elseif ($var === '%parameters%' && !array_key_exists('parameters', $params)) {
+			return $recursive
+				? self::expand($params, $params, (is_array($recursive) ? $recursive : []))
+				: $params;
+
 		} elseif (!is_string($var)) {
 			return $var;
 		}
@@ -57,7 +63,10 @@ final class Helpers
 				$res[] = '%';
 
 			} elseif (isset($recursive[$part])) {
-				throw new Nette\InvalidArgumentException(sprintf('Circular reference detected for variables: %s.', implode(', ', array_keys($recursive))));
+				throw new Nette\InvalidArgumentException(sprintf(
+					'Circular reference detected for variables: %s.',
+					implode(', ', array_keys($recursive))
+				));
 
 			} else {
 				$val = $params;
@@ -67,7 +76,7 @@ final class Helpers
 					} elseif ($val instanceof DynamicParameter) {
 						$val = new DynamicParameter($val . '[' . var_export($key, true) . ']');
 					} else {
-						throw new Nette\InvalidArgumentException("Missing parameter '$part'.");
+						throw new Nette\InvalidArgumentException(sprintf("Missing parameter '%s'.", $part));
 					}
 				}
 				if ($recursive) {
@@ -79,17 +88,42 @@ final class Helpers
 				if ($val instanceof DynamicParameter) {
 					$php = true;
 				} elseif (!is_scalar($val)) {
-					throw new Nette\InvalidArgumentException("Unable to concatenate non-scalar parameter '$part' into '$var'.");
+					throw new Nette\InvalidArgumentException(sprintf("Unable to concatenate non-scalar parameter '%s' into '%s'.", $part, $var));
 				}
 				$res[] = $val;
 			}
 		}
 		if ($php) {
 			$res = array_filter($res, function ($val): bool { return $val !== ''; });
-			$res = array_map(function ($val): string { return $val instanceof DynamicParameter ? "($val)" : var_export((string) $val, true); }, $res);
+			$res = array_map(function ($val): string {
+				return $val instanceof DynamicParameter
+					? "($val)"
+					: var_export((string) $val, true);
+			}, $res);
 			return new DynamicParameter(implode(' . ', $res));
 		}
 		return implode('', $res);
+	}
+
+
+	/**
+	 * Escapes '%' and '@'
+	 * @param  mixed  $value
+	 * @return mixed
+	 */
+	public static function escape($value)
+	{
+		if (is_array($value)) {
+			$res = [];
+			foreach ($value as $key => $val) {
+				$key = is_string($key) ? str_replace('%', '%%', $key) : $key;
+				$res[$key] = self::escape($val);
+			}
+			return $res;
+		} elseif (is_string($value)) {
+			return preg_replace('#^@|%#', '$0$0', $value);
+		}
+		return $value;
 	}
 
 
@@ -101,15 +135,22 @@ final class Helpers
 		foreach ($args as $k => $v) {
 			if ($v === '...') {
 				unset($args[$k]);
-			} elseif (is_string($v) && preg_match('#^[\w\\\\]*::[A-Z][A-Z0-9_]*\z#', $v, $m)) {
+			} elseif (
+				PHP_VERSION_ID >= 80100
+				&& is_string($v)
+				&& preg_match('#^([\w\\\\]+)::\w+$#D', $v, $m)
+				&& enum_exists($m[1])
+			) {
+				$args[$k] = new Nette\PhpGenerator\PhpLiteral($v);
+			} elseif (is_string($v) && preg_match('#^[\w\\\\]*::[A-Z][A-Z0-9_]*$#D', $v)) {
 				$args[$k] = constant(ltrim($v, ':'));
-			} elseif (is_string($v) && preg_match('#^@[\w\\\\]+\z#', $v)) {
+			} elseif (is_string($v) && preg_match('#^@[\w\\\\]+$#D', $v)) {
 				$args[$k] = new Reference(substr($v, 1));
 			} elseif (is_array($v)) {
 				$args[$k] = self::filterArguments($v);
 			} elseif ($v instanceof Statement) {
-				$tmp = self::filterArguments([$v->getEntity()]);
-				$args[$k] = new Statement($tmp[0], self::filterArguments($v->arguments));
+				[$tmp] = self::filterArguments([$v->getEntity()]);
+				$args[$k] = new Statement($tmp, self::filterArguments($v->arguments));
 			}
 		}
 		return $args;
@@ -147,6 +188,7 @@ final class Helpers
 
 	/**
 	 * Returns an annotation value.
+	 * @param  \ReflectionFunctionAbstract|\ReflectionProperty|\ReflectionClass  $ref
 	 */
 	public static function parseAnnotation(\Reflector $ref, string $name): ?string
 	{
@@ -161,29 +203,65 @@ final class Helpers
 	}
 
 
-	public static function getReturnType(\ReflectionFunctionAbstract $func): ?string
+	public static function getReturnTypeAnnotation(\ReflectionFunctionAbstract $func): ?Type
 	{
-		if ($type = Reflection::getReturnType($func)) {
-			return $type;
-		} elseif ($type = preg_replace('#[|\s].*#', '', (string) self::parseAnnotation($func, 'return'))) {
-			if ($type === 'object' || $type === 'mixed') {
-				return null;
-			} elseif ($func instanceof \ReflectionMethod) {
-				return $type === 'static' || $type === '$this'
-					? $func->getDeclaringClass()->getName()
-					: Reflection::expandClassName($type, $func->getDeclaringClass());
-			} else {
-				return $type;
-			}
+		$type = preg_replace('#[|\s].*#', '', (string) self::parseAnnotation($func, 'return'));
+		if (!$type || $type === 'object' || $type === 'mixed') {
+			return null;
+		} elseif ($func instanceof \ReflectionMethod) {
+			$type = $type === '$this' ? 'static' : $type;
+			$type = Reflection::expandClassName($type, $func->getDeclaringClass());
 		}
-		return null;
+		return Type::fromString($type);
+	}
+
+
+	public static function ensureClassType(?Type $type, string $hint): string
+	{
+		if (!$type) {
+			throw new ServiceCreationException(sprintf('%s is not declared.', ucfirst($hint)));
+		} elseif (!$type->isClass() || $type->isUnion()) {
+			throw new ServiceCreationException(sprintf("%s is not expected to be nullable/union/intersection/built-in, '%s' given.", ucfirst($hint), $type));
+		}
+		$class = $type->getSingleName();
+		if (!class_exists($class) && !interface_exists($class)) {
+			throw new ServiceCreationException(sprintf("Class '%s' not found.\nCheck the %s.", $class, $hint));
+		}
+		return $class;
 	}
 
 
 	public static function normalizeClass(string $type): string
 	{
 		return class_exists($type) || interface_exists($type)
-			? (new \ReflectionClass($type))->getName()
+			? (new \ReflectionClass($type))->name
 			: $type;
+	}
+
+
+	/**
+	 * Non data-loss type conversion.
+	 * @param  mixed  $value
+	 * @return mixed
+	 * @throws Nette\InvalidStateException
+	 */
+	public static function convertType($value, string $type)
+	{
+		if (is_scalar($value)) {
+			$norm = ($value === false ? '0' : (string) $value);
+			if ($type === 'float') {
+				$norm = preg_replace('#\.0*$#D', '', $norm);
+			}
+			$orig = $norm;
+			settype($norm, $type);
+			if ($orig === ($norm === false ? '0' : (string) $norm)) {
+				return $norm;
+			}
+		}
+		throw new Nette\InvalidStateException(sprintf(
+			'Cannot convert %s to %s.',
+			is_scalar($value) ? "'$value'" : gettype($value),
+			$type
+		));
 	}
 }

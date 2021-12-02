@@ -25,6 +25,10 @@ services:
 extensions:
     dbal: Nextras\Dbal\Bridges\NetteDI\DbalExtension
     orm: Nextras\Orm\Bridges\NetteDI\OrmExtension
+    tbDatePicker: RadekDostal\NetteComponents\DateTimePicker\TbDatePicker\DI\TbDatePickerExtension
+
+tbDatePicker:
+    format: j. n. Y
 
 orm:
 	model: App\Model\Orm\Orm

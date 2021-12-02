@@ -47,14 +47,13 @@ final class SignInFormFactory {
 
 		$form->addCheckbox('remember', 'Mantener sesión');
 
-		$form->addSubmit('send', 'Conectar')
-            ->setHtmlAttribute('class', 'btn btn-success');
+		$form->addSubmit('send', 'Conectar')->setHtmlAttribute("class", "btn btn-success");
 
 		$form->onSuccess[] = function (Form $form, \stdClass $values) use ($onSuccess): void {
 
 		    try {
 
-		        $this->user->setExpiration($values->remember ? '14 days' : '20 minutes');
+		        $this->user->setExpiration($values->remember ? '14 days' : '14 days');
 
 		        $this->user->login($values->correo, $values->password);
 

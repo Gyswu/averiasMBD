@@ -39,6 +39,9 @@ class Environment
 	/** @var int initial output buffer level */
 	private static $obLevel;
 
+	/** @var int */
+	private static $exitCode = 0;
+
 
 	/**
 	 * Configures testing environment.
@@ -59,6 +62,11 @@ class Environment
 		if (getenv(self::COVERAGE) && getenv(self::COVERAGE_ENGINE)) {
 			CodeCoverage\Collector::start(getenv(self::COVERAGE), getenv(self::COVERAGE_ENGINE));
 		}
+
+		if (getenv('TERMINAL_EMULATOR') === 'JetBrains-JediTerm') {
+			Dumper::$maxPathSegments = -1;
+			Dumper::$pathSeparator = '/';
+		}
 	}
 
 
@@ -69,9 +77,16 @@ class Environment
 	{
 		self::$useColors = getenv(self::COLORS) !== false
 			? (bool) getenv(self::COLORS)
-			: ((PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg')
-				&& ((function_exists('posix_isatty') && posix_isatty(STDOUT))
-					|| getenv('ConEmuANSI') === 'ON' || getenv('ANSICON') !== false) || getenv('TERM') === 'xterm-256color');
+			: (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg')
+				&& (!function_exists('stream_isatty') || stream_isatty(STDOUT)) // PHP >= 7.2
+				&& getenv('NO_COLOR') === false
+				&& (defined('PHP_WINDOWS_VERSION_BUILD')
+					? (function_exists('sapi_windows_vt100_support') && sapi_windows_vt100_support(STDOUT))
+						|| getenv('ConEmuANSI') === 'ON' // ConEmu
+						|| getenv('ANSICON') !== false // ANSICON
+						|| getenv('term') === 'xterm' // MSYS
+						|| getenv('term') === 'xterm-256color' // MSYS
+					: (!function_exists('posix_isatty') || posix_isatty(STDOUT))); // PHP < 7.2
 
 		ob_start(function (string $s): string {
 			return self::$useColors ? $s : Dumper::removeColors($s);
@@ -89,29 +104,34 @@ class Environment
 		ini_set('html_errors', '0');
 		ini_set('log_errors', '0');
 
-		set_exception_handler([__CLASS__, 'handleException']);
+		set_exception_handler([self::class, 'handleException']);
 
 		set_error_handler(function (int $severity, string $message, string $file, int $line): ?bool {
-			if (in_array($severity, [E_RECOVERABLE_ERROR, E_USER_ERROR], true) || ($severity & error_reporting()) === $severity) {
+			if (
+				in_array($severity, [E_RECOVERABLE_ERROR, E_USER_ERROR], true)
+				|| ($severity & error_reporting()) === $severity
+			) {
 				self::handleException(new \ErrorException($message, 0, $severity, $file, $line));
 			}
 			return false;
 		});
 
 		register_shutdown_function(function (): void {
-			Assert::$onFailure = [__CLASS__, 'handleException'];
+			Assert::$onFailure = [self::class, 'handleException'];
 
 			$error = error_get_last();
 			register_shutdown_function(function () use ($error): void {
-				if (in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE], true)) {
+				if (in_array($error['type'] ?? null, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE], true)) {
 					if (($error['type'] & error_reporting()) !== $error['type']) { // show fatal errors hidden by @shutup
 						self::removeOutputBuffers();
-						echo "\nFatal error: $error[message] in $error[file] on line $error[line]\n";
+						echo "\n", Dumper::color('white/red', "Fatal error: $error[message] in $error[file] on line $error[line]"), "\n";
 					}
 				} elseif (self::$checkAssertions && !Assert::$counter) {
 					self::removeOutputBuffers();
-					echo "\nError: This test forgets to execute an assertion.\n";
-					exit(Runner\Job::CODE_FAIL);
+					echo "\n", Dumper::color('white/red', 'Error: This test forgets to execute an assertion.'), "\n";
+					self::exit(Runner\Job::CODE_FAIL);
+				} elseif (!getenv(self::RUNNER) && self::$exitCode !== Runner\Job::CODE_SKIP) {
+					echo "\n", (self::$exitCode ? Dumper::color('white/red', 'FAILURE') : Dumper::color('white/green', 'OK')), "\n";
 				}
 			});
 		});
@@ -126,7 +146,7 @@ class Environment
 		self::removeOutputBuffers();
 		self::$checkAssertions = false;
 		echo Dumper::dumpException($e);
-		exit($e instanceof AssertException ? Runner\Job::CODE_FAIL : Runner\Job::CODE_ERROR);
+		self::exit($e instanceof AssertException ? Runner\Job::CODE_FAIL : Runner\Job::CODE_ERROR);
 	}
 
 
@@ -137,7 +157,7 @@ class Environment
 	{
 		self::$checkAssertions = false;
 		echo "\nSkipped:\n$message\n";
-		die(Runner\Job::CODE_SKIP);
+		self::exit(Runner\Job::CODE_SKIP);
 	}
 
 
@@ -161,8 +181,9 @@ class Environment
 	public static function getTestAnnotations(): array
 	{
 		$trace = debug_backtrace();
-		$file = $trace[count($trace) - 1]['file'];
-		return Helpers::parseDocComment(file_get_contents($file)) + ['file' => $file];
+		return ($file = $trace[count($trace) - 1]['file'] ?? null)
+			? Helpers::parseDocComment(file_get_contents($file)) + ['file' => $file]
+			: [];
 	}
 
 
@@ -192,17 +213,26 @@ class Environment
 	public static function loadData(): array
 	{
 		if (isset($_SERVER['argv']) && ($tmp = preg_filter('#--dataprovider=(.*)#Ai', '$1', $_SERVER['argv']))) {
-			[$query, $file] = explode('|', reset($tmp), 2);
-
-		} else {
-			$annotations = self::getTestAnnotations();
-			if (!isset($annotations['dataprovider'])) {
-				throw new \Exception('Missing annotation @dataProvider.');
+			[$key, $file] = explode('|', reset($tmp), 2);
+			$data = DataProvider::load($file);
+			if (!array_key_exists($key, $data)) {
+				throw new \Exception("Missing dataset '$key' from data provider '$file'.");
 			}
-			$provider = (array) $annotations['dataprovider'];
-			[$file, $query] = DataProvider::parseAnnotation($provider[0], $annotations['file']);
+			return $data[$key];
 		}
+
+		$annotations = self::getTestAnnotations();
+		if (!isset($annotations['dataprovider'])) {
+			throw new \Exception('Missing annotation @dataProvider.');
+		}
+		$provider = (array) $annotations['dataprovider'];
+		[$file, $query] = DataProvider::parseAnnotation($provider[0], $annotations['file']);
+
 		$data = DataProvider::load($file, $query);
+		if (!$data) {
+			throw new \Exception("No datasets from data provider '$file'" . ($query ? " for query '$query'" : '') . '.');
+		}
+
 		return reset($data);
 	}
 
@@ -210,5 +240,12 @@ class Environment
 	private static function removeOutputBuffers(): void
 	{
 		while (ob_get_level() > self::$obLevel && @ob_end_flush()); // @ may be not removable
+	}
+
+
+	public static function exit(int $code = 0): void
+	{
+		self::$exitCode = $code;
+		exit($code);
 	}
 }

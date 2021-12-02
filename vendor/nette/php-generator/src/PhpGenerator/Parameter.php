@@ -10,23 +10,25 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
+use Nette\Utils\Type;
 
 
 /**
- * Method parameter description.
+ * Function/Method parameter description.
  *
  * @property mixed $defaultValue
  */
-final class Parameter
+class Parameter
 {
 	use Nette\SmartObject;
 	use Traits\NameAware;
+	use Traits\AttributeAware;
 
 	/** @var bool */
 	private $reference = false;
 
 	/** @var string|null */
-	private $typeHint;
+	private $type;
 
 	/** @var bool */
 	private $nullable = false;
@@ -38,9 +40,7 @@ final class Parameter
 	private $defaultValue;
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setReference(bool $state = true): self
 	{
 		$this->reference = $state;
@@ -54,19 +54,36 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
-	public function setTypeHint(?string $hint): self
+	/** @return static */
+	public function setType(?string $type): self
 	{
-		$this->typeHint = $hint;
+		$this->type = Helpers::validateType($type, $this->nullable);
 		return $this;
 	}
 
 
+	/**
+	 * @return Type|string|null
+	 */
+	public function getType(bool $asObject = false)
+	{
+		return $asObject && $this->type
+			? Type::fromString($this->type)
+			: $this->type;
+	}
+
+
+	/** @deprecated  use setType() */
+	public function setTypeHint(?string $type): self
+	{
+		return $this->setType($type);
+	}
+
+
+	/** @deprecated  use getType() */
 	public function getTypeHint(): ?string
 	{
-		return $this->typeHint;
+		return $this->getType();
 	}
 
 
@@ -82,9 +99,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setNullable(bool $state = true): self
 	{
 		$this->nullable = $state;
@@ -98,9 +113,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setDefaultValue($val): self
 	{
 		$this->defaultValue = $val;
@@ -118,5 +131,10 @@ final class Parameter
 	public function hasDefaultValue(): bool
 	{
 		return $this->hasDefaultValue;
+	}
+
+
+	public function validate(): void
+	{
 	}
 }

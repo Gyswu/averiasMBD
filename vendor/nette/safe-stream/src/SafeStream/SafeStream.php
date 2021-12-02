@@ -30,7 +30,7 @@ class SafeStream
 	/** @var resource  orignal file handle */
 	private $handle;
 
-	/** @var resource  temporary file handle */
+	/** @var resource|null  temporary file handle */
 	private $tempHandle;
 
 	/** @var string  orignal file path */
@@ -54,8 +54,8 @@ class SafeStream
 		foreach (array_intersect(stream_get_wrappers(), ['safe', self::PROTOCOL]) as $name) {
 			stream_wrapper_unregister($name);
 		}
-		stream_wrapper_register('safe', __CLASS__); // old protocol
-		return stream_wrapper_register(self::PROTOCOL, __CLASS__);
+		stream_wrapper_register('safe', self::class); // old protocol
+		return stream_wrapper_register(self::PROTOCOL, self::class);
 	}
 
 
@@ -86,7 +86,7 @@ class SafeStream
 			$this->deleteFile = true;
 
 		} elseif ($mode[0] === 'w' || $mode[0] === 'a' || $mode[0] === 'c') {
-			if ($this->checkAndLock($this->handle = @fopen($path, 'x' . $flag, $use_path), LOCK_EX)) { // intentionally @
+			if ($this->checkAndLock($this->handle = @fopen($path, 'x+' . $flag, $use_path), LOCK_EX)) { // intentionally @
 				$this->deleteFile = true;
 
 			} elseif (!$this->checkAndLock($this->handle = fopen($path, 'a+' . $flag, $use_path), LOCK_EX)) {
@@ -195,7 +195,7 @@ class SafeStream
 	/**
 	 * Writes the string to the file.
 	 */
-	public function stream_write(string $data): int
+	public function stream_write(string $data)
 	{
 		$len = strlen($data);
 		$res = fwrite($this->tempHandle, $data, $len);
@@ -272,5 +272,14 @@ class SafeStream
 	{
 		$path = substr($path, strpos($path, ':') + 3);
 		return unlink($path);
+	}
+
+
+	/**
+	 * Does nothing, but since PHP 7.4 needs to be implemented when using wrapper for includes
+	 */
+	public function stream_set_option(int $option, int $arg1, int $arg2): bool
+	{
+		return false;
 	}
 }

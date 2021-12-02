@@ -7,9 +7,10 @@
 
 declare(strict_types=1);
 
-namespace Nette;
+namespace Nette\Bootstrap;
 
 use Composer\Autoload\ClassLoader;
+use Latte;
 use Nette;
 use Nette\DI;
 use Tracy;
@@ -20,18 +21,18 @@ use Tracy;
  */
 class Configurator
 {
-	use SmartObject;
+	use Nette\SmartObject;
 
 	public const COOKIE_SECRET = 'nette-debug';
 
 	/** @var callable[]  function (Configurator $sender, DI\Compiler $compiler); Occurs after the compiler is created */
-	public $onCompile;
+	public $onCompile = [];
 
 	/** @var array */
 	public $defaultExtensions = [
 		'application' => [Nette\Bridges\ApplicationDI\ApplicationExtension::class, ['%debugMode%', ['%appDir%'], '%tempDir%/cache/nette.application']],
 		'cache' => [Nette\Bridges\CacheDI\CacheExtension::class, ['%tempDir%']],
-		'constants' => Nette\DI\Extensions\ConstantsExtension::class,
+		'constants' => Extensions\ConstantsExtension::class,
 		'database' => [Nette\Bridges\DatabaseDI\DatabaseExtension::class, ['%debugMode%']],
 		'decorator' => Nette\DI\Extensions\DecoratorExtension::class,
 		'di' => [Nette\DI\Extensions\DIExtension::class, ['%debugMode%']],
@@ -41,7 +42,7 @@ class Configurator
 		'inject' => Nette\DI\Extensions\InjectExtension::class,
 		'latte' => [Nette\Bridges\ApplicationDI\LatteExtension::class, ['%tempDir%/cache/latte', '%debugMode%']],
 		'mail' => Nette\Bridges\MailDI\MailExtension::class,
-		'php' => Nette\DI\Extensions\PhpExtension::class,
+		'php' => Extensions\PhpExtension::class,
 		'routing' => [Nette\Bridges\ApplicationDI\RoutingExtension::class, ['%debugMode%']],
 		'search' => [Nette\DI\Extensions\SearchExtension::class, ['%tempDir%/cache/nette.search']],
 		'security' => [Nette\Bridges\SecurityDI\SecurityExtension::class, ['%debugMode%']],
@@ -50,10 +51,16 @@ class Configurator
 	];
 
 	/** @var string[] of classes which shouldn't be autowired */
-	public $autowireExcludedClasses = ['ArrayAccess', 'Countable', 'IteratorAggregate', 'stdClass', 'Traversable'];
+	public $autowireExcludedClasses = [
+		\ArrayAccess::class,
+		\Countable::class,
+		\IteratorAggregate::class,
+		\stdClass::class,
+		\Traversable::class,
+	];
 
 	/** @var array */
-	protected $parameters;
+	protected $staticParameters;
 
 	/** @var array */
 	protected $dynamicParameters = [];
@@ -67,7 +74,7 @@ class Configurator
 
 	public function __construct()
 	{
-		$this->parameters = $this->getDefaultParameters();
+		$this->staticParameters = $this->getDefaultParameters();
 	}
 
 
@@ -83,15 +90,15 @@ class Configurator
 		} elseif (!is_bool($value)) {
 			throw new Nette\InvalidArgumentException(sprintf('Value must be either a string, array, or boolean, %s given.', gettype($value)));
 		}
-		$this->parameters['debugMode'] = $value;
-		$this->parameters['productionMode'] = !$this->parameters['debugMode']; // compatibility
+		$this->staticParameters['debugMode'] = $value;
+		$this->staticParameters['productionMode'] = !$this->staticParameters['debugMode']; // compatibility
 		return $this;
 	}
 
 
 	public function isDebugMode(): bool
 	{
-		return $this->parameters['debugMode'];
+		return $this->staticParameters['debugMode'];
 	}
 
 
@@ -101,7 +108,7 @@ class Configurator
 	 */
 	public function setTempDirectory(string $path)
 	{
-		$this->parameters['tempDir'] = $path;
+		$this->staticParameters['tempDir'] = $path;
 		return $this;
 	}
 
@@ -119,12 +126,22 @@ class Configurator
 
 
 	/**
-	 * Adds new parameters. The %params% will be expanded.
+	 * Alias for addStaticParameters()
 	 * @return static
 	 */
 	public function addParameters(array $params)
 	{
-		$this->parameters = DI\Config\Helpers::merge($params, $this->parameters);
+		return $this->addStaticParameters($params);
+	}
+
+
+	/**
+	 * Adds new static parameters.
+	 * @return static
+	 */
+	public function addStaticParameters(array $params)
+	{
+		$this->staticParameters = DI\Config\Helpers::merge($params, $this->staticParameters);
 		return $this;
 	}
 
@@ -156,11 +173,13 @@ class Configurator
 		$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		$last = end($trace);
 		$debugMode = static::detectDebugMode();
-		$loaderRc = class_exists(ClassLoader::class) ? new \ReflectionClass(ClassLoader::class) : null;
+		$loaderRc = class_exists(ClassLoader::class)
+			? new \ReflectionClass(ClassLoader::class)
+			: null;
 		return [
 			'appDir' => isset($trace[1]['file']) ? dirname($trace[1]['file']) : null,
 			'wwwDir' => isset($last['file']) ? dirname($last['file']) : null,
-			'vendorDir' => $loaderRc ? dirname(dirname($loaderRc->getFileName())) : null,
+			'vendorDir' => $loaderRc ? dirname($loaderRc->getFileName(), 2) : null,
 			'debugMode' => $debugMode,
 			'productionMode' => !$debugMode,
 			'consoleMode' => PHP_SAPI === 'cli',
@@ -170,9 +189,16 @@ class Configurator
 
 	public function enableTracy(string $logDirectory = null, string $email = null): void
 	{
+		if (!class_exists(Tracy\Debugger::class)) {
+			throw new Nette\NotSupportedException('Tracy not found, do you have `tracy/tracy` package installed?');
+		}
+
 		Tracy\Debugger::$strictMode = true;
-		Tracy\Debugger::enable(!$this->parameters['debugMode'], $logDirectory, $email);
+		Tracy\Debugger::enable(!$this->staticParameters['debugMode'], $logDirectory, $email);
 		Tracy\Bridges\Nette\Bridge::initialize();
+		if (class_exists(Latte\Bridges\Tracy\BlueScreenPanel::class)) {
+			Latte\Bridges\Tracy\BlueScreenPanel::initialize();
+		}
 	}
 
 
@@ -196,7 +222,12 @@ class Configurator
 
 		$loader = new Nette\Loaders\RobotLoader;
 		$loader->setTempDirectory($this->getCacheDirectory() . '/nette.robotLoader');
-		$loader->setAutoRefresh($this->parameters['debugMode']);
+		$loader->setAutoRefresh($this->staticParameters['debugMode']);
+
+		if (isset($this->defaultExtensions['application'])) {
+			$this->defaultExtensions['application'][1][1] = null;
+			$this->defaultExtensions['application'][1][3] = $loader;
+		}
 		return $loader;
 	}
 
@@ -235,13 +266,18 @@ class Configurator
 	{
 		$loader = new DI\ContainerLoader(
 			$this->getCacheDirectory() . '/nette.configurator',
-			$this->parameters['debugMode']
+			$this->staticParameters['debugMode']
 		);
-		$class = $loader->load(
+		return $loader->load(
 			[$this, 'generateContainer'],
-			[$this->parameters, array_keys($this->dynamicParameters), $this->configs, PHP_VERSION_ID - PHP_RELEASE_VERSION]
+			[
+				$this->staticParameters,
+				array_keys($this->dynamicParameters),
+				$this->configs,
+				PHP_VERSION_ID - PHP_RELEASE_VERSION, // minor PHP version
+				class_exists(ClassLoader::class) ? filemtime((new \ReflectionClass(ClassLoader::class))->getFilename()) : null, // composer update
+			]
 		);
-		return $class;
 	}
 
 
@@ -251,7 +287,7 @@ class Configurator
 	public function generateContainer(DI\Compiler $compiler): void
 	{
 		$loader = $this->createLoader();
-		$loader->setParameters($this->parameters);
+		$loader->setParameters($this->staticParameters);
 
 		foreach ($this->configs as $config) {
 			if (is_string($config)) {
@@ -261,21 +297,23 @@ class Configurator
 			}
 		}
 
-		$compiler->addConfig(['parameters' => $this->parameters]);
+		$compiler->addConfig(['parameters' => DI\Helpers::escape($this->staticParameters)]);
 		$compiler->setDynamicParameterNames(array_keys($this->dynamicParameters));
 
 		$builder = $compiler->getContainerBuilder();
 		$builder->addExcludedClasses($this->autowireExcludedClasses);
 
 		foreach ($this->defaultExtensions as $name => $extension) {
-			[$class, $args] = is_string($extension) ? [$extension, []] : $extension;
+			[$class, $args] = is_string($extension)
+				? [$extension, []]
+				: $extension;
 			if (class_exists($class)) {
-				$args = DI\Helpers::expand($args, $this->parameters, true);
+				$args = DI\Helpers::expand($args, $this->staticParameters);
 				$compiler->addExtension($name, (new \ReflectionClass($class))->newInstanceArgs($args));
 			}
 		}
 
-		$this->onCompile($this, $compiler);
+		Nette\Utils\Arrays::invoke($this->onCompile, $this, $compiler);
 	}
 
 
@@ -287,10 +325,10 @@ class Configurator
 
 	protected function getCacheDirectory(): string
 	{
-		if (empty($this->parameters['tempDir'])) {
+		if (empty($this->staticParameters['tempDir'])) {
 			throw new Nette\InvalidStateException('Set path to temporary directory using setTempDirectory().');
 		}
-		$dir = $this->parameters['tempDir'] . '/cache';
+		$dir = $this->staticParameters['tempDir'] . '/cache';
 		Nette\Utils\FileSystem::createDir($dir);
 		return $dir;
 	}
@@ -315,7 +353,11 @@ class Configurator
 		if (!isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !isset($_SERVER['HTTP_FORWARDED'])) {
 			$list[] = '127.0.0.1';
 			$list[] = '::1';
+			$list[] = '[::1]'; // workaround for PHP < 7.3.4
 		}
 		return in_array($addr, $list, true) || in_array("$secret@$addr", $list, true);
 	}
 }
+
+
+class_exists(Nette\Configurator::class);

@@ -49,10 +49,10 @@ class Logger implements ILogger
 	/**
 	 * Logs message or exception to file and sends email notification.
 	 * @param  mixed  $message
-	 * @param  string  $priority  one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
+	 * @param  string  $level  one of constant ILogger::INFO, WARNING, ERROR (sends email), EXCEPTION (sends email), CRITICAL (sends email)
 	 * @return string|null logged error filename
 	 */
-	public function log($message, $priority = self::INFO)
+	public function log($message, $level = self::INFO)
 	{
 		if (!$this->directory) {
 			throw new \LogicException('Logging directory is not specified.');
@@ -61,10 +61,10 @@ class Logger implements ILogger
 		}
 
 		$exceptionFile = $message instanceof \Throwable
-			? $this->getExceptionFile($message)
+			? $this->getExceptionFile($message, $level)
 			: null;
 		$line = static::formatLogLine($message, $exceptionFile);
-		$file = $this->directory . '/' . strtolower($priority ?: self::INFO) . '.log';
+		$file = $this->directory . '/' . strtolower($level ?: self::INFO) . '.log';
 
 		if (!@file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX)) { // @ is escalated to exception
 			throw new \RuntimeException("Unable to write to log file '$file'. Is directory writable?");
@@ -74,7 +74,7 @@ class Logger implements ILogger
 			$this->logException($message, $exceptionFile);
 		}
 
-		if (in_array($priority, [self::ERROR, self::EXCEPTION, self::CRITICAL], true)) {
+		if (in_array($level, [self::ERROR, self::EXCEPTION, self::CRITICAL], true)) {
 			$this->sendEmail($message);
 		}
 
@@ -88,12 +88,11 @@ class Logger implements ILogger
 	public static function formatMessage($message): string
 	{
 		if ($message instanceof \Throwable) {
-			while ($message) {
-				$tmp[] = ($message instanceof \ErrorException
-					? Helpers::errorTypeToString($message->getSeverity()) . ': ' . $message->getMessage()
-					: Helpers::getClass($message) . ': ' . $message->getMessage() . ($message->getCode() ? ' #' . $message->getCode() : '')
-				) . ' in ' . $message->getFile() . ':' . $message->getLine();
-				$message = $message->getPrevious();
+			foreach (Helpers::getExceptionChain($message) as $exception) {
+				$tmp[] = ($exception instanceof \ErrorException
+					? Helpers::errorTypeToString($exception->getSeverity()) . ': ' . $exception->getMessage()
+					: Helpers::getClass($exception) . ': ' . $exception->getMessage() . ($exception->getCode() ? ' #' . $exception->getCode() : '')
+				) . ' in ' . $exception->getFile() . ':' . $exception->getLine();
 			}
 			$message = implode("\ncaused by ", $tmp);
 
@@ -111,7 +110,7 @@ class Logger implements ILogger
 	public static function formatLogLine($message, string $exceptionFile = null): string
 	{
 		return implode(' ', [
-			@date('[Y-m-d H-i-s]'), // @ timezone may not be set
+			date('[Y-m-d H-i-s]'),
 			preg_replace('#\s*\r?\n\s*#', ' ', static::formatMessage($message)),
 			' @  ' . Helpers::getSource(),
 			$exceptionFile ? ' @@  ' . basename($exceptionFile) : null,
@@ -119,14 +118,13 @@ class Logger implements ILogger
 	}
 
 
-	public function getExceptionFile(\Throwable $exception): string
+	public function getExceptionFile(\Throwable $exception, string $level = self::EXCEPTION): string
 	{
-		while ($exception) {
+		foreach (Helpers::getExceptionChain($exception) as $exception) {
 			$data[] = [
 				get_class($exception), $exception->getMessage(), $exception->getCode(), $exception->getFile(), $exception->getLine(),
 				array_map(function (array $item): array { unset($item['args']); return $item; }, $exception->getTrace()),
 			];
-			$exception = $exception->getPrevious();
 		}
 		$hash = substr(md5(serialize($data)), 0, 10);
 		$dir = strtr($this->directory . '/', '\\/', DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR);
@@ -135,7 +133,7 @@ class Logger implements ILogger
 				return $dir . $file;
 			}
 		}
-		return $dir . 'exception--' . @date('Y-m-d--H-i') . "--$hash.html"; // @ timezone may not be set
+		return $dir . $level . '--' . date('Y-m-d--H-i') . "--$hash.html";
 	}
 
 
@@ -159,7 +157,7 @@ class Logger implements ILogger
 	{
 		$snooze = is_numeric($this->emailSnooze)
 			? $this->emailSnooze
-			: @strtotime($this->emailSnooze) - time(); // @ timezone may not be set
+			: strtotime($this->emailSnooze) - time();
 
 		if (
 			$this->email
@@ -179,7 +177,7 @@ class Logger implements ILogger
 	 */
 	public function defaultMailer($message, string $email): void
 	{
-		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['HTTP_HOST'] ?? php_uname('n'));
+		$host = preg_replace('#[^\w.-]+#', '', $_SERVER['SERVER_NAME'] ?? php_uname('n'));
 		$parts = str_replace(
 			["\r\n", "\n"],
 			["\n", PHP_EOL],

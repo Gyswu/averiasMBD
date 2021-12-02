@@ -19,4 +19,5 @@ use Nextras\Orm\Relationships\OneHasMany;
  */
 class Cambios extends Entity {
 
+
 }

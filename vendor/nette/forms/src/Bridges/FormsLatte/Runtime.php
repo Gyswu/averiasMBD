@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nette\Bridges\FormsLatte;
 
+use Latte;
 use Nette;
 use Nette\Forms\Form;
 use Nette\Utils\Html;
@@ -70,5 +71,36 @@ class Runtime
 		}
 
 		return $s . ($withTags ? $form->getElementPrototype()->endTag() . "\n" : '');
+	}
+
+
+	/**
+	 * Generates blueprint of form.
+	 */
+	public static function renderBlueprint(Form $form): void
+	{
+		$blueprint = new Latte\Runtime\Blueprint;
+		$end = $blueprint->printCanvas();
+		$blueprint->printHeader('Form ' . $form->getName());
+		$blueprint->printCode((new Nette\Forms\Rendering\LatteRenderer)->render($form), 'latte');
+		echo $end;
+	}
+
+
+	/**
+	 * Generates blueprint of form data class.
+	 */
+	public static function renderFormClassPrint(Form $form): void
+	{
+		$blueprint = new Latte\Runtime\Blueprint;
+		$end = $blueprint->printCanvas();
+		$blueprint->printHeader('Form Data Class ' . $form->getName());
+		$generator = new Nette\Forms\Rendering\DataClassGenerator;
+		$blueprint->printCode($generator->generateCode($form));
+		if (PHP_VERSION_ID >= 80000) {
+			$generator->propertyPromotion = true;
+			$blueprint->printCode($generator->generateCode($form));
+		}
+		echo $end;
 	}
 }

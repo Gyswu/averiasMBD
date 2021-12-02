@@ -17,16 +17,16 @@ use Nette;
  */
 final class DIExtension extends Nette\DI\CompilerExtension
 {
-	/** @var string[] */
+	/** @var array */
 	public $exportedTags = [];
 
-	/** @var string[] */
+	/** @var array */
 	public $exportedTypes = [];
 
 	/** @var bool */
 	private $debugMode;
 
-	/** @var int */
+	/** @var float */
 	private $time;
 
 
@@ -36,24 +36,28 @@ final class DIExtension extends Nette\DI\CompilerExtension
 		$this->time = microtime(true);
 
 		$this->config = new class {
-			/** @var bool */
+			/** @var ?bool */
 			public $debugger;
+
 			/** @var string[] */
 			public $excluded = [];
+
 			/** @var ?string */
 			public $parentClass;
+
 			/** @var object */
 			public $export;
 		};
 		$this->config->export = new class {
 			/** @var bool */
 			public $parameters = true;
+
 			/** @var string[]|bool|null */
 			public $tags = true;
+
 			/** @var string[]|bool|null */
 			public $types = true;
 		};
-		$this->config->debugger = interface_exists(\Tracy\IBarPanel::class);
 	}
 
 
@@ -81,11 +85,14 @@ final class DIExtension extends Nette\DI\CompilerExtension
 		$this->restrictTags($class);
 		$this->restrictTypes($class);
 
-		if ($this->debugMode && $this->config->debugger) {
-			$this->enableTracyIntegration($class);
+		if (
+			$this->debugMode &&
+			($this->config->debugger ?? $this->getContainerBuilder()->getByType(\Tracy\Bar::class))
+		) {
+			$this->enableTracyIntegration();
 		}
 
-		$this->initializeTaggedServices($class);
+		$this->initializeTaggedServices();
 	}
 
 
@@ -96,7 +103,7 @@ final class DIExtension extends Nette\DI\CompilerExtension
 		} elseif ($option === false) {
 			$class->removeProperty('tags');
 		} elseif ($prop = $class->getProperties()['tags'] ?? null) {
-			$prop->value = array_intersect_key($prop->value, $this->exportedTags + array_flip((array) $option));
+			$prop->setValue(array_intersect_key($prop->getValue(), $this->exportedTags + array_flip((array) $option)));
 		}
 	}
 
@@ -108,26 +115,26 @@ final class DIExtension extends Nette\DI\CompilerExtension
 			return;
 		}
 		$prop = $class->getProperty('wiring');
-		$prop->value = array_intersect_key(
-			$prop->value,
+		$prop->setValue(array_intersect_key(
+			$prop->getValue(),
 			$this->exportedTypes + (is_array($option) ? array_flip($option) : [])
-		);
+		));
 	}
 
 
-	private function initializeTaggedServices(Nette\PhpGenerator\ClassType $class): void
+	private function initializeTaggedServices(): void
 	{
 		foreach (array_filter($this->getContainerBuilder()->findByTag('run')) as $name => $on) {
 			trigger_error("Tag 'run' used in service '$name' definition is deprecated.", E_USER_DEPRECATED);
-			$class->getMethod('initialize')->addBody('$this->getService(?);', [$name]);
+			$this->initialization->addBody('$this->getService(?);', [$name]);
 		}
 	}
 
 
-	private function enableTracyIntegration(Nette\PhpGenerator\ClassType $class): void
+	private function enableTracyIntegration(): void
 	{
 		Nette\Bridges\DITracy\ContainerPanel::$compilationTime = $this->time;
-		$class->getMethod('initialize')->addBody($this->getContainerBuilder()->formatPhp('?;', [
+		$this->initialization->addBody($this->getContainerBuilder()->formatPhp('?;', [
 			new Nette\DI\Definitions\Statement('@Tracy\Bar::addPanel', [new Nette\DI\Definitions\Statement(Nette\Bridges\DITracy\ContainerPanel::class)]),
 		]));
 	}

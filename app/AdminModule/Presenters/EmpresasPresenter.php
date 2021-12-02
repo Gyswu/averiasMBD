@@ -57,6 +57,8 @@ class EmpresasPresenter extends BaseAdminPresenter {
 
                 $empresa->direccion = $values->direccion;
 
+                $empresa->contacto = $values->contacto;
+
                 $this->orm->persistAndFlush($empresa);
 
                 $this->flashMessage('Empresa añadida correctamente', 'success');

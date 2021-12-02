@@ -61,7 +61,12 @@ final class SearchExtension extends Nette\DI\CompilerExtension
 	{
 		foreach (array_filter($this->config) as $name => $batch) {
 			if (!is_dir($batch->in)) {
-				throw new Nette\DI\InvalidConfigurationException("Option '{$this->name} › {$name} › in' must be valid directory name, '{$batch->in}' given.");
+				throw new Nette\DI\InvalidConfigurationException(sprintf(
+					"Option '%s › %s › in' must be valid directory name, '%s' given.",
+					$this->name,
+					$name,
+					$batch->in
+				));
 			}
 
 			foreach ($this->findClasses($batch) as $class) {
@@ -80,7 +85,6 @@ final class SearchExtension extends Nette\DI\CompilerExtension
 		$robot->reportParseErrors(false);
 		$robot->refresh();
 		$classes = array_unique(array_keys($robot->getIndexedClasses()));
-		$classes = array_filter($classes, 'class_exists');
 
 		$exclude = $config->exclude;
 		$acceptRE = self::buildNameRegexp($config->classes);
@@ -90,15 +94,26 @@ final class SearchExtension extends Nette\DI\CompilerExtension
 
 		$found = [];
 		foreach ($classes as $class) {
+			if (!class_exists($class) && !interface_exists($class) && !trait_exists($class)) {
+				throw new Nette\InvalidStateException(sprintf(
+					'Class %s was found, but it cannot be loaded by autoloading.',
+					$class
+				));
+			}
 			$rc = new \ReflectionClass($class);
 			if (
-				$rc->isInstantiable()
-				&& (!$acceptRE || preg_match($acceptRE, $rc->getName()))
-				&& (!$rejectRE || !preg_match($rejectRE, $rc->getName()))
+				($rc->isInstantiable()
+					||
+					($rc->isInterface()
+					&& count($methods = $rc->getMethods()) === 1
+					&& $methods[0]->name === 'create')
+				)
+				&& (!$acceptRE || preg_match($acceptRE, $rc->name))
+				&& (!$rejectRE || !preg_match($rejectRE, $rc->name))
 				&& (!$acceptParent || Arrays::some($acceptParent, function ($nm) use ($rc) { return $rc->isSubclassOf($nm); }))
 				&& (!$rejectParent || Arrays::every($rejectParent, function ($nm) use ($rc) { return !$rc->isSubclassOf($nm); }))
 			) {
-				$found[] = $rc->getName();
+				$found[] = $rc->name;
 			}
 		}
 		return $found;
@@ -109,12 +124,17 @@ final class SearchExtension extends Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		foreach ($this->classes as $class => $tags) {
-			if (!$builder->findByType($class)) {
-				$builder->addDefinition(null)
-					->setType($class)
-					->setTags(Arrays::normalize($tags, true));
+		foreach ($this->classes as $class => $foo) {
+			if ($builder->findByType($class)) {
+				unset($this->classes[$class]);
 			}
+		}
+
+		foreach ($this->classes as $class => $tags) {
+			$def = class_exists($class)
+				? $builder->addDefinition(null)->setType($class)
+				: $builder->addFactoryDefinition(null)->setImplement($class);
+			$def->setTags(Arrays::normalize($tags, true));
 		}
 	}
 

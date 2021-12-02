@@ -21,7 +21,7 @@ final class HomepagePresenter extends BaseAdminPresenter {
 
             $this->flashMessage('Bienvenido '. $name, 'success');
 
-            $this->redirect('Averias:default');
+            $this->redirect('Maquinas:default');
         }
 
     }

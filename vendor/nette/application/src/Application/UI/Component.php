@@ -22,12 +22,12 @@ use Nette;
  * @property-read Presenter $presenter
  * @property-read bool $linkCurrent
  */
-abstract class Component extends Nette\ComponentModel\Container implements ISignalReceiver, IStatePersistent, \ArrayAccess
+abstract class Component extends Nette\ComponentModel\Container implements SignalReceiver, StatePersistent, \ArrayAccess
 {
 	use Nette\ComponentModel\ArrayAccess;
 
-	/** @var callable[]  function (Component $sender): void; Occurs when component is attached to presenter */
-	public $onAnchor;
+	/** @var array<callable(self): void>  Occurs when component is attached to presenter */
+	public $onAnchor = [];
 
 	/** @var array */
 	protected $params = [];
@@ -35,11 +35,12 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 	/**
 	 * Returns the presenter where this component belongs to.
+	 * @return Presenter
 	 */
 	public function getPresenter(): ?Presenter
 	{
 		if (func_num_args()) {
-			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use hasPresenter()', E_USER_DEPRECATED);
+			trigger_error(__METHOD__ . '() parameter $throw is deprecated, use getPresenterIfExists()', E_USER_DEPRECATED);
 			$throw = func_get_arg(0);
 		}
 		return $this->lookup(Presenter::class, $throw ?? true);
@@ -47,8 +48,15 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 
 
 	/**
-	 * Returns whether there is a presenter.
+	 * Returns the presenter where this component belongs to.
 	 */
+	public function getPresenterIfExists(): ?Presenter
+	{
+		return $this->lookup(Presenter::class, false);
+	}
+
+
+	/** @deprecated */
 	public function hasPresenter(): bool
 	{
 		return (bool) $this->lookup(Presenter::class, false);
@@ -65,12 +73,23 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
+	protected function createComponent(string $name): ?Nette\ComponentModel\IComponent
+	{
+		$res = parent::createComponent($name);
+		if ($res && !$res instanceof SignalReceiver && !$res instanceof StatePersistent) {
+			$type = get_class($res);
+			trigger_error("It seems that component '$name' of type $type is not intended to be used in the Presenter.", E_USER_NOTICE);
+		}
+		return $res;
+	}
+
+
 	protected function validateParent(Nette\ComponentModel\IContainer $parent): void
 	{
 		parent::validateParent($parent);
 		$this->monitor(Presenter::class, function (Presenter $presenter): void {
 			$this->loadState($presenter->popGlobalParameters($this->getUniqueId()));
-			$this->onAnchor($this);
+			Nette\Utils\Arrays::invoke($this->onAnchor, $this);
 		});
 	}
 
@@ -84,7 +103,10 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 		$rc = $this->getReflection();
 		if ($rc->hasMethod($method)) {
 			$rm = $rc->getMethod($method);
-			if ($rm->isPublic() && !$rm->isAbstract() && !$rm->isStatic()) {
+			if ($rm->isPrivate()) {
+				throw new Nette\InvalidStateException('Method ' . $rm->getName() . '() can not be called because it is private.');
+			}
+			if (!$rm->isAbstract() && !$rm->isStatic()) {
 				$this->checkRequirements($rm);
 				try {
 					$args = $rc->combineArgs($rm, $params);
@@ -108,6 +130,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 			$element instanceof \ReflectionMethod
 			&& substr($element->getName(), 0, 6) === 'handle'
 			&& !ComponentReflection::parseAnnotation($element, 'crossOrigin')
+			&& (PHP_VERSION_ID < 80000 || !$element->getAttributes(Nette\Application\Attributes\CrossOrigin::class))
 			&& !$this->getPresenter()->getHttpRequest()->isSameSite()
 		) {
 			$this->getPresenter()->detectedCsrf();
@@ -124,7 +147,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
-	/********************* interface IStatePersistent ****************d*g**/
+	/********************* interface StatePersistent ****************d*g**/
 
 
 	/**
@@ -135,19 +158,18 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 		$reflection = $this->getReflection();
 		foreach ($reflection->getPersistentParams() as $name => $meta) {
 			if (isset($params[$name])) { // nulls are ignored
-				$type = gettype($meta['def']);
-				if (!$reflection->convertType($params[$name], $type)) {
+				if (!$reflection->convertType($params[$name], $meta['type'])) {
 					throw new Nette\Application\BadRequestException(sprintf(
 						"Value passed to persistent parameter '%s' in %s must be %s, %s given.",
 						$name,
 						$this instanceof Presenter ? 'presenter ' . $this->getName() : "component '{$this->getUniqueId()}'",
-						$type === 'NULL' ? 'scalar' : $type,
+						$meta['type'],
 						is_object($params[$name]) ? get_class($params[$name]) : gettype($params[$name])
 					));
 				}
 				$this->$name = $params[$name];
 			} else {
-				$params[$name] = $this->$name;
+				$params[$name] = $this->$name ?? null;
 			}
 		}
 		$this->params = $params;
@@ -192,15 +214,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	}
 
 
-	/** @deprecated */
-	final public function getParam($name = null, $default = null)
-	{
-		trigger_error(__METHOD__ . '() is deprecated; use getParameter() or getParameters() instead.', E_USER_DEPRECATED);
-		return func_num_args() ? $this->getParameter($name, $default) : $this->getParameters();
-	}
-
-
-	/********************* interface ISignalReceiver ****************d*g**/
+	/********************* interface SignalReceiver ****************d*g**/
 
 
 	/**
@@ -210,7 +224,7 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	public function signalReceived(string $signal): void
 	{
 		if (!$this->tryCall($this->formatSignalMethod($signal), $this->params)) {
-			$class = get_class($this);
+			$class = static::class;
 			throw new BadSignalException("There is no handler for signal '$signal' in class $class.");
 		}
 	}
@@ -231,13 +245,15 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Generates URL to presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 * @throws InvalidLinkException
 	 */
-	public function link(string $destination, $args = []): string
+	public function link(string $destination, ...$args): string
 	{
 		try {
-			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+			$args = count($args) === 1 && is_array($args[0] ?? null)
+				? $args[0]
+				: $args;
 			return $this->getPresenter()->createRequest($this, $destination, $args, 'link');
 
 		} catch (InvalidLinkException $e) {
@@ -249,11 +265,13 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Returns destination as Link object.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 */
-	public function lazyLink(string $destination, $args = []): Link
+	public function lazyLink(string $destination, ...$args): Link
 	{
-		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+		$args = count($args) === 1 && is_array($args[0] ?? null)
+			? $args[0]
+			: $args;
 		return new Link($this, $destination, $args);
 	}
 
@@ -261,13 +279,15 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Determines whether it links to the current page.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 * @throws InvalidLinkException
 	 */
-	public function isLinkCurrent(string $destination = null, $args = []): bool
+	public function isLinkCurrent(string $destination = null, ...$args): bool
 	{
 		if ($destination !== null) {
-			$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+			$args = count($args) === 1 && is_array($args[0] ?? null)
+				? $args[0]
+				: $args;
 			$this->getPresenter()->createRequest($this, $destination, $args, 'test');
 		}
 		return $this->getPresenter()->getLastCreatedRequestFlag('current');
@@ -277,36 +297,30 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 	/**
 	 * Redirect to another presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirect($code, $destination = null, $args = []): void
+	public function redirect(string $destination, ...$args): void
 	{
-		if (is_numeric($code)) {
-			trigger_error(__METHOD__ . '() first parameter $code is deprecated; use redirectPermanent() for 301 redirect.', E_USER_DEPRECATED);
-			if (func_num_args() > 3 || !is_array($args)) {
-				$args = array_slice(func_get_args(), 2);
-			}
-		} elseif (!is_numeric($code)) { // first parameter is optional
-			$args = func_num_args() < 3 && is_array($destination) ? $destination : array_slice(func_get_args(), 1);
-			$destination = $code;
-			$code = null;
-		}
-
+		$args = count($args) === 1 && is_array($args[0] ?? null)
+			? $args[0]
+			: $args;
 		$presenter = $this->getPresenter();
-		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'), $code);
+		$presenter->redirectUrl($presenter->createRequest($this, $destination, $args, 'redirect'));
 	}
 
 
 	/**
 	 * Permanently redirects to presenter, action or signal.
 	 * @param  string   $destination in format "[//] [[[module:]presenter:]action | signal! | this] [#fragment]"
-	 * @param  array|mixed  $args
+	 * @param  mixed  ...$args
 	 * @throws Nette\Application\AbortException
 	 */
-	public function redirectPermanent(string $destination, $args = []): void
+	public function redirectPermanent(string $destination, ...$args): void
 	{
-		$args = func_num_args() < 3 && is_array($args) ? $args : array_slice(func_get_args(), 1);
+		$args = count($args) === 1 && is_array($args[0] ?? null)
+			? $args[0]
+			: $args;
 		$presenter = $this->getPresenter();
 		$presenter->redirectUrl(
 			$presenter->createRequest($this, $destination, $args, 'redirect'),
@@ -324,3 +338,6 @@ abstract class Component extends Nette\ComponentModel\Container implements ISign
 		throw new Nette\Application\BadRequestException($message, $httpCode);
 	}
 }
+
+
+class_exists(PresenterComponent::class);

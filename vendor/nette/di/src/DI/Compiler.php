@@ -65,12 +65,16 @@ class Compiler
 		if ($name === null) {
 			$name = '_' . count($this->extensions);
 		} elseif (isset($this->extensions[$name])) {
-			throw new Nette\InvalidArgumentException("Name '$name' is already used or reserved.");
+			throw new Nette\InvalidArgumentException(sprintf("Name '%s' is already used or reserved.", $name));
 		}
 		$lname = strtolower($name);
 		foreach (array_keys($this->extensions) as $nm) {
 			if ($lname === strtolower((string) $nm)) {
-				throw new Nette\InvalidArgumentException("Name of extension '$name' has the same name as '$nm' in a case-insensitive manner.");
+				throw new Nette\InvalidArgumentException(sprintf(
+					"Name of extension '%s' has the same name as '%s' in a case-insensitive manner.",
+					$name,
+					$nm
+				));
 			}
 		}
 		$this->extensions[$name] = $extension->setCompiler($this, $name);
@@ -92,9 +96,7 @@ class Compiler
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setClassName(string $className)
 	{
 		$this->className = $className;
@@ -149,6 +151,7 @@ class Compiler
 	 */
 	public function setDynamicParameterNames(array $names)
 	{
+		assert($this->extensions[self::PARAMETERS] instanceof Extensions\ParametersExtension);
 		$this->extensions[self::PARAMETERS]->dynamicParams = $names;
 		return $this;
 	}
@@ -175,24 +178,22 @@ class Compiler
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function addExportedTag(string $tag)
 	{
 		if (isset($this->extensions[self::DI])) {
+			assert($this->extensions[self::DI] instanceof Extensions\DIExtension);
 			$this->extensions[self::DI]->exportedTags[$tag] = true;
 		}
 		return $this;
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function addExportedType(string $type)
 	{
 		if (isset($this->extensions[self::DI])) {
+			assert($this->extensions[self::DI] instanceof Extensions\DIExtension);
 			$this->extensions[self::DI]->exportedTypes[$type] = true;
 		}
 		return $this;
@@ -202,6 +203,7 @@ class Compiler
 	public function compile(): string
 	{
 		$this->processExtensions();
+		$this->processBeforeCompile();
 		return $this->generateCode();
 	}
 
@@ -218,6 +220,10 @@ class Compiler
 
 		$last = $this->getExtensions(Extensions\InjectExtension::class);
 		$this->extensions = array_merge(array_diff_key($this->extensions, $last), $last);
+
+		if ($decorator = $this->getExtensions(Extensions\DecoratorExtension::class)) {
+			Nette\Utils\Arrays::insertBefore($this->extensions, key($decorator), $this->getExtensions(Extensions\SearchExtension::class));
+		}
 
 		$extensions = array_diff_key($this->extensions, $first, [self::SERVICES => 1]);
 		foreach ($extensions as $name => $extension) {
@@ -236,16 +242,31 @@ class Compiler
 		}
 
 		if ($extra = array_diff_key($this->extensions, $extensions, $first, [self::SERVICES => 1])) {
-			$extra = implode("', '", array_keys($extra));
-			throw new Nette\DeprecatedException("Extensions '$extra' were added while container was being compiled.");
+			throw new Nette\DeprecatedException(sprintf(
+				"Extensions '%s' were added while container was being compiled.",
+				implode("', '", array_keys($extra))
+			));
 
 		} elseif ($extra = key(array_diff_key($this->configs, $this->extensions))) {
-			$hint = Nette\Utils\ObjectHelpers::getSuggestion(array_keys($this->extensions), $extra);
+			$hint = Nette\Utils\Helpers::getSuggestion(array_keys($this->extensions), $extra);
 			throw new InvalidConfigurationException(
-				"Found section '$extra' in configuration, but corresponding extension is missing"
+				sprintf("Found section '%s' in configuration, but corresponding extension is missing", $extra)
 				. ($hint ? ", did you mean '$hint'?" : '.')
 			);
 		}
+	}
+
+
+	private function processBeforeCompile(): void
+	{
+		$this->builder->resolve();
+
+		foreach ($this->extensions as $extension) {
+			$extension->beforeCompile();
+			$this->dependencies->add([(new \ReflectionClass($extension))->getFileName()]);
+		}
+
+		$this->builder->complete();
 	}
 
 
@@ -261,32 +282,27 @@ class Compiler
 			$context->dynamics = &$this->extensions[self::PARAMETERS]->dynamicValidators;
 		};
 		try {
-			return $processor->processMultiple($schema, $configs);
+			$res = $processor->processMultiple($schema, $configs);
 		} catch (Schema\ValidationException $e) {
 			throw new Nette\DI\InvalidConfigurationException($e->getMessage());
 		}
+		foreach ($processor->getWarnings() as $warning) {
+			trigger_error($warning, E_USER_DEPRECATED);
+		}
+		return $res;
 	}
 
 
 	/** @internal */
 	public function generateCode(): string
 	{
-		$this->builder->resolve();
-
-		foreach ($this->extensions as $extension) {
-			$extension->beforeCompile();
-			$this->dependencies->add([(new \ReflectionClass($extension))->getFileName()]);
-		}
-
-		$this->builder->complete();
-
-		$generator = new PhpGenerator($this->builder);
+		$generator = $this->createPhpGenerator();
 		$class = $generator->generate($this->className);
-		$class->addMethod('initialize');
 		$this->dependencies->add($this->builder->getDependencies());
 
 		foreach ($this->extensions as $extension) {
 			$extension->afterCompile($class);
+			$generator->addInitialization($class, $extension);
 		}
 
 		return $this->sources . "\n" . $generator->toString($class);
@@ -299,22 +315,25 @@ class Compiler
 	public function loadDefinitionsFromConfig(array $configList): void
 	{
 		$extension = $this->extensions[self::SERVICES];
+		assert($extension instanceof Extensions\ServicesExtension);
 		$extension->loadDefinitions($this->processSchema($extension->getConfigSchema(), [$configList]));
 	}
 
 
-	/**
-	 * @deprecated use non-static Compiler::loadDefinitionsFromConfig()
-	 */
+	protected function createPhpGenerator(): PhpGenerator
+	{
+		return new PhpGenerator($this->builder);
+	}
+
+
+	/** @deprecated use non-static Compiler::loadDefinitionsFromConfig() */
 	public static function loadDefinitions(): void
 	{
 		throw new Nette\DeprecatedException(__METHOD__ . '() is deprecated, use non-static Compiler::loadDefinitionsFromConfig(array $configList).');
 	}
 
 
-	/**
-	 * @deprecated use non-static Compiler::loadDefinitionsFromConfig()
-	 */
+	/** @deprecated use non-static Compiler::loadDefinitionsFromConfig() */
 	public static function loadDefinition(): void
 	{
 		throw new Nette\DeprecatedException(__METHOD__ . '() is deprecated, use non-static Compiler::loadDefinitionsFromConfig(array $configList).');

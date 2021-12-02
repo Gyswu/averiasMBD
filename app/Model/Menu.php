@@ -11,7 +11,7 @@ class Menu {
         $menu = [
 
             [
-                'nombre'  => 'Empresas',
+                'nombre'  => 'Clientes',
                 'mostrar' => $user->isAllowed(Roles::SECCION_EMPRESAS),
                 'nhref'   => 'Empresas:default',
             ],
@@ -20,11 +20,11 @@ class Menu {
                 'mostrar' => $user->isAllowed(Roles::SECCION_USUARIOS),
                 'nhref'   => 'Usuarios:default',
             ],
-            [
-                'nombre'  => 'Averias',
-                'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
-                'nhref'   => 'Averias:default',
-            ],
+//            [
+//                'nombre'  => 'Averias',
+//                'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
+//                'nhref'   => 'Averias:default',
+//            ],
             [
                 'nombre'  => 'Maquinas',
                 'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
@@ -51,11 +51,11 @@ class Menu {
                 'nhref'   => 'Empresas:default',
             ],
 
-            [
-                'nombre'  => 'Averias',
-                'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
-                'nhref'   => 'Averias:default',
-            ]
+//            [
+//                'nombre'  => 'Averias',
+//                'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
+//                'nhref'   => 'Averias:default',
+//            ]
 
         ];
 

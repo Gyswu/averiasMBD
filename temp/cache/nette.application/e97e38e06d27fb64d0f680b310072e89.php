@@ -55,7 +55,7 @@ return array (
     'App\\AdminModule\\Presenters\\MaquinasPresenter' => 
     array (
       'file' => '/var/www/nette/app/AdminModule/Presenters/MaquinasPresenter.php',
-      'time' => 1625849185,
+      'time' => 1628176809,
     ),
     'App\\AdminModule\\Presenters\\CopiasPresenter' => 
     array (
@@ -81,6 +81,11 @@ return array (
     array (
       'file' => '/var/www/nette/app/AdminModule/Presenters/AveriasPresenter.php',
       'time' => 1625213035,
+    ),
+    'App\\AdminModule\\Presenters\\PiezasPresenter' => 
+    array (
+      'file' => '/var/www/nette/app/AdminModule/Presenters/PiezasPresenter.php',
+      'time' => 1635366260,
     ),
   ),
   1 => 

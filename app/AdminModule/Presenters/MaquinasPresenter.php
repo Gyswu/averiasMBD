@@ -4,13 +4,12 @@ namespace App\AdminModule\Presenters;
 
 use App\Forms\CopiasFormFactory;
 use App\Forms\MaquinasFormFactory;
+use App\Model\Listas;
+use App\Model\Orm\Copias;
 use App\Model\Orm\Maquinas;
 use Nette\Application\UI\Form;
 use Nextras\Orm\Collection\ICollection;
-use Nextras\Orm\Entity\AbstractEntity;
-use Nette\Http\FileUpload;
-use Nette\SmartObject;
-use App\Model\Listas;
+
 
 use Nette\Application\UI\Multiplier;
 

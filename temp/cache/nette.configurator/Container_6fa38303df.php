@@ -20,6 +20,7 @@ class Container_6fa38303df extends Nette\DI\Container
 			'application.15' => true,
 			'application.16' => true,
 			'application.17' => true,
+			'application.18' => true,
 			'application.2' => true,
 			'application.3' => true,
 			'application.4' => true,
@@ -83,6 +84,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Countable' => [2 => ['routing.router']],
@@ -211,6 +213,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\Application\UI\Presenter' => [
@@ -229,6 +232,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\Application\UI\Control' => [
@@ -247,6 +251,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\Application\UI\Component' => [
@@ -265,6 +270,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\ComponentModel\Container' => [
@@ -283,6 +289,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\ComponentModel\Component' => [
@@ -301,6 +308,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\Application\UI\IRenderable' => [
@@ -319,6 +327,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\ComponentModel\IContainer' => [
@@ -337,6 +346,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\ComponentModel\IComponent' => [
@@ -355,6 +365,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\Application\UI\ISignalReceiver' => [
@@ -373,6 +384,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\Application\UI\IStatePersistent' => [
@@ -391,6 +403,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'Nette\Application\IPresenter' => [
@@ -412,6 +425,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.15',
 				'application.16',
 				'application.17',
+				'application.18',
 			],
 		],
 		'App\Presenters\UsuariosPresenter' => [2 => ['application.1']],
@@ -431,6 +445,7 @@ class Container_6fa38303df extends Nette\DI\Container
 				'application.13',
 				'application.14',
 				'application.15',
+				'application.16',
 			],
 		],
 		'App\AdminModule\Presenters\UsuariosPresenter' => [2 => ['application.8']],
@@ -440,8 +455,9 @@ class Container_6fa38303df extends Nette\DI\Container
 		'App\AdminModule\Presenters\EmpresasPresenter' => [2 => ['application.12']],
 		'App\AdminModule\Presenters\HomepagePresenter' => [2 => ['application.14']],
 		'App\AdminModule\Presenters\AveriasPresenter' => [2 => ['application.15']],
-		'NetteModule\ErrorPresenter' => [2 => ['application.16']],
-		'NetteModule\MicroPresenter' => [2 => ['application.17']],
+		'App\AdminModule\Presenters\PiezasPresenter' => [2 => ['application.16']],
+		'NetteModule\ErrorPresenter' => [2 => ['application.17']],
+		'NetteModule\MicroPresenter' => [2 => ['application.18']],
 	];
 
 
@@ -621,14 +637,33 @@ class Container_6fa38303df extends Nette\DI\Container
 	}
 
 
-	public function createServiceApplication__16(): NetteModule\ErrorPresenter
+	public function createServiceApplication__16(): App\AdminModule\Presenters\PiezasPresenter
+	{
+		$service = new App\AdminModule\Presenters\PiezasPresenter;
+		$service->injectPrimary(
+			$this,
+			$this->getService('application.presenterFactory'),
+			$this->getService('routing.router'),
+			$this->getService('http.request'),
+			$this->getService('http.response'),
+			$this->getService('session.session'),
+			$this->getService('security.user'),
+			$this->getService('latte.templateFactory')
+		);
+		$service->orm = $this->getService('orm.model');
+		$service->invalidLinkMode = 5;
+		return $service;
+	}
+
+
+	public function createServiceApplication__17(): NetteModule\ErrorPresenter
 	{
 		$service = new NetteModule\ErrorPresenter($this->getService('tracy.logger'));
 		return $service;
 	}
 
 
-	public function createServiceApplication__17(): NetteModule\MicroPresenter
+	public function createServiceApplication__18(): NetteModule\MicroPresenter
 	{
 		$service = new NetteModule\MicroPresenter($this, $this->getService('http.request'), $this->getService('routing.router'));
 		return $service;

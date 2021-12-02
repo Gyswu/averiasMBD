@@ -66,6 +66,7 @@
                             <td>
 
                                 <a n:href = "Usuarios:default $empresa->id" class = "btn btn-xs btn-primary"> Usuarios </a>
+                                <a n:href = "Maquinas:default, id=> $empresa->id , mode=> 8 " class = "btn btn-xs btn-primary"> Maquinas </a>
                             {if $rol == 'admin'}
                                 <a n:href = "Empresas:edit $empresa->id" class="btn btn-xs btn-primary"> Editar </a>
                             {elseif$rol == 'encargado'}

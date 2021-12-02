@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Application;
 
 use Nette;
+use Nette\Http\UrlScript;
 use Nette\Routing\Router;
 
 
@@ -23,14 +24,14 @@ final class LinkGenerator
 	/** @var Router */
 	private $router;
 
-	/** @var Nette\Http\UrlScript */
+	/** @var UrlScript */
 	private $refUrl;
 
 	/** @var IPresenterFactory|null */
 	private $presenterFactory;
 
 
-	public function __construct(Router $router, Nette\Http\UrlScript $refUrl, IPresenterFactory $presenterFactory = null)
+	public function __construct(Router $router, UrlScript $refUrl, IPresenterFactory $presenterFactory = null)
 	{
 		$this->router = $router;
 		$this->refUrl = $refUrl;
@@ -45,13 +46,15 @@ final class LinkGenerator
 	 */
 	public function link(string $dest, array $params = []): string
 	{
-		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()\z~', $dest, $m)) {
+		if (!preg_match('~^([\w:]+):(\w*+)(#.*)?()$~D', $dest, $m)) {
 			throw new UI\InvalidLinkException("Invalid link destination '$dest'.");
 		}
 		[, $presenter, $action, $frag] = $m;
 
 		try {
-			$class = $this->presenterFactory ? $this->presenterFactory->getPresenterClass($presenter) : null;
+			$class = $this->presenterFactory
+				? $this->presenterFactory->getPresenterClass($presenter)
+				: null;
 		} catch (InvalidPresenterException $e) {
 			throw new UI\InvalidLinkException($e->getMessage(), 0, $e);
 		}
@@ -83,9 +86,19 @@ final class LinkGenerator
 		$url = $this->router->constructUrl($params, $this->refUrl);
 		if ($url === null) {
 			unset($params[UI\Presenter::ACTION_KEY], $params[UI\Presenter::PRESENTER_KEY]);
-			$params = urldecode(http_build_query($params, '', ', '));
-			throw new UI\InvalidLinkException("No route for $dest($params)");
+			$paramsDecoded = urldecode(http_build_query($params, '', ', '));
+			throw new UI\InvalidLinkException("No route for $dest($paramsDecoded)");
 		}
 		return $url . $frag;
+	}
+
+
+	public function withReferenceUrl(string $url): self
+	{
+		return new self(
+			$this->router,
+			new UrlScript($url),
+			$this->presenterFactory
+		);
 	}
 }

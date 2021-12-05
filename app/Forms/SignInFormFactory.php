@@ -8,68 +8,72 @@ use App\Model\Orm\Orm;
 use Nette;
 use Nette\Application\UI\Form;
 use Nette\Security\User;
+use stdClass;
 
 
-final class SignInFormFactory {
+final class SignInFormFactory
+{
 
     use Nette\SmartObject;
 
-	/** @var FormFactory */
+    /** @var FormFactory */
 
     private $factory;
 
-	/** @var User */
+    /** @var User */
 
     private $user;
 
-	/** @var Orm */
+    /** @var Orm */
 
     private $orm;
 
 
-	public function __construct(FormFactory $factory, User $user, Orm $orm) {
+    public function __construct(FormFactory $factory, User $user, Orm $orm)
+    {
 
-	    $this->factory = $factory;
+        $this->factory = $factory;
 
-	    $this->user = $user;
+        $this->user = $user;
 
-	    $this->orm = $orm;
+        $this->orm = $orm;
 
-	}
+    }
 
-	public function create(callable $onSuccess): Form {
+    public function create(callable $onSuccess): Form
+    {
 
-	    $form = $this->factory->create();
+        $form = $this->factory->create();
 
-	    $form->addText('correo', 'Email:')->setRequired('Elige tu usuario.');
+        $form->addText('correo', 'Email:')->setRequired('Elige tu usuario.');
 
-		$form->addPassword('password', 'Contraseña:')->setRequired('Introduce tu Contraseña.');
+        $form->addPassword('password', 'Contraseña:')->setRequired('Introduce tu Contraseña.');
 
-		$form->addCheckbox('remember', 'Mantener sesión');
+        $form->addCheckbox('remember', 'Mantener sesión');
 
-		$form->addSubmit('send', 'Conectar')->setHtmlAttribute("class", "btn btn-success");
+        $form->addSubmit('send', 'Conectar')->setHtmlAttribute("class", "btn btn-success");
 
-		$form->onSuccess[] = function (Form $form, \stdClass $values) use ($onSuccess): void {
+        $form->onSuccess[] = function (Form $form, stdClass $values) use ($onSuccess): void {
 
-		    try {
+            try {
 
-		        $this->user->setExpiration($values->remember ? '14 days' : '14 days');
+                $this->user->setExpiration($values->remember ? '14 days' : '14 days');
 
-		        $this->user->login($values->correo, $values->password);
+                $this->user->login($values->correo, $values->password);
 
-		    } catch (Nette\Security\AuthenticationException $e) {
+            } catch (Nette\Security\AuthenticationException $e) {
 
-		        $form->addError('Wrong credentials.');
+                $form->addError('Wrong credentials.');
 
-		        return;
+                return;
             }
 
             $onSuccess($this->user);
 
-		};
+        };
 
-		return $form;
+        return $form;
 
-	}
+    }
 
 }

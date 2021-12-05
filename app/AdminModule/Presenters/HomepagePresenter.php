@@ -1,15 +1,15 @@
 <?php
-declare( strict_types = 1 );
+declare(strict_types=1);
 
 namespace App\AdminModule\Presenters;
 
 use App\Model\Orm\Usuarios;
-use App\Model\Roles;
-use Nette\Application\UI\Form;
 
-final class HomepagePresenter extends BaseAdminPresenter {
+final class HomepagePresenter extends BaseAdminPresenter
+{
 
-    public function renderdefault(): void {
+    public function renderdefault(): void
+    {
 
         $rol = $this->getDbUser()->rol;
 
@@ -17,9 +17,9 @@ final class HomepagePresenter extends BaseAdminPresenter {
 
         $this->flashMessage('Miercoles 1 de Julio a las 20:00 se incluirán funciones adicionales en el software y arreglos de todos los errores actuales', 'success');
 
-        if ($rol == 'admin'){
+        if ($rol == 'admin') {
 
-            $this->flashMessage('Bienvenido '. $name, 'success');
+            $this->flashMessage('Bienvenido ' . $name, 'success');
 
             $this->redirect('Maquinas:default');
         }

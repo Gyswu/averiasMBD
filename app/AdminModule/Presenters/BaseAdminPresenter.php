@@ -3,16 +3,25 @@
 namespace App\AdminModule\Presenters;
 
 use App\Model\Menu;
+use App\Model\Roles;
+use App\Presenters\BasePresenter;
 
-class BaseAdminPresenter extends \App\Presenters\BasePresenter {
+class BaseAdminPresenter extends BasePresenter
+{
 
     protected $redirectLogin = true;
 
-    protected function startup() {
+    public function str_contains($haystack, $needle): bool
+    {
+        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+    }
 
-        $this->getUser()->setAuthorizator(new \App\Model\Roles());
+    protected function startup()
+    {
 
-        if (!$this->user->isLoggedIn() && !in_array($this->presenter->getName(), ['Sign']) ) {
+        $this->getUser()->setAuthorizator(new Roles());
+
+        if (!$this->user->isLoggedIn() && !in_array($this->presenter->getName(), ['Sign'])) {
 
             $this->flashMessage('Debes iniciar sesión primero');
 

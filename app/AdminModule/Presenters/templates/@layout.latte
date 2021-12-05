@@ -6,68 +6,68 @@
 
 {block usuario}
 
-    <nav class = "navbar navbar-expand-lg navbar-dark bg-primary mb-5">
-	<div class="container-fluid">
-        <a class = "navbar-brand" n:href = "Homepage:default"> Home </a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
+        <div class="container-fluid">
+            <a class="navbar-brand" n:href = "Homepage:default"> Home </a>
 
-        <button class = "navbar-toggler" type = "button" data-bs-toggle = "collapse"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 
-                data-bs-target = ".dual-collapse2"
+                    data-bs-target=".dual-collapse2"
 
-                aria-controls = "navbarSupportedContent" aria-expanded = "false"
+                    aria-controls="navbarSupportedContent" aria-expanded="false"
 
-                aria-label = "Toggle navigation">
+                    aria-label="Toggle navigation">
 
-            <span class="navbar-toggler-icon"> </span>
+                <span class="navbar-toggler-icon"> </span>
 
-        </button>
+            </button>
 
-        <div class = "collapse navbar-collapse w-100 order-0 dual-collapse2" id = "navbarSupportedContent">
+            <div class="collapse navbar-collapse w-100 order-0 dual-collapse2 ml-3" id="navbarSupportedContent">
 
-            <ul class = "navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto">
 
-                {foreach $menu as $datos}
+                    {foreach $menu as $datos}
 
-                    {if $datos['mostrar']}
+                        {if $datos['mostrar']}
 
-                        <li class="nav-item">
+                            <li class="nav-item">
 
-                            <a class = "nav-link" n:href = "$datos['nhref']"> {$datos['nombre']}
+                                <a class="nav-link" n:href = "$datos['nhref']"> {$datos['nombre']}
 
-                            </a>
+                                </a>
 
-                        </li>
+                            </li>
 
-                    {/if}
+                        {/if}
 
-                {/foreach}
+                    {/foreach}
 
-            </ul>
+                </ul>
 
+            </div>
+
+            <div class="d-flex navbar-collapse collapse w-100 order-3 dual-collapse2 justify-content-end">
+
+                <ul class="navbar-nav ml-auto mr-3">
+
+                    <li class="nav-item">
+
+                        {if $usuarioDb}
+
+                            <a class="nav-link" n:href = ":Sign:out"> {$usuarioDb->nombre} (<b> Salir </b>)</a>
+
+                        {else}
+
+                            Invitado
+
+                        {/if}
+
+                    </li>
+
+                </ul>
+
+            </div>
         </div>
-
-        <div class = "d-flex navbar-collapse collapse w-100 order-3 dual-collapse2">
-
-            <ul class = "navbar-nav ml-auto">
-
-                <li class = "nav-item">
-
-                    {if $usuarioDb}
-
-                        <a class = "nav-link" n:href = ":Sign:out"> {$usuarioDb->nombre} (<b> Salir </b>)</a>
-
-                    {else}
-
-                        Invitado
-
-                    {/if}
-
-                </li>
-
-            </ul>
-
-        </div>
-	</div>
     </nav>
 
 {/block}

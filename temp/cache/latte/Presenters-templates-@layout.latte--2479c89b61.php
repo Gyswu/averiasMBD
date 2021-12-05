@@ -57,7 +57,7 @@ final class Template2479c89b61 extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 		echo '
-    <nav class = "navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class = "navbar navbar-expand-lg navbar-dark bg-primary mb-5">
 	<div class="container-fluid">
         <a class = "navbar-brand" href="';
 		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Homepage:default")) /* line 11 */;
@@ -75,7 +75,7 @@ final class Template2479c89b61 extends Latte\Runtime\Template
 
         </button>
 
-        <div class = "collapse navbar-collapse w-100 order-0 dual-collapse2" id = "navbarSupportedContent">
+        <div class = "collapse navbar-collapse w-100 order-0 dual-collapse2 ml-3" id = "navbarSupportedContent">
 
             <ul class = "navbar-nav mr-auto">
 
@@ -107,9 +107,9 @@ final class Template2479c89b61 extends Latte\Runtime\Template
 
         </div>
 
-        <div class = "d-flex navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <div class = "d-flex navbar-collapse collapse w-100 order-3 dual-collapse2 justify-content-end">
 
-            <ul class = "navbar-nav ml-auto">
+            <ul class = "navbar-nav ml-auto mr-3">
 
                 <li class = "nav-item">
 

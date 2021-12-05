@@ -7,47 +7,50 @@ namespace App\Forms;
 use App\Model;
 use Nette;
 use Nette\Application\UI\Form;
+use stdClass;
 
 
 final class SignUpFormFactory
 {
-	use Nette\SmartObject;
+    use Nette\SmartObject;
 
-	private const PASSWORD_MIN_LENGTH = 7;
+    private const PASSWORD_MIN_LENGTH = 7;
 
-	/** @var FormFactory */
-	private $factory;
+    /** @var FormFactory */
+    private $factory;
 
-	/** @var Model\Authentication */
-	private $authentication;
-
-
-
-	public function __construct(FormFactory $factory, Model\Authentication $authentication)
-	{
-		$this->factory = $factory;
-		$this->authentication = $authentication;
-	}
+    /** @var Model\Authentication */
+    private $authentication;
 
 
-	public function create (callable $onSuccess): Form
-	{
-		$form = $this->factory->create();
-		//$form->addText('username', 'Pick a username:')
-		//	->setRequired('Please pick a username.');
+    public function __construct(FormFactory $factory, Model\Authentication $authentication)
+    {
+        $this->factory = $factory;
+        $this->authentication = $authentication;
+    }
 
-		$form->addEmail('email', 'Your e-mail:')
-			->setRequired('Please enter your e-mail.');
 
-		$form->addPassword('password', 'Create a password:')
-			->setOption('description', sprintf('at least %d characters', self::PASSWORD_MIN_LENGTH))
-			->setRequired('Please create a password.')
-			->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH);
+    public function create(callable $onSuccess): Form
+    {
+        $form = $this->factory->create();
+        //$form->addText('username', 'Pick a username:')
+        //	->setRequired('Please pick a username.');
 
-		$form->addSubmit('send', 'Sign up')
-            ->setHtmlAttribute('class', 'btn btn-success');
+        $form->addEmail('email', 'Your e-mail:')
+             ->setRequired('Please enter your e-mail.')
+        ;
 
-		$form->onSuccess[] = function (Form $form, \stdClass $values) use ($onSuccess): void {
+        $form->addPassword('password', 'Create a password:')
+             ->setOption('description', sprintf('at least %d characters', self::PASSWORD_MIN_LENGTH))
+             ->setRequired('Please create a password.')
+             ->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH)
+        ;
+
+        $form->addSubmit('send', 'Sign up')
+             ->setHtmlAttribute('class', 'btn btn-success')
+        ;
+
+        $form->onSuccess[] = function (Form $form, stdClass $values) use ($onSuccess): void {
             try {
                 $user = new Model\Orm\Usuario();
                 $user->correo = $values->email;
@@ -60,8 +63,8 @@ final class SignUpFormFactory
                 return;
             }
             $onSuccess();
-		};
+        };
 
-		return $form;
-	}
+        return $form;
+    }
 }

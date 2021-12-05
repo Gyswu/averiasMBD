@@ -1,72 +1,72 @@
 {block content}
-    <div class="container">
-        <div class="row">
-            <div class="col col-lg-6">
-                <h1>Cambios de Piezas</h1>
-            </div>
-            <div class="col col-lg-6">
+<div class="container">
+    <div class="row">
+        <div class="col col-lg-6">
+            <h1>Cambios de Piezas</h1>
+        </div>
+        <div class="col col-lg-6">
 
-            </div>
-            <div class="col col-lg-10">
-                <table class="table">
-                    <thead class="thead-dark">
+        </div>
+        <div class="col col-lg-10">
+            <table class="table">
+                <thead class="thead-dark">
+                {if $mode == 0}
+                    <th>
+                        Maquina
+                    </th>
+                {/if}
+                <th>
+                    Pieza
+                </th>
+                <th>
+                    Fecha
+                </th>
+                <th>
+                    Razón
+                </th>
+                <th>
+                    Origen
+                </th>
+                <th>
+                    Tecnico
+                </th>
+                <th>
+                    Garantía
+                </th>
+                </thead>
+                {foreach $cambios as $cambio}
+                    <tr>
                         {if $mode == 0}
-                            <th>
-                                Maquina
-                            </th>
+                            <td>x
+                                {$cambio->maquina->id}
+                            </td>
                         {/if}
-                        <th>
-                            Pieza
-                        </th>
-                        <th>
-                            Fecha
-                        </th>
-                        <th>
-                            Razón
-                        </th>
-                        <th>
-                            Origen
-                        </th>
-                        <th>
-                            Tecnico
-                        </th>
-                        <th>
-                            Garantía
-                        </th>
-                    </thead>
-                    {foreach $cambios as $cambio}
-                        <tr>
-                            {if $mode == 0}
-                                <td>x
-                                    {$cambio->maquina->id}
-                                </td>
+                        <td>
+                            Pieza (TODO)
+                        </td>
+                        <td>
+                            Añadir campo fecha
+                        </td>
+                        <td>
+                            {$cambio->causa}
+                        </td>
+                        <td>
+                            {$cambio->origen}
+                        </td>
+                        <td>
+                            {$cambio->tecnico}
+                        </td>
+                        <td>
+                            {if $cambio->garantia}
+                                Si
+                            {else}
+                                No
                             {/if}
-                            <td>
-                                Pieza (TODO)
-                            </td>
-                            <td>
-                                Añadir campo fecha
-                            </td>
-                            <td>
-                                {$cambio->causa}
-                            </td>
-                            <td>
-                                {$cambio->origen}
-                            </td>
-                            <td>
-                                {$cambio->tecnico}
-                            </td>
-                            <td>
-                                {if $cambio->garantia}
-                                    Si
-                                    {else}
-                                    No
-                                {/if}
-                            </td>
-                        </tr>
-                    {/foreach}
-                </table>
+                        </td>
+                    </tr>
+                {/foreach}
+            </table>
 
-            </div>
         </div>
     </div>
+</div>

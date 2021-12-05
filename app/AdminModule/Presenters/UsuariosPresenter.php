@@ -3,36 +3,32 @@
 namespace App\AdminModule\Presenters;
 
 use App\Forms\UsuariosFormFactory;
-
 use App\Model\Orm\Alumno;
-
 use App\Model\Orm\Empresa;
 use App\Model\Orm\Usuario;
-
-use Mpdf\Tag\Em;
-use Nette\Application\UI\Form;
-
-use Nette\Security\Passwords;
-
+use Exception;
 use Nette;
+use Nette\Application\UI\Form;
+use Nette\Security\Passwords;
+use stdClass;
 
-class UsuariosPresenter extends BaseAdminPresenter {
-
-    public function __construct (Passwords $passwords ) {$this->passwords = $passwords;}
+class UsuariosPresenter extends BaseAdminPresenter
+{
 
     /** @var Usuario */
 
     private $usuarioEditado;
-
     /** @var Model\Authentication */
 
     private $authentication;
-
     /** @var Passwords */
 
     private $passwords;
 
-    public function renderDefault ($empresaId): void {
+    public function __construct(Passwords $passwords) { $this->passwords = $passwords; }
+
+    public function renderDefault($empresaId): void
+    {
 
         if (!isset($empresaId)) {
 
@@ -54,7 +50,8 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
 // ______________________________________________________________ EDITAR  ________________________________________
 
-    public function actionEditar ( $idUsuario ) {
+    public function actionEditar($idUsuario)
+    {
 
         $this->usuarioEditado = $this->orm->usuarios->getById($idUsuario);
 
@@ -62,18 +59,20 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
     }
 
-    public function createComponentEditarUsuarioForm() {
+    public function createComponentEditarUsuarioForm()
+    {
 
-        $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id','nombre');
+        $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
 
-        $form = ( new UsuariosFormFactory() )->createEdit($this->usuarioEditado, $empresasarray);
+        $form = (new UsuariosFormFactory())->createEdit($this->usuarioEditado, $empresasarray);
 
-        $form->onSuccess[] = [ $this, 'onSuccessEditarUsuario' ];
+        $form->onSuccess[] = [$this, 'onSuccessEditarUsuario'];
 
         return $form;
     }
 
-    public function onSuccessEditarUsuario (Form $form, \stdClass $values ): void {
+    public function onSuccessEditarUsuario(Form $form, stdClass $values): void
+    {
 
         Nette\Utils\Validators::assert($values->correo, 'email');
 
@@ -107,10 +106,11 @@ class UsuariosPresenter extends BaseAdminPresenter {
 //            dd($this->orm->persistAndFlush($empresa));
 
 
-
             $this->flashMessage('Usuario editado correctamente', 'success');
 
-        } catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
+        } catch (Exception $e) {
+            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
+        }
 
         $this->redirect('this');
 
@@ -119,34 +119,40 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
 // ______________________________________________________________ AÑADIR ________________________________________
 
-    public function actionAdd ($empresaId) {
+    public function actionAdd($empresaId)
+    {
 
-        if (isset($empresaId)){
+        if (isset($empresaId)) {
 
             $rol = $this->getDbUser()->rol;
 
             $this->template->empresaId = $empresaId;
 
-        } else {$rol = $this->getDbUser()->rol;}
+        } else {
+            $rol = $this->getDbUser()->rol;
+        }
 
-        if( $rol == 'admin') {}
-
-        else {$this->redirect('default');}
+        if ($rol == 'admin') {
+        } else {
+            $this->redirect('default');
+        }
 
     }
 
-    public function createComponentAddUsuarioForm ($empresaId){
+    public function createComponentAddUsuarioForm($empresaId)
+    {
 
         $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
 
-        $form = ( new UsuariosFormFactory() )->createNuevo($empresasarray);
+        $form = (new UsuariosFormFactory())->createNuevo($empresasarray);
 
-        $form->onSuccess[] = [ $this, 'onSuccessAddUsuario' ];
+        $form->onSuccess[] = [$this, 'onSuccessAddUsuario'];
 
         return $form;
     }
 
-    public function onSuccessAddUsuario (Form $form, \stdClass $values ): void {
+    public function onSuccessAddUsuario(Form $form, stdClass $values): void
+    {
 
         Nette\Utils\Validators::assert($values->correo, 'email');
 
@@ -180,7 +186,7 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
             $this->flashMessage('Usuario añadido correctamente', 'success');
 
-        } catch( Model\DuplicateNameException $e ) {
+        } catch (Model\DuplicateNameException $e) {
 
             $form['email']->addError('Este correo ya existe, por favor elige otro o recupera tu contraseña.');
 
@@ -193,14 +199,15 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
 // ______________________________________________________________ BORRAR  ________________________________________
 
-    public function actionBorrarUsuario ($id) {
+    public function actionBorrarUsuario($id)
+    {
 
         try {
 
-            if( !$usuario = $this->orm->usuarios->getById($id)) {
+            if (!$usuario = $this->orm->usuarios->getById($id)) {
 
                 $this->flashMessage("El usuario no existe", "danger");
-            };
+            }
 
             if ($usuario->rol == 'admin') {
 
@@ -212,11 +219,11 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
                 $averiasusuario = $usuario->averias;
 
-                foreach($averiasusuario as $averia){
-                   $user = new Usuario();
-                   $user = $this->orm->usuarios->getById("666");
-                   $user->averias->add($averia);
-                   $this->orm->persistAndFlush($user);
+                foreach ($averiasusuario as $averia) {
+                    $user = new Usuario();
+                    $user = $this->orm->usuarios->getById("666");
+                    $user->averias->add($averia);
+                    $this->orm->persistAndFlush($user);
                 }
 
                 $this->orm->usuarios->removeAndFlush($usuario);
@@ -226,7 +233,9 @@ class UsuariosPresenter extends BaseAdminPresenter {
 
             }
 
-        } catch( \Exception $e ) {$this->flashMessage("Error al eliminar, contacte con el administrador".$e,'danger');}
+        } catch (Exception $e) {
+            $this->flashMessage("Error al eliminar, contacte con el administrador" . $e, 'danger');
+        }
 
         $this->redirect('Usuarios:default');
 

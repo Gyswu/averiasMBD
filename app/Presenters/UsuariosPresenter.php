@@ -3,39 +3,32 @@
 namespace App\Presenters;
 
 use App\Forms\AlumnosFormFactory;
-
 use App\Forms\UsuariosFormFactory;
-
 use App\Model\DuplicateNameException;
-
 use App\Model\Orm\Alumno;
-
-use App\Model\Orm\Empresa;
 use App\Model\Orm\Usuario;
-
-use App\Presenters\BasePresenter;
-use Nette\Application\UI\Form;
-
-use Nette\Security\Passwords;
-
+use Exception;
 use Nette;
+use Nette\Application\UI\Form;
+use Nette\Security\Passwords;
+use stdClass;
 
-class UsuariosPresenter extends BasePresenter {
-
-    public function __construct(Passwords $passwords ) {$this->passwords = $passwords;}
+class UsuariosPresenter extends BasePresenter
+{
 
     /** @var Usuario */
     private $usuarioEditado;
-
     /** @var Model\Authentication */
     private $authentication;
-
     /** @var Passwords */
     private $passwords;
 
-    public function renderDefault ($empresaId): void {
+    public function __construct(Passwords $passwords) { $this->passwords = $passwords; }
 
-        if(!isset($empresaId)){
+    public function renderDefault($empresaId): void
+    {
+
+        if (!isset($empresaId)) {
             $this->template->usuarios = $this->orm->usuarios->findAll();
             $this->template->rol = $this->getDbUser()->rol;
         } else {
@@ -49,7 +42,8 @@ class UsuariosPresenter extends BasePresenter {
 
 // ______________________________________________________________ EDITAR  ________________________________________
 
-    public function actionEditar( $idUsuario ) {
+    public function actionEditar($idUsuario)
+    {
 
         $this->usuarioEditado = $this->orm->usuarios->getById($idUsuario);
 
@@ -57,16 +51,18 @@ class UsuariosPresenter extends BasePresenter {
 
     }
 
-    public function createComponentEditarUsuarioForm() {
+    public function createComponentEditarUsuarioForm()
+    {
 
-        $form = ( new UsuariosFormFactory() )->createEdit($this->usuarioEditado);
+        $form = (new UsuariosFormFactory())->createEdit($this->usuarioEditado);
 
-        $form->onSuccess[] = [ $this, 'onSuccessEditarUsuario' ];
+        $form->onSuccess[] = [$this, 'onSuccessEditarUsuario'];
 
         return $form;
     }
 
-    public function onSuccessEditarUsuario (Form $form, \stdClass $values ): void {
+    public function onSuccessEditarUsuario(Form $form, stdClass $values): void
+    {
 
         Nette\Utils\Validators::assert($values->correo, 'email');
 
@@ -84,7 +80,9 @@ class UsuariosPresenter extends BasePresenter {
 
             $usuario->extensiontelefono = $values->extensiontelefono;
 
-            if ($values->password) {$usuario->password = $values->password;}
+            if ($values->password) {
+                $usuario->password = $values->password;
+            }
 
             $usuario->password = $this->passwords->hash($usuario->password);
 
@@ -95,7 +93,7 @@ class UsuariosPresenter extends BasePresenter {
 
             $this->flashMessage('Usuario añadido correctamente', 'success');
 
-        } catch( Model\DuplicateNameException $e ) {
+        } catch (Model\DuplicateNameException $e) {
 
             $form['email']->addError('Este correo ya existe, por favor elige otro o recupera tu contraseña.');
 
@@ -108,39 +106,45 @@ class UsuariosPresenter extends BasePresenter {
 
 // ______________________________________________________________ AÑADIR ________________________________________
 
-    public function actionAdd($empresaId) {
+    public function actionAdd($empresaId)
+    {
 
-        if(isset($empresaId)){
+        if (isset($empresaId)) {
             $rol = $this->getDbUser()->rol;
             $this->template->empresaId = $empresaId;
         } else {
             $rol = $this->getDbUser()->rol;
         }
 
-        if( $rol == 'admin') {}
-
-        else {$this->redirect('default');}
+        if ($rol == 'admin') {
+        } else {
+            $this->redirect('default');
+        }
 
     }
 
-    public function createComponentAddUsuarioForm ($empresaId){
+    public function createComponentAddUsuarioForm($empresaId)
+    {
 
         $usuario = new Usuario();
 
-        $form = ( new UsuariosFormFactory() )->createNuevo();
+        $form = (new UsuariosFormFactory())->createNuevo();
 
-        $form->onSuccess[] = [ $this, 'onSuccessAddUsuarios' ];
+        $form->onSuccess[] = [$this, 'onSuccessAddUsuarios'];
 
         return $form;
     }
 
-    public function onSuccessAddUsuario (Form $form, \stdClass $values ): void {
+    public function onSuccessAddUsuario(Form $form, stdClass $values): void
+    {
 
         Nette\Utils\Validators::assert($values->correo, 'email');
 
         try {
 
-            if ($this->orm->usuarios->getBy(['correo' => $values->correo])) {throw new DuplicateNameException;}
+            if ($this->orm->usuarios->getBy(['correo' => $values->correo])) {
+                throw new DuplicateNameException;
+            }
 
             $usuario = new Usuario();
 
@@ -166,13 +170,11 @@ class UsuariosPresenter extends BasePresenter {
             $usuario->telefono = $values->telefono;
 
 
-
-
             $this->orm->persistAndFlush($usuario);
 
             $this->flashMessage('Usuario añadido correctamente', 'success');
 
-        } catch( Model\DuplicateNameException $e ) {
+        } catch (Model\DuplicateNameException $e) {
 
             $form['email']->addError('Este correo ya existe, por favor elige otro o recupera tu contraseña.');
 
@@ -185,14 +187,15 @@ class UsuariosPresenter extends BasePresenter {
 
 // ______________________________________________________________ BORRAR  ________________________________________
 
-    public function actionBorrarUsuario ($id) {
+    public function actionBorrarUsuario($id)
+    {
 
         try {
 
-            if( !$usuario = $this->orm->usuarios->getById($id)) {
+            if (!$usuario = $this->orm->usuarios->getById($id)) {
 
                 $this->flashMessage("La clase no existe", "danger");
-            };
+            }
 
             if ($usuario->rol == 'admin') {
 
@@ -208,7 +211,9 @@ class UsuariosPresenter extends BasePresenter {
 
             }
 
-        } catch( \Exception $e ) {$this->flashMessage("Error al eliminar, contacte con el administrador",'danger');}
+        } catch (Exception $e) {
+            $this->flashMessage("Error al eliminar, contacte con el administrador", 'danger');
+        }
 
         $this->redirect('Usuarios:default');
 
@@ -218,18 +223,20 @@ class UsuariosPresenter extends BasePresenter {
 // ______________________________________________________________ CUENTA DEL ALUMNO ________________________________________
 
 
-    public function actionPerfilUsuario() {$this->usuarioEditado = $this->getDbUser()->usuario;}
+    public function actionPerfilUsuario() { $this->usuarioEditado = $this->getDbUser()->usuario; }
 
-    public function createComponentEditarPerfilUsuarioForm() {
+    public function createComponentEditarPerfilUsuarioForm()
+    {
 
-        $form = ( new AlumnosFormFactory() )->createMiEdit($this->usuarioEditado);
+        $form = (new AlumnosFormFactory())->createMiEdit($this->usuarioEditado);
 
-        $form->onSuccess[] = [ $this, 'onSuccessEditarPerfilUsuario' ];
+        $form->onSuccess[] = [$this, 'onSuccessEditarPerfilUsuario'];
 
         return $form;
     }
 
-    public function onSuccessEditarPerfilUsuario (Form $form, \stdClass $values ): void {
+    public function onSuccessEditarPerfilUsuario(Form $form, stdClass $values): void
+    {
 
         $usuariox = new Alumno();
 
@@ -252,7 +259,9 @@ class UsuariosPresenter extends BasePresenter {
             $this->flashMessage('Usuario editado correctamente', 'success');
 
 
-        } catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
+        } catch (Exception $e) {
+            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
+        }
 
         $this->redirect('this');
     }

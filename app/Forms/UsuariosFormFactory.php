@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace App\Forms;
 
 use App\Model\Orm\Orm;
-
 use App\Model\Orm\Usuario;
-
-use App\Model\Orm\Empresa;
-
 use Nette;
-
 use Nette\Application\UI\Form;
 
-final class UsuariosFormFactory {
+final class UsuariosFormFactory
+{
 
     private const PASSWORD_MIN_LENGTH = 7;
 
@@ -24,24 +20,16 @@ final class UsuariosFormFactory {
 
     use Nette\SmartObject;
 
-    public function createNuevo (array $empresas) {
+    public function createNuevo(array $empresas)
+    {
 
         $form = $this->create($empresas);
 
         return $form;
     }
 
-    public function createEdit (Usuario $usuario, array $empresas) {
-
-        $form = $this->createEditUser($empresas);
-
-        $form->setDefaults($usuario->toArray(2));
-
-        return $form;
-
-    }
-
-    public function create (array $empresas): Form {
+    public function create(array $empresas): Form
+    {
 
         $form = (new FormFactory())->create();
 
@@ -56,14 +44,15 @@ final class UsuariosFormFactory {
         $form->addEmail('correo', 'Correo electronico')->setRequired();
 
         $form->addInteger('telefono', 'Telefono')
-
-            ->addRule($form::MIN_LENGTH, 'Telefono demasiado corto', '9')
-
-            ->addRule($form::MAX_LENGTH, 'Telefono demasiado largo', '9');
+             ->addRule($form::MIN_LENGTH, 'Telefono demasiado corto', '9')
+             ->addRule($form::MAX_LENGTH, 'Telefono demasiado largo', '9')
+        ;
 
         $form->addInteger('extensiontelefono', 'Extensión telefonica');
 
-        $form->addPassword('password', 'Contraseña')->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH)->setRequired();
+        $form->addPassword('password', 'Contraseña')->addRule($form::MIN_LENGTH, null, self::PASSWORD_MIN_LENGTH)
+             ->setRequired()
+        ;
 
         $form->addSelect('rol', 'Rol', [
 
@@ -80,7 +69,19 @@ final class UsuariosFormFactory {
         return $form;
     }
 
-    public function createEditUser (array $empresas): Form {
+    public function createEdit(Usuario $usuario, array $empresas)
+    {
+
+        $form = $this->createEditUser($empresas);
+
+        $form->setDefaults($usuario->toArray(2));
+
+        return $form;
+
+    }
+
+    public function createEditUser(array $empresas): Form
+    {
 
         $form = (new FormFactory())->create();
 
@@ -95,10 +96,9 @@ final class UsuariosFormFactory {
         $form->addEmail('correo', 'Correo electronico')->setRequired();
 
         $form->addInteger('telefono', 'Telefono')
-
-            ->addRule($form::MIN_LENGTH, 'Telefono demasiado corto', '9')
-
-            ->addRule($form::MAX_LENGTH, 'Telefono demasiado largo', '9');
+             ->addRule($form::MIN_LENGTH, 'Telefono demasiado corto', '9')
+             ->addRule($form::MAX_LENGTH, 'Telefono demasiado largo', '9')
+        ;
 
         $form->addInteger('extensiontelefono', 'Extensión telefonica');
 

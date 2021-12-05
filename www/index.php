@@ -22,7 +22,7 @@ function testip($ip){
     $none = 1;
             if($cuatro = explode(".", $ip)){
                 foreach ($cuatro as $uno){
-                    if($uno >= 1 && $uno <= 255){
+                    if($uno >= 0 && $uno <= 256){
                     } else {
                         $none = 0;
                     }

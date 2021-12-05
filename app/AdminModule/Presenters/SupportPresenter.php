@@ -3,30 +3,36 @@
 namespace App\AdminModule\Presenters;
 
 use App\Forms\FormFactory;
-use Nette\Forms\Form;
+use Nette\Application\UI\Form;
 use PHPMailer\PHPMailer\PHPMailer;
+use stdClass;
 
-class SupportPresenter extends BaseAdminPresenter {
+class SupportPresenter extends BaseAdminPresenter
+{
 
-    public function createComponentCorreoForm() {
+    public function createComponentCorreoForm()
+    {
 
-        $form = ( new FormFactory() )->create();
+        $form = (new FormFactory())->create();
         $form->addSelect('category', 'Categoria', [
-            'error'      => 'Error',
+            'error' => 'Error',
             'sugerencia' => 'Sugerencia',
-            'contacto'   => 'Contacto',
-            'peticion'   => 'Peticion',
+            'contacto' => 'Contacto',
+            'peticion' => 'Peticion',
         ]);
         $form->addTextArea('comentario', 'Escriba aquí su mensaje')
-            ->setRequired();
+             ->setRequired()
+        ;
         $form->addSubmit('send', 'Enviar')
-            ->setHtmlAttribute("class", 'btn btn-success');
-        $form->onSuccess[] = [ $this, 'onSuccessEnviarCorreo' ];
+             ->setHtmlAttribute("class", 'btn btn-success')
+        ;
+        $form->onSuccess[] = [$this, 'onSuccessEnviarCorreo'];
 
         return $form;
     }
 
-    public function onSuccessEnviarCorreo( \Nette\Application\UI\Form $form, \stdClass $values ): void {
+    public function onSuccessEnviarCorreo(Form $form, stdClass $values): void
+    {
 
         $mail = new PHPMailer();
         $mail->isSMTP();
@@ -74,7 +80,7 @@ class SupportPresenter extends BaseAdminPresenter {
                                 <td>' . $values->comentario . '</td>
                             </tr>
                         </table>';
-        if( !$mail->send() ) {
+        if (!$mail->send()) {
             $this->flashMessage('Ha habido un error en el sistema', 'error');
             $this->redirect('this');
         } else {

@@ -25,7 +25,7 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 	{
 		extract($this->params);
 		if (!$this->getReferringTemplate() || $this->getReferenceType() === "extends") {
-			foreach (array_intersect_key(['copia' => '154, 218, 283, 347', 'maquina' => '217, 282'], $this->params) as $ʟ_v => $ʟ_l) {
+			foreach (array_intersect_key(['copia' => '151, 215, 280, 344', 'maquina' => '214, 279'], $this->params) as $ʟ_v => $ʟ_l) {
 				trigger_error("Variable \$$ʟ_v overwritten in foreach on line $ʟ_l");
 			}
 		}
@@ -130,9 +130,6 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 			echo '                            <th class="maquina">
                                 Maquina
                             </th>
-                            <th class="copiasc">
-                                Copias C
-                            </th>
                             <th class="copiasbn">
                                 Copias BN
                             </th>
@@ -150,7 +147,7 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
                             </th>
 ';
 		}
-		elseif (in_array($ʟ_switch, [9], true)) /* line 85 */ {
+		elseif (in_array($ʟ_switch, [9], true)) /* line 82 */ {
 			echo '                            <th class="maquina">
                                 Maquina
                             </th>
@@ -177,36 +174,36 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
                             </th>
 ';
 		}
-		elseif (in_array($ʟ_switch, [10], true)) /* line 110 */ {
+		elseif (in_array($ʟ_switch, [10], true)) /* line 107 */ {
 			echo '                            <th class="fecha">
                                 Fecha
                             </th>
 ';
-			if ($copias->tipocontador >= 1) /* line 114 */ {
+			if ($copias->tipocontador <= 1) /* line 111 */ {
 				echo '                            <th class="copiasc">
                                 Copias C
                             </th>
 ';
 			}
-			if ($copias->tipocontador >= 0) /* line 119 */ {
+			if ($copias->tipocontador >= 0) /* line 116 */ {
 				echo '                            <th class="copiasbn">
                                 Copias BN
                             </th>
 ';
 			}
-			if ($copias->tipocontador == 2) /* line 124 */ {
+			if ($copias->tipocontador == 2) /* line 121 */ {
 				echo '                            <th class="conpiasl">
                                 Copias L1
                             </th>
 ';
 			}
-			if ($copias->tipocontador == 2) /* line 129 */ {
+			if ($copias->tipocontador == 2) /* line 126 */ {
 				echo '                            <th class="copiasll">
                                 Copias L2
                             </th>
 ';
 			}
-			if ($copias->tipocontador == 2) /* line 134 */ {
+			if ($copias->tipocontador == 2) /* line 131 */ {
 				echo '                            <th class="copiaslll">
                                 Copias L3
                             </th>
@@ -216,7 +213,7 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
                                 Escaneos
                             </th>
 ';
-			if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 142 */ {
+			if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 139 */ {
 				echo '                                <th>
                                     Opciones
                                 </th>
@@ -226,110 +223,110 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 		echo '                    </thead>
 
 ';
-		$ʟ_switch = ($modo) /* line 152 */;
+		$ʟ_switch = ($modo) /* line 149 */;
 		if (false) {
 		}
-		elseif (in_array($ʟ_switch, [7], true)) /* line 153 */ {
+		elseif (in_array($ʟ_switch, [7], true)) /* line 150 */ {
 			$iterations = 0;
-			foreach ($copias as $copia) /* line 154 */ {
+			foreach ($copias as $copia) /* line 151 */ {
 				echo '                                    <tr>
                                     <td class="maquina">
                                         ';
-				echo LR\Filters::escapeHtmlText($copia->maquina->modelo) /* line 157 */;
+				echo LR\Filters::escapeHtmlText($copia->maquina->modelo) /* line 154 */;
 				echo '
                                     </td>
                                     <td class="cliente">
 ';
-				if (isset($copia->maquina->empresa->nombre)) /* line 160 */ {
+				if (isset($copia->maquina->empresa->nombre)) /* line 157 */ {
 					echo '                                            ';
-					echo LR\Filters::escapeHtmlText($copia->maquina->empresa->nombre) /* line 161 */;
+					echo LR\Filters::escapeHtmlText($copia->maquina->empresa->nombre) /* line 158 */;
 					echo "\n";
 				}
-				else /* line 162 */ {
+				else /* line 159 */ {
 					echo '                                            N/S
 ';
 				}
 				echo '                                    </td>
                                     <td class="copiasc">
 ';
-				if (isset($copia->copiascl)) /* line 167 */ {
+				if (isset($copia->copiascl)) /* line 164 */ {
 					echo '                                            ';
-					echo LR\Filters::escapeHtmlText($copia->copiascl) /* line 168 */;
+					echo LR\Filters::escapeHtmlText($copia->copiascl) /* line 165 */;
 					echo "\n";
 				}
-				else /* line 169 */ {
+				else /* line 166 */ {
 					echo '                                            N/S
 ';
 				}
 				echo '                                    </td>
                                     <td class="copiasbn">
 ';
-				if (isset($copia->copiasbn)) /* line 174 */ {
+				if (isset($copia->copiasbn)) /* line 171 */ {
 					echo '                                            ';
-					echo LR\Filters::escapeHtmlText($copia->copiasbn) /* line 175 */;
+					echo LR\Filters::escapeHtmlText($copia->copiasbn) /* line 172 */;
 					echo "\n";
 				}
-				else /* line 176 */ {
+				else /* line 173 */ {
 					echo '                                            N/S
 ';
 				}
 				echo '                                    </td>
                                     <td class="copiasl">
 ';
-				if (isset($copia->copiasl)) /* line 181 */ {
+				if (isset($copia->copiasl)) /* line 178 */ {
 					echo '                                            ';
-					echo LR\Filters::escapeHtmlText($copia->copiasl) /* line 182 */;
+					echo LR\Filters::escapeHtmlText($copia->copiasl) /* line 179 */;
 					echo "\n";
 				}
-				else /* line 183 */ {
+				else /* line 180 */ {
 					echo '                                            N/S
 ';
 				}
 				echo '                                    </td>
                                     <td class="copiasll">
 ';
-				if (isset($copia->copiasll)) /* line 188 */ {
+				if (isset($copia->copiasll)) /* line 185 */ {
 					echo '                                            ';
-					echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 189 */;
+					echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 186 */;
 					echo "\n";
 				}
-				else /* line 190 */ {
+				else /* line 187 */ {
 					echo '                                            N/S
 ';
 				}
 				echo '                                    </td>
                                     <td class="copiaslll">
 ';
-				if (isset($copia->copiasll)) /* line 195 */ {
+				if (isset($copia->copiasll)) /* line 192 */ {
 					echo '                                            ';
-					echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 196 */;
+					echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 193 */;
 					echo "\n";
 				}
-				else /* line 197 */ {
+				else /* line 194 */ {
 					echo '                                            N/S
 ';
 				}
 				echo '                                    </td>
                                     <td class="escaneos">
 ';
-				if (isset($copia->escaneos)) /* line 202 */ {
+				if (isset($copia->escaneos)) /* line 199 */ {
 					echo '                                            ';
-					echo LR\Filters::escapeHtmlText($copia->escaneos) /* line 203 */;
+					echo LR\Filters::escapeHtmlText($copia->escaneos) /* line 200 */;
 					echo "\n";
 				}
-				else /* line 204 */ {
+				else /* line 201 */ {
 					echo '                                            N/S
 ';
 				}
 				echo '                                    </td>
 ';
-				if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 208 */ {
+				if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 205 */ {
 					echo '                                            <td>
                                                 <a class="btn btn-info" href="';
-					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:edit", [$copia->id])) /* line 210 */;
+					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:edit", [$copia->id])) /* line 207 */;
 					echo '"><i class="bi bi-pencil-square"></i> Editar</a>
                                                 <a class="btn btn-danger" href="';
-					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:removeCopia", ['idcopia' => $copia->id, 'modo' => $modo])) /* line 211 */;
+					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:removeCopia", ['idcopia' => $copia->id, 'modo' => $modo])) /* line 208 */;
 					echo '"><i class="bi bi-trash-fill"></i> Remove</a>
                                             </td>
 ';
@@ -339,109 +336,109 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 				$iterations++;
 			}
 		}
-		elseif (in_array($ʟ_switch, [8], true)) /* line 216 */ {
+		elseif (in_array($ʟ_switch, [8], true)) /* line 213 */ {
 			$iterations = 0;
-			foreach ($maquinas as $maquina) /* line 217 */ {
+			foreach ($maquinas as $maquina) /* line 214 */ {
 				$iterations = 0;
-				foreach ($maquina->copias as $copia) /* line 218 */ {
+				foreach ($maquina->copias as $copia) /* line 215 */ {
 					echo '                                        <tr>
                                         <td class="maquina">
                                             ';
-					echo LR\Filters::escapeHtmlText($copia->maquina->modelo) /* line 221 */;
+					echo LR\Filters::escapeHtmlText($copia->maquina->modelo) /* line 218 */;
 					echo '
                                         </td>
                                         <td class="cliente">
 ';
-					if (isset($copia->maquina->empresa->nombre)) /* line 224 */ {
+					if (isset($copia->maquina->empresa->nombre)) /* line 221 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->maquina->empresa->nombre) /* line 225 */;
+						echo LR\Filters::escapeHtmlText($copia->maquina->empresa->nombre) /* line 222 */;
 						echo "\n";
 					}
-					else /* line 226 */ {
+					else /* line 223 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiasc">
 ';
-					if (isset($copia->copiascl)) /* line 231 */ {
+					if (isset($copia->copiascl)) /* line 228 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiascl) /* line 232 */;
+						echo LR\Filters::escapeHtmlText($copia->copiascl) /* line 229 */;
 						echo "\n";
 					}
-					else /* line 233 */ {
+					else /* line 230 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiasbn">
 ';
-					if (isset($copia->copiasbn)) /* line 238 */ {
+					if (isset($copia->copiasbn)) /* line 235 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiasbn) /* line 239 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasbn) /* line 236 */;
 						echo "\n";
 					}
-					else /* line 240 */ {
+					else /* line 237 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiasl">
 ';
-					if (isset($copia->copiasl)) /* line 245 */ {
+					if (isset($copia->copiasl)) /* line 242 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiasl) /* line 246 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasl) /* line 243 */;
 						echo "\n";
 					}
-					else /* line 247 */ {
+					else /* line 244 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiasll">
 ';
-					if (isset($copia->copiasll)) /* line 252 */ {
+					if (isset($copia->copiasll)) /* line 249 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 253 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 250 */;
 						echo "\n";
 					}
-					else /* line 254 */ {
+					else /* line 251 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiaslll">
 ';
-					if (isset($copia->copiasll)) /* line 259 */ {
+					if (isset($copia->copiasll)) /* line 256 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 260 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 257 */;
 						echo "\n";
 					}
-					else /* line 261 */ {
+					else /* line 258 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="escaneos">
 ';
-					if (isset($copia->escaneos)) /* line 266 */ {
+					if (isset($copia->escaneos)) /* line 263 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->escaneos) /* line 267 */;
+						echo LR\Filters::escapeHtmlText($copia->escaneos) /* line 264 */;
 						echo "\n";
 					}
-					else /* line 268 */ {
+					else /* line 265 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
 ';
-					if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 272 */ {
+					if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 269 */ {
 						echo '                                                <td>
                                                     <a class="btn btn-info" href="';
-						echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:edit", [$copia->id])) /* line 274 */;
+						echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:edit", [$copia->id])) /* line 271 */;
 						echo '"><i class="bi bi-pencil-square"></i> Editar</a>
                                                     <a class="btn btn-danger" href="';
-						echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:removeCopia", ['idcopia' => $copia->id, 'modo' => $modo])) /* line 275 */;
+						echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:removeCopia", ['idcopia' => $copia->id, 'modo' => $modo])) /* line 272 */;
 						echo '"><i class="bi bi-trash-fill"></i> Remove</a>
                                                 </td>
 ';
@@ -453,109 +450,109 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 				$iterations++;
 			}
 		}
-		elseif (in_array($ʟ_switch, [9], true)) /* line 281 */ {
+		elseif (in_array($ʟ_switch, [9], true)) /* line 278 */ {
 			$iterations = 0;
-			foreach ($maquinas as $maquina) /* line 282 */ {
+			foreach ($maquinas as $maquina) /* line 279 */ {
 				$iterations = 0;
-				foreach ($maquina->copias as $copia) /* line 283 */ {
+				foreach ($maquina->copias as $copia) /* line 280 */ {
 					echo '                                        <tr>
                                         <td class="maquina">
                                             ';
-					echo LR\Filters::escapeHtmlText($copia->maquina->modelo) /* line 286 */;
+					echo LR\Filters::escapeHtmlText($copia->maquina->modelo) /* line 283 */;
 					echo '
                                         </td>
                                         <td class="cliente">
 ';
-					if (isset($copia->maquina->empresa->nombre)) /* line 289 */ {
+					if (isset($copia->maquina->empresa->nombre)) /* line 286 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->maquina->empresa->nombre) /* line 290 */;
+						echo LR\Filters::escapeHtmlText($copia->maquina->empresa->nombre) /* line 287 */;
 						echo "\n";
 					}
-					else /* line 291 */ {
+					else /* line 288 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiasc">
 ';
-					if (isset($copia->copiascl)) /* line 296 */ {
+					if (isset($copia->copiascl)) /* line 293 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiascl) /* line 297 */;
+						echo LR\Filters::escapeHtmlText($copia->copiascl) /* line 294 */;
 						echo "\n";
 					}
-					else /* line 298 */ {
+					else /* line 295 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiasbn">
 ';
-					if (isset($copia->copiasbn)) /* line 303 */ {
+					if (isset($copia->copiasbn)) /* line 300 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiasbn) /* line 304 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasbn) /* line 301 */;
 						echo "\n";
 					}
-					else /* line 305 */ {
+					else /* line 302 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiasl">
 ';
-					if (isset($copia->copiasl)) /* line 310 */ {
+					if (isset($copia->copiasl)) /* line 307 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiasl) /* line 311 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasl) /* line 308 */;
 						echo "\n";
 					}
-					else /* line 312 */ {
+					else /* line 309 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiasll">
 ';
-					if (isset($copia->copiasll)) /* line 317 */ {
+					if (isset($copia->copiasll)) /* line 314 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 318 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 315 */;
 						echo "\n";
 					}
-					else /* line 319 */ {
+					else /* line 316 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="copiaslll">
 ';
-					if (isset($copia->copiasll)) /* line 324 */ {
+					if (isset($copia->copiasll)) /* line 321 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 325 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 322 */;
 						echo "\n";
 					}
-					else /* line 326 */ {
+					else /* line 323 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
                                         <td class="escaneos">
 ';
-					if (isset($copia->escaneos)) /* line 331 */ {
+					if (isset($copia->escaneos)) /* line 328 */ {
 						echo '                                                ';
-						echo LR\Filters::escapeHtmlText($copia->escaneos) /* line 332 */;
+						echo LR\Filters::escapeHtmlText($copia->escaneos) /* line 329 */;
 						echo "\n";
 					}
-					else /* line 333 */ {
+					else /* line 330 */ {
 						echo '                                                N/S
 ';
 					}
 					echo '                                        </td>
 ';
-					if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 337 */ {
+					if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 334 */ {
 						echo '                                                <td>
                                                     <a class="btn btn-info" href="';
-						echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:edit", [$copia->id])) /* line 339 */;
+						echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:edit", [$copia->id])) /* line 336 */;
 						echo '"><i class="bi bi-pencil-square"></i> Editar</a>
                                                     <a class="btn btn-danger" href="';
-						echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:removeCopia", ['idcopia' => $copia->id, 'modo' => $modo])) /* line 340 */;
+						echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:removeCopia", ['idcopia' => $copia->id, 'modo' => $modo])) /* line 337 */;
 						echo '"><i class="bi bi-trash-fill"></i> Remove</a>
                                                 </td>
 ';
@@ -567,85 +564,85 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 				$iterations++;
 			}
 		}
-		elseif (in_array($ʟ_switch, [10], true)) /* line 346 */ {
+		elseif (in_array($ʟ_switch, [10], true)) /* line 343 */ {
 			$iterations = 0;
-			foreach ($copies as $copia) /* line 347 */ {
+			foreach ($copies as $copia) /* line 344 */ {
 				echo '                                    <tr>
                                         <td class="fecha">
                                             ';
-				echo LR\Filters::escapeHtmlText($copia->fecha) /* line 350 */;
+				echo LR\Filters::escapeHtmlText($copia->fecha) /* line 347 */;
 				echo '
                                         </td>
 ';
-				if ($copias->tipocontador >= 1) /* line 352 */ {
+				if ($copias->tipocontador <= 1) /* line 349 */ {
 					echo '                                    <td class="copiasc">
 ';
-					if (isset($copia->copiascl)) /* line 354 */ {
+					if (isset($copia->copiascl)) /* line 351 */ {
 						echo '                                            ';
-						echo LR\Filters::escapeHtmlText($copia->copiascl) /* line 355 */;
+						echo LR\Filters::escapeHtmlText($copia->copiascl) /* line 352 */;
 						echo "\n";
 					}
-					else /* line 356 */ {
+					else /* line 353 */ {
 						echo '                                            N/S
 ';
 					}
 					echo '                                    </td>
 ';
 				}
-				if ($copias->tipocontador >= 0) /* line 361 */ {
+				if ($copias->tipocontador >= 0) /* line 358 */ {
 					echo '                                    <td class="copiasbn">
 ';
-					if (isset($copia->copiasbn)) /* line 363 */ {
+					if (isset($copia->copiasbn)) /* line 360 */ {
 						echo '                                            ';
-						echo LR\Filters::escapeHtmlText($copia->copiasbn) /* line 364 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasbn) /* line 361 */;
 						echo "\n";
 					}
-					else /* line 365 */ {
+					else /* line 362 */ {
 						echo '                                            N/S
 ';
 					}
 					echo '                                    </td>
 ';
 				}
-				if ($copias->tipocontador == 2) /* line 370 */ {
+				if ($copias->tipocontador == 2) /* line 367 */ {
 					echo '                                    <td class="copiasl">
 ';
-					if (isset($copia->copiasl)) /* line 372 */ {
+					if (isset($copia->copiasl)) /* line 369 */ {
 						echo '                                            ';
-						echo LR\Filters::escapeHtmlText($copia->copiasl) /* line 373 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasl) /* line 370 */;
 						echo "\n";
 					}
-					else /* line 374 */ {
+					else /* line 371 */ {
 						echo '                                            N/S
 ';
 					}
 					echo '                                    </td>
 ';
 				}
-				if ($copias->tipocontador == 2) /* line 379 */ {
+				if ($copias->tipocontador == 2) /* line 376 */ {
 					echo '                                    <td class="copiasll">
 ';
-					if (isset($copia->copiasll)) /* line 381 */ {
+					if (isset($copia->copiasll)) /* line 378 */ {
 						echo '                                            ';
-						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 382 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 379 */;
 						echo "\n";
 					}
-					else /* line 383 */ {
+					else /* line 380 */ {
 						echo '                                            N/S
 ';
 					}
 					echo '                                    </td>
 ';
 				}
-				if ($copias->tipocontador == 2) /* line 388 */ {
+				if ($copias->tipocontador == 2) /* line 385 */ {
 					echo '                                    <td class="copiaslll">
 ';
-					if (isset($copia->copiasll)) /* line 390 */ {
+					if (isset($copia->copiasll)) /* line 387 */ {
 						echo '                                            ';
-						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 391 */;
+						echo LR\Filters::escapeHtmlText($copia->copiasll) /* line 388 */;
 						echo "\n";
 					}
-					else /* line 392 */ {
+					else /* line 389 */ {
 						echo '                                            N/S
 ';
 					}
@@ -654,24 +651,24 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 				}
 				echo '                                    <td class="escaneos">
 ';
-				if (isset($copia->escaneos)) /* line 398 */ {
+				if (isset($copia->escaneos)) /* line 395 */ {
 					echo '                                            ';
-					echo LR\Filters::escapeHtmlText($copia->escaneos) /* line 399 */;
+					echo LR\Filters::escapeHtmlText($copia->escaneos) /* line 396 */;
 					echo "\n";
 				}
-				else /* line 400 */ {
+				else /* line 397 */ {
 					echo '                                            N/S
 ';
 				}
 				echo '                                    </td>
 ';
-				if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 404 */ {
+				if ($rol == "admin" || $rol == "gerente" || $rol == "miriam") /* line 401 */ {
 					echo '                                            <td>
                                                 <a class="btn btn-info" href="';
-					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:edit", [$copia->id])) /* line 406 */;
+					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:edit", [$copia->id])) /* line 403 */;
 					echo '"><i class="bi bi-pencil-square"></i> Editar</a>
                                                 <a class="btn btn-danger" href="';
-					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:removeCopia", ['idcopia' => $copia->id, 'modo' => $modo])) /* line 407 */;
+					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:removeCopia", ['idcopia' => $copia->id, 'modo' => $modo])) /* line 404 */;
 					echo '"><i class="bi bi-trash-fill"></i> Remove</a>
                                             </td>
 ';

@@ -65,7 +65,7 @@ return array (
     'App\\Model\\Menu' => 
     array (
       0 => '/var/www/nette/app/Model/Menu.php',
-      1 => 1638370766,
+      1 => 1638482441,
     ),
     'App\\Model\\UserManager' => 
     array (
@@ -205,7 +205,7 @@ return array (
     'App\\Forms\\SignInFormFactory' => 
     array (
       0 => '/var/www/nette/app/Forms/SignInFormFactory.php',
-      1 => 1638373408,
+      1 => 1638480982,
     ),
     'App\\Forms\\SignUpFormFactory' => 
     array (
@@ -215,7 +215,7 @@ return array (
     'App\\Forms\\MaquinasFormFactory' => 
     array (
       0 => '/var/www/nette/app/Forms/MaquinasFormFactory.php',
-      1 => 1638370766,
+      1 => 1638547880,
     ),
     'App\\Forms\\FormFactory' => 
     array (
@@ -225,7 +225,7 @@ return array (
     'App\\Forms\\CopiasFormFactory' => 
     array (
       0 => '/var/www/nette/app/Forms/CopiasFormFactory.php',
-      1 => 1638370766,
+      1 => 1638545401,
     ),
     'App\\Forms\\AveriasFormFactory' => 
     array (
@@ -235,7 +235,7 @@ return array (
     'App\\Forms\\EmpresasFormFactory' => 
     array (
       0 => '/var/www/nette/app/Forms/EmpresasFormFactory.php',
-      1 => 1638370766,
+      1 => 1638523106,
     ),
     'App\\Forms\\UsuariosFormFactory' => 
     array (
@@ -255,7 +255,7 @@ return array (
     'App\\AdminModule\\Presenters\\MaquinasPresenter' => 
     array (
       0 => '/var/www/nette/app/AdminModule/Presenters/MaquinasPresenter.php',
-      1 => 1638370773,
+      1 => 1638544593,
     ),
     'App\\AdminModule\\Presenters\\CopiasPresenter' => 
     array (
@@ -265,17 +265,17 @@ return array (
     'App\\AdminModule\\Presenters\\EmpresasPresenter' => 
     array (
       0 => '/var/www/nette/app/AdminModule/Presenters/EmpresasPresenter.php',
-      1 => 1638370765,
+      1 => 1638525898,
     ),
     'App\\AdminModule\\Presenters\\BaseAdminPresenter' => 
     array (
       0 => '/var/www/nette/app/AdminModule/Presenters/BaseAdminPresenter.php',
-      1 => 1638370765,
+      1 => 1638525898,
     ),
     'App\\AdminModule\\Presenters\\HomepagePresenter' => 
     array (
       0 => '/var/www/nette/app/AdminModule/Presenters/HomepagePresenter.php',
-      1 => 1638370765,
+      1 => 1638482373,
     ),
     'App\\AdminModule\\Presenters\\AveriasPresenter' => 
     array (
@@ -316,11 +316,15 @@ return array (
     'App\\Presenters\\EmpresasTemplate' => 2,
     'App\\AdminModule\\Presenters\\PiezasDefaultTemplate' => 3,
     'App\\AdminModule\\Presenters\\PiezasTemplate' => 3,
-    'App\\AdminModule\\Presenters\\EmpresasEditTemplate' => 1,
+    'App\\AdminModule\\Presenters\\EmpresasEditTemplate' => 3,
     'App\\AdminModule\\Presenters\\MaquinasEditTemplate' => 3,
-    'App\\AdminModule\\Presenters\\CopiasRemoveCopiaTemplate' => 2,
+    'App\\AdminModule\\Presenters\\CopiasRemoveCopiaTemplate' => 3,
     'App\\AdminModule\\Presenters\\CopiasAddTemplate' => 3,
-    'App\\AdminModule\\Presenters\\Copias' => 2,
+    'App\\AdminModule\\Presenters\\Copias' => 3,
+    'App\\Presenters\\SignOutTemplate' => 1,
+    'App\\AdminModule\\Presenters\\CopiasEditTemplate' => 1,
+    'App\\AdminModule\\Presenters\\MaquinasAddTemplate' => 3,
+    'App\\AdminModule\\Presenters\\UsuariosEditarTemplate' => 2,
   ),
   2 => 
   array (

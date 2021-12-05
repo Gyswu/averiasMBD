@@ -1,16 +1,17 @@
 {block content}
 
-    <div class = "container">
+    <div class="container">
 
-         <br>
+        <br>
 
-        <div class = "row"> <h1 n:block = "title"> Averias </h1> </div>
+        <div class="row"><h1 n:block = "title"> Averias </h1></div>
 
-         <br>
+        <br>
 
-        <div class = "row">
+        <div class="row">
 
-            <div class = "col col-lg-12"> <a n:href = "Averias:add" class = "btn btn-xs btn-success"> Añadir averia </a> </div>
+            <div class="col col-lg-12"><a n:href = "Averias:add" class="btn btn-xs btn-success"> Añadir averia </a>
+            </div>
 
             <br>
 
@@ -20,72 +21,72 @@
 
         <br>
 
-        <div class = "row">
+        <div class="row">
 
-            <div class = "col col-lg-12">
+            <div class="col col-lg-12">
 
-                <table class = "table">
+                <table class="table">
 
-                    <thead class = "thead-dark">
-                    
-                        <tr>
+                    <thead class="thead-dark">
 
-                            <th> ID </th>
+                    <tr>
 
-                            <th> Fecha </th>
-                        
-                            <th> Descripcion </th>
+                        <th> ID</th>
 
-                            <th> Estado </th>
+                        <th> Fecha</th>
 
-                            <th> Opciones </th>
+                        <th> Descripcion</th>
 
-                    
-                        </tr>
-                    
+                        <th> Estado</th>
+
+                        <th> Opciones</th>
+
+
+                    </tr>
+
                     </thead>
-                    
+
                     <tbody>
 
-                        {foreach $averias as $averia}
+                    {foreach $averias as $averia}
 
-                            <tr>
+                        <tr>
 
-                                <td> {$averia -> id} </td>
+                            <td> {$averia -> id} </td>
 
-                                <td> {$averia -> fechainicio} </td>
+                            <td> {$averia -> fechainicio} </td>
 
-                                <td> {$averia -> descripcion} </td>
+                            <td> {$averia -> descripcion} </td>
 
-                                <td>
+                            <td>
 
-                                    {switch $averia->estado}
+                                {switch $averia->estado}
 
-                                        {case 0}
+                                    {case 0}
 
-                                            <a class = "btn btn-xs btn-success" style = "color : white"> Entrada </a>
+                                    <a class="btn btn-xs btn-success" style="color : white"> Entrada </a>
 
-                                        {case 1}
+                                {case 1}
 
-                                            <a class = "btn btn-xs btn-warning"> En Proceso </a>
+                                    <a class="btn btn-xs btn-warning"> En Proceso </a>
 
-                                        {case 2}
+                                {case 2}
 
-                                            <a class = "btn btn-xs btn-danger" style = "color : white"> Finalizado </a>
+                                    <a class="btn btn-xs btn-danger" style="color : white"> Finalizado </a>
 
-                                    {/switch}
+                                {/switch}
 
-                                </td>
+                            </td>
 
-                                <td>
+                            <td>
 
-                                    <a n:href = "Averias:edit $averia->id" class = "btn btn-xs btn-primary "> Editar </a>
+                                <a n:href = "Averias:edit $averia->id" class="btn btn-xs btn-primary "> Editar </a>
 
-                                </td>
+                            </td>
 
-                            </tr>
+                        </tr>
 
-                        {/foreach}
+                    {/foreach}
 
                     </tbody>
 

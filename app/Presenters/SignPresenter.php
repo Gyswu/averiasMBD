@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\Forms;
-use App\Model\Roles;
 use Nette\Application\UI\Form;
-use Nette\Security\Passwords;
 use Nette\Security\User;
 
-final class SignPresenter extends BasePresenter {
+final class SignPresenter extends BasePresenter
+{
 
     /** @persistent */
 
@@ -25,27 +24,37 @@ final class SignPresenter extends BasePresenter {
     private $signUpFactory;
 
 
-
-    public function __construct (Forms\SignInFormFactory $signInFactory, Forms\SignUpFormFactory $signUpFactory) {
+    public function __construct(Forms\SignInFormFactory $signInFactory, Forms\SignUpFormFactory $signUpFactory)
+    {
 
         $this->signInFactory = $signInFactory;
 
         $this->signUpFactory = $signUpFactory;
     }
 
-    protected function createComponentSignInForm(): Form {
+    public function actionOut(): void
+    {
+
+        $this->getUser()->logout(true);
+
+        $this->redirect(':Sign:in');
+
+    }
+
+    protected function createComponentSignInForm(): Form
+    {
 
         return $this->signInFactory->create(function (User $user): void {
 
             $this->restoreRequest($this->backlink);
 
-            if ($user->isInRole('admin')) {$this->redirect(':Admin:Homepage:');}
-
-            elseif ($user->isInRole('cliente')) {$this->redirect('Averias:default');}
-
-            elseif ($user->isInRole('encargado')) {$this->redirect(':Averias:default');}
-
-
+            if ($user->isInRole('admin')) {
+                $this->redirect(':Admin:Homepage:');
+            } elseif ($user->isInRole('cliente')) {
+                $this->redirect('Averias:default');
+            } elseif ($user->isInRole('encargado')) {
+                $this->redirect(':Averias:default');
+            }
 
 
             $this->redirect('Homepage:');
@@ -53,20 +62,13 @@ final class SignPresenter extends BasePresenter {
         });
     }
 
-    protected function createComponentSignUpForm(): Form {
+    protected function createComponentSignUpForm(): Form
+    {
 
         return $this->signUpFactory->create(function (): void {
 
             $this->redirect('Homepage:default');
 
         });
-    }
-
-    public function actionOut(): void {
-
-        $this->getUser()->logout(true);
-
-        $this->redirect(':Sign:in');
-
     }
 }

@@ -44,7 +44,9 @@ final class Template3daac5ba1d extends Latte\Runtime\Template
 <br>
 
 ';
-		$this->renderBlock('bootstrap-form', ['signInForm'] + [], 'html') /* line 9 */;
+		/* line 9 */ $_tmp = $this->global->uiControl->getComponent("signInForm");
+		if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
+		$_tmp->render();
 		
 	}
 

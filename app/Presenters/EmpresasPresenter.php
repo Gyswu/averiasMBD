@@ -2,20 +2,21 @@
 
 namespace App\Presenters;
 
-use App\Model\Orm\Empresa;
-
-use Nette\Application\UI\Form;
-
 use App\Forms\EmpresasFormFactory;
+use App\Model\Orm\Empresa;
+use Nette\Application\UI\Form;
+use stdClass;
 
 
-class EmpresasPresenter extends BasePresenter {
+class EmpresasPresenter extends BasePresenter
+{
 
     /** @var $empresaEditada Empresa */
 
     private $empresaEditada;
 
-    public function renderDefault ($empresaId) {
+    public function renderDefault($empresaId)
+    {
 
         $this->template->empresa = $this->orm->empresa->getById($empresaId);
 
@@ -35,7 +36,8 @@ class EmpresasPresenter extends BasePresenter {
 
     //public function actionAdd(){}
 
-    public function createComponentAddEmpresaForm(){
+    public function createComponentAddEmpresaForm()
+    {
 
         $empresa = new Empresa();
 
@@ -46,11 +48,12 @@ class EmpresasPresenter extends BasePresenter {
         return $form;
     }
 
-    public function onSuccessAddEmpresa (Form $form, \stdClass $values ) :void{
+    public function onSuccessAddEmpresa(Form $form, stdClass $values): void
+    {
 
         $empresa = new Empresa();
 
-        try{
+        try {
 
             $empresa->id = $values->id;
 
@@ -66,7 +69,7 @@ class EmpresasPresenter extends BasePresenter {
 
             $this->flashMessage('Empresa añadida correctamente', 'success');
 
-        } catch( Model\DuplicateNameException $e ) {
+        } catch (Model\DuplicateNameException $e) {
 
             $form['nif']->addError('Este nif ya existe');
 
@@ -78,7 +81,8 @@ class EmpresasPresenter extends BasePresenter {
 
 //    _______________________EDITAR EMPRESA__________________________________
 
-    public function actionEdit($idEmpresa){
+    public function actionEdit($idEmpresa)
+    {
 
         $this->empresaEditada = $this->orm->empresa->getById($idEmpresa);
 
@@ -86,7 +90,8 @@ class EmpresasPresenter extends BasePresenter {
 
     }
 
-    public function createComponentEditarEmpresaForm(){
+    public function createComponentEditarEmpresaForm()
+    {
 
         $form = (new EmpresasFormFactory())->createEdit($this->empresaEditada);
         $form->onSuccess[] = [$this, 'onSuccessEditarEmpresa'];
@@ -94,10 +99,11 @@ class EmpresasPresenter extends BasePresenter {
         return $form;
     }
 
-    public function onSuccessEditarEmpresa(Form $form, \stdClass $values) :void{
+    public function onSuccessEditarEmpresa(Form $form, stdClass $values): void
+    {
         $empresa = $this->orm->empresa->getById($this->empresaEditada->id);
 
-        try{
+        try {
             $empresa->nif = $values->nif;
             $empresa->nombre = $values->nombre;
             $empresa->telefono = $values->telefono;
@@ -106,7 +112,7 @@ class EmpresasPresenter extends BasePresenter {
             $this->orm->persistAndFlush($empresa);
             $this->flashMessage('Empresa editada correctamente', 'success');
 
-        } catch( Model\DuplicateNameException $e ) {
+        } catch (Model\DuplicateNameException $e) {
 
             $form['nif']->addError('Este nif ya existe');
 
@@ -117,7 +123,8 @@ class EmpresasPresenter extends BasePresenter {
     }
 
 //    ___________________ ELIMINAR EMPRESA ___________________
-    public function actionBorrar($idEmpresa){
+    public function actionBorrar($idEmpresa)
+    {
         $this->flashMessage('La empresa no puede ser borrada', 'danger');
         $this->redirect('Empresas:default');
     }

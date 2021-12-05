@@ -36,7 +36,8 @@
 		"nextras/orm": "^3.1",
 		"mpdf/mpdf": "^8.0",
 		"phpmailer/phpmailer": "^6.0",
-		"radekdostal/nette-datetimepicker": "^3.1"
+		"radekdostal/nette-datetimepicker": "^3.1",
+		"snapappointments/bootstrap-select": "^1.13"
 	},
 	"require-dev": {
 		"nette/tester": "^2.0"

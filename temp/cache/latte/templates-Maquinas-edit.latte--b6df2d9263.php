@@ -40,7 +40,7 @@ final class Templateb6df2d9263 extends Latte\Runtime\Template
 		/* line 3 */ $_tmp = $this->global->uiControl->getComponent("editarMaquinaForm");
 		if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
 		$_tmp->render();
-		
+		echo "\n";
 	}
 
 }

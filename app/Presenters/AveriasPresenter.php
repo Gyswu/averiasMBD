@@ -3,23 +3,22 @@
 namespace App\Presenters;
 
 use App\Forms\AveriasFormFactory;
-
 use App\Model\Orm\Averias;
-
 use App\Model\Orm\Usuario;
+use Exception;
 use Nette\Application\UI\Form;
-
 use Nextras\Orm\Collection\ICollection;
+use stdClass;
 
-use Nette\SmartObject;
-
-class AveriasPresenter extends BasePresenter {
+class AveriasPresenter extends BasePresenter
+{
 
     /** @var $averiaEditada Averia */
 
     private $averiaEditada;
 
-    public function renderDefault ($idAveria): void {
+    public function renderDefault($idAveria): void
+    {
 
         $this->template->averias = $this->orm->averias->findAll();
 
@@ -27,15 +26,18 @@ class AveriasPresenter extends BasePresenter {
 
         $this->template->averias = $this->getDbUser()->averias;
 
-        if (!$idAveria) {$this->template->averias = $this->orm->averias->findAll();}
-
-        else {$this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('id', ICollection::DESC);}
+        if (!$idAveria) {
+            $this->template->averias = $this->orm->averias->findAll();
+        } else {
+            $this->template->id = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('id', ICollection::DESC);
+        }
 
     }
 
 // _____________________________ EDITAR _______________________________________________
 
-    public function actionEdit ($idAveria) {
+    public function actionEdit($idAveria)
+    {
 
         $averia = $this->orm->averias->getById($idAveria);
 
@@ -44,7 +46,8 @@ class AveriasPresenter extends BasePresenter {
         $this->template->averia = $averia;
     }
 
-    public function createComponentEditarAveriaForm() {
+    public function createComponentEditarAveriaForm()
+    {
 
         $form = (new AveriasFormFactory())->createEditCliente($this->averiaEditada);
 
@@ -53,7 +56,8 @@ class AveriasPresenter extends BasePresenter {
         return $form;
     }
 
-    public function onSuccessEditarAveria (Form $form, \stdClass $values): void {
+    public function onSuccessEditarAveria(Form $form, stdClass $values): void
+    {
 
         $averiax = new Averias();
 
@@ -79,27 +83,31 @@ class AveriasPresenter extends BasePresenter {
 
             $this->flashMessage('Averia editada correctamente', 'success');
 
-        } catch (\Exception $e) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
+        } catch (Exception $e) {
+            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
+        }
 
         $this->redirect('Averias:default', $this->averiaEditada->id);
     }
 
 //__________________AÑADIR____________________________
 
-    public function createComponentAddAveriaForm ($empresaId) {
+    public function createComponentAddAveriaForm($empresaId)
+    {
 
         $averia = new Averias();
 
         $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
 
-        $form = ( new AveriasFormFactory() )->createAClient($empresasarray);
+        $form = (new AveriasFormFactory())->createAClient($empresasarray);
 
         $form->onSuccess[] = [$this, 'onSuccessAddAveria'];
 
         return $form;
     }
 
-    public function onSuccessAddAveria (Form $form, \stdClass $values): void {
+    public function onSuccessAddAveria(Form $form, stdClass $values): void
+    {
 
         try {
 
@@ -129,7 +137,9 @@ class AveriasPresenter extends BasePresenter {
 
             $this->flashMessage('Averia añadida correctamente', 'success');
 
-        } catch (\Exception $e) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
+        } catch (Exception $e) {
+            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
+        }
 
         $this->redirect('Averias:default');
     }
@@ -137,23 +147,23 @@ class AveriasPresenter extends BasePresenter {
 
 //____________________BORRAR_____________________________________
 
-    /*public function actionBorrarAverias ($idAveria){
+/*public function actionBorrarAverias ($idAveria){
 
-        try {
+    try {
 
-            if (!$averia = $this->orm->averias->getById($idAveria)) {$this->flashMessage("La averia no existe", "danger");};
+        if (!$averia = $this->orm->averias->getById($idAveria)) {$this->flashMessage("La averia no existe", "danger");};
 
-            $this->orm->averias->removeAndFlush($averia);
+        $this->orm->averias->removeAndFlush($averia);
 
-            $this->flashMessage("Averia eliminada", "success");
+        $this->flashMessage("Averia eliminada", "success");
 
-        } catch( \Exception $e ) {
+    } catch( \Exception $e ) {
 
-            $this->flashMessage("Error al eliminar la averia, contacte con el administrador",'danger');
-        }
-
-        $this->redirect('Averias:default', $idAveria);
+        $this->flashMessage("Error al eliminar la averia, contacte con el administrador",'danger');
     }
+
+    $this->redirect('Averias:default', $idAveria);
+}
 
 }*/
 

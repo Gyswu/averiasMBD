@@ -7,11 +7,12 @@ use App\Forms\MaquinasFormFactory;
 use App\Model\Listas;
 use App\Model\Orm\Copias;
 use App\Model\Orm\Maquinas;
+use Exception;
 use Nette\Application\UI\Form;
-use Nextras\Orm\Collection\ICollection;
-
-
 use Nette\Application\UI\Multiplier;
+use Nextras\Orm\Collection\ICollection;
+use stdClass;
+
 
 class MaquinasPresenter extends BaseAdminPresenter
 {
@@ -26,49 +27,51 @@ class MaquinasPresenter extends BaseAdminPresenter
 //    $mode 9 Maquinas de un proveedor
 //    otros $mode segun el estado de la maquina (taller, etc.)
 
-    public function renderDefault($id, $mode, $order) :void{
-        if( !isset($id)) {
-            if (!isset($order)){
+    public function renderDefault($id, $mode, $order): void
+    {
+        if (!isset($id)) {
+            if (!isset($order)) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('id', ICollection::DESC);
-            } elseif($order == 1) {
+            } elseif ($order == 1) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('modelo', ICollection::DESC);
-            } elseif ($order == 2){
+            } elseif ($order == 2) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('modelo', ICollection::ASC);
-            } elseif ($order == 3){
+            } elseif ($order == 3) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('proveedor', ICollection::DESC);
-            } elseif ($order == 4){
+            } elseif ($order == 4) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('proveedor', ICollection::ASC);
-            } elseif ($order == 5){
+            } elseif ($order == 5) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('empresa', ICollection::DESC);
-            } elseif ($order == 6){
+            } elseif ($order == 6) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('empresa', ICollection::ASC);
-            } elseif ($order == 7){
+            } elseif ($order == 7) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('estado', ICollection::DESC);
-            } elseif ($order == 8){
+            } elseif ($order == 8) {
                 $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('estado', ICollection::ASC);
             }
 
             $listaCajones = Listas::getCajones();
 
             $this->template->mode = 7;
-        } elseif ($mode == 8){
+        } elseif ($mode == 8) {
             //MODO CLIENTE
             $this->template->mode = 8;
             $this->template->maquinas = $this->orm->empresa->getById($id)->maquinas;
             $this->template->empresa = $this->orm->empresa->getById($id);
-        } elseif ($mode == 9){
+        } elseif ($mode == 9) {
             //MODO PROVEEDOR
             $this->template->mode = 9;
-            $this->template->maquinas = $this->orm->maquinas->findBy(['proveedor'=> $id]);
+            $this->template->maquinas = $this->orm->maquinas->findBy(['proveedor' => $id]);
             $this->template->proveedor = $this->orm->proveedor->getById($id);
         } else {
-            $this->template->maquinas = $this->orm->maquinas->findBy(['estado'=>$mode]);
+            $this->template->maquinas = $this->orm->maquinas->findBy(['estado' => $mode]);
         }
     }
 
-    public function actioninfo($id) :void{
-        if(!$this->orm->maquinas->getById($id)){
-            $this->flashMessage("La Maquina a la que intentas acceder no existe o se ha dado de baja en el sistema",'danger');
+    public function actioninfo($id): void
+    {
+        if (!$this->orm->maquinas->getById($id)) {
+            $this->flashMessage("La Maquina a la que intentas acceder no existe o se ha dado de baja en el sistema", 'danger');
             $this->redirect("Maquinas:default");
 
         }
@@ -85,108 +88,120 @@ class MaquinasPresenter extends BaseAdminPresenter
 //
 //
 
-    public function actionAdd ($idpasado, $modo){
-        if($modo == 0){
+    public function actionAdd($idpasado, $modo)
+    {
+        if ($modo == 0) {
 //            default
         }
-        if($modo == 1){
+        if ($modo == 1) {
 //            cliente
             $this->template->idpasado = $idpasado;
         }
 
     }
 
-    public function createComponentAddMaquinaForm(){
+    public function createComponentAddMaquinaForm()
+    {
 
         $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
         $proveedores = $this->orm->proveedor->findAll()->fetchPairs('id', 'nombre');
-        $form = ( new MaquinasFormFactory())->createNuevo($empresasarray, $proveedores);
+        $form = (new MaquinasFormFactory())->createNuevo($empresasarray, $proveedores);
 
-        $form->onSuccess[] = [ $this, 'onSuccessAddMaquina' ];
+        $form->onSuccess[] = [$this, 'onSuccessAddMaquina'];
 
         return $form;
     }
 
-    public function onSuccessAddMaquina(Form $form, \stdClass $values ): void {
+    public function onSuccessAddMaquina(Form $form, stdClass $values): void
+    {
 //        dd($values->firmwarebackup);
         $maquina = new Maquinas();
         try {
-        $maquina->modelo = $values->modelo;
-        if(is_null($values->ip)){
-            if(testip($values->ip)){
-                $maquina->ip = $values->ip;
-            } else {
-                $this->flashMessage("IP Incorrecta",'danger');
-                $this->redirect("Maquinas:add");
-            }
-        }
-        if(is_null($values->mascara)){
-            if(testip($values->mascara)){
-                $maquina->mascara = $values->ip;
-            } else {
-                $this->flashMessage("Mascara Incorrecta",'danger');
-                $this->redirect("Maquinas:add");
-            }
-        }
-        $maquina->vfirmware = $values->vfirmware;
-        $maquina->fcompra = $values->fcompra;
-        $maquina->tipocontador = $values->tipocontador;
-        $maquina->estado = $values->estado;
-        $maquina->origen = $values->origen;
-        $maquina->finicioservicio = $values->finicioservicio;
-        $maquina->ffinalservicio = $values->ffinalservicio;
-        $maquina->tipocontrato = $values->tipocontrato;
-        $maquina->tipogarantia = $values->tipogarantia;
-        $maquina->comentario = $values->comentario;
-
-            if(!is_null($values->firmwarebackup)){
-                $firmware = $values->firmwarebackup;
-                if(is_null($firmware)){
-                    $firmware->move("upload/".$values->modelo.$values->empresa."Backup".date('dmY').$values->firmwarebackup->name);
-                    $maquina->firmwarebackup = "upload/".$values->modelo.$values->empresa."Backup".date('dmY').$values->firmwarebackup->name;
+            $maquina->modelo = $values->modelo;
+            if (is_null($values->ip)) {
+                if (testip($values->ip)) {
+                    $maquina->ip = $values->ip;
+                } else {
+                    $this->flashMessage("IP Incorrecta", 'danger');
+                    $this->redirect("Maquinas:add");
                 }
             }
-        $proveedor = $this->orm->proveedor->getById($values->proveedor);
-        $proveedor->maquinas->add($maquina);
-        $empresa = $this->orm->empresa->getById($values->empresa);
-        $empresa->maquinas->add($maquina);
+            if (is_null($values->mascara)) {
+                if (testip($values->mascara)) {
+                    $maquina->mascara = $values->ip;
+                } else {
+                    $this->flashMessage("Mascara Incorrecta", 'danger');
+                    $this->redirect("Maquinas:add");
+                }
+            }
+            $maquina->vfirmware = $values->vfirmware;
+            $maquina->fcompra = $values->fcompra;
+            $maquina->tipocontador = $values->tipocontador;
+            $maquina->estado = $values->estado;
+            $maquina->origen = $values->origen;
+            $maquina->finicioservicio = $values->finicioservicio;
+            $maquina->ffinalservicio = $values->ffinalservicio;
+            $maquina->tipocontrato = $values->tipocontrato;
+            $maquina->tipogarantia = $values->tipogarantia;
+            $maquina->comentario = $values->comentario;
+
+            if (!is_null($values->firmwarebackup)) {
+                $firmware = $values->firmwarebackup;
+                if (is_null($firmware)) {
+                    $firmware->move("upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
+                                    $values->firmwarebackup->name);
+                    $maquina->firmwarebackup = "upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
+                        $values->firmwarebackup->name;
+                }
+            }
+            $proveedor = $this->orm->proveedor->getById($values->proveedor);
+            $proveedor->maquinas->add($maquina);
+            $empresa = $this->orm->empresa->getById($values->empresa);
+            $empresa->maquinas->add($maquina);
 
             $this->orm->persistAndFlush($maquina);
-        } catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
+        } catch (Exception $e) {
+            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
+        }
         $this->redirect('Maquinas:default');
     }
 
-    public function actionEdit($idMaquina){
+    public function actionEdit($idMaquina)
+    {
         $this->maquinaEditada = $this->orm->maquinas->getById($idMaquina);
         $this->template->maquina = $this->maquinaEditada;
     }
 
-    public function createComponentEditarMaquinaForm(){
+    public function createComponentEditarMaquinaForm()
+    {
         $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
         $proveedores = $this->orm->proveedor->findAll()->fetchPairs('id', 'nombre');
-        $form = ( new MaquinasFormFactory())->createEdit($this->maquinaEditada, $empresasarray, $proveedores);
+        $form = (new MaquinasFormFactory())->createEdit($this->maquinaEditada, $empresasarray, $proveedores);
         $form->onSuccess[] = [$this, 'onSuccessEditarMaquina'];
         return $form;
     }
 
-    public function onSuccessEditarMaquina(Form $form, \stdClass $values): void{
+    public function onSuccessEditarMaquina(Form $form, stdClass $values): void
+    {
 
         $maquine = $this->orm->maquinas->getById($values->id);
         try {
+
+
             $maquine->modelo = $values->modelo;
-            if(is_null($values->ip)){
-                if(testip($values->ip)){
+            if (!is_null($values->ip)) {
+                if (testip($values->ip)) {
                     $maquine->ip = $values->ip;
                 } else {
-                    $this->flashMessage("IP Incorrecta",'danger');
+                    $this->flashMessage("IP Incorrecta", 'danger');
                     $this->redirect("Maquinas:edit", $maquine->id);
                 }
             }
-            if(is_null($values->mascara)){
-                if(testip($values->mascara)){
-                    $maquine->mascara = $values->ip;
+            if (!is_null($values->mascara)) {
+                if (testip($values->mascara)) {
+                    $maquine->mascara = $values->mascara;
                 } else {
-                    $this->flashMessage("Mascara Incorrecta",'danger');
+                    $this->flashMessage("Mascara Incorrecta", 'danger');
                     $this->redirect("Maquinas:edit", $maquine->id);
                 }
             }
@@ -200,11 +215,14 @@ class MaquinasPresenter extends BaseAdminPresenter
             $maquine->tipocontrato = $values->tipocontrato;
             $maquine->tipogarantia = $values->tipogarantia;
             $maquine->comentario = $values->comentario;
-            if(!is_null($values->firmwarebackup)){
+//            dd($maquine);
+            if (!is_null($values->firmwarebackup)) {
                 $firmware = $values->firmwarebackup;
-                if(is_null($firmware)) {
-                    $firmware->move("upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') . $values->firmwarebackup->name);
-                    $maquine->firmwarebackup = "upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') . $values->firmwarebackup->name;
+                if (is_null($firmware)) {
+                    $firmware->move("upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
+                                    $values->firmwarebackup->name);
+                    $maquine->firmwarebackup = "upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
+                        $values->firmwarebackup->name;
                 }
             }
             $proveedor = $this->orm->proveedor->getById($values->proveedor);
@@ -213,7 +231,9 @@ class MaquinasPresenter extends BaseAdminPresenter
             $empresa->maquinas->add($maquine);
 
             $this->orm->persistAndFlush($maquine);
-        } catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
+        } catch (Exception $e) {
+            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
+        }
         $this->redirect('Maquinas:default');
     }
 //
@@ -223,17 +243,18 @@ class MaquinasPresenter extends BaseAdminPresenter
 //
 
 
-    public function createComponentAddCopiasForm(){
+    public function createComponentAddCopiasForm()
+    {
 
-	return new Multiplier(function ($idmaquina) {
-        $maquina = $this->orm->maquinas->getById($idmaquina);
-        $form = ( new CopiasFormFactory())->createNuevo($maquina);
-        $form->onSuccess[] = [ $this, 'onSuccessAddCopias'];
-        return $form;
-	});
+        return new Multiplier(function ($idmaquina) {
+            $maquina = $this->orm->maquinas->getById($idmaquina);
+            $form = (new CopiasFormFactory())->createNuevo($maquina);
+            $form->onSuccess[] = [$this, 'onSuccessAddCopias'];
+            return $form;
+        });
     }
 
-    public function onSuccessAddCopias(Form $form, \stdClass $values ): void
+    public function onSuccessAddCopias(Form $form, stdClass $values): void
     {
 //
 //
@@ -244,13 +265,14 @@ class MaquinasPresenter extends BaseAdminPresenter
         $copies = new Copias();
         $copias = new Copias();
 
-        $comparecopias = $this->orm->copias->findBy(['maquina' => $values->idmaquina])->orderBy('id', ICollection::DESC)->limitBy(1);
-        foreach ($comparecopias as $comparar){
+        $comparecopias = $this->orm->copias->findBy(['maquina' => $values->idmaquina])->orderBy('id', ICollection::DESC)
+                                           ->limitBy(1);
+        foreach ($comparecopias as $comparar) {
             $copias = $comparar;
         }
         $maquina = $this->orm->maquinas->getById($values->idmaquina);
-        try{
-            if(isset($copias->id)){
+        try {
+            if (isset($copias->id)) {
                 if ($maquina->tipocontador == 0) {
                     if ($copias->copiasbn < $values->copiasbn) {
                         $copies->copiasbn = $values->copiasbn;
@@ -362,9 +384,10 @@ class MaquinasPresenter extends BaseAdminPresenter
                     $this->redirect('Copias:default');
                 }
             }
-        } catch( \Exception $e ) {}
+        } catch (Exception $e) {
+        }
 //        $this->flashMessage("Error: " . $e->getMessage(), 'danger');
-        $this->redirect('Copias:default', $maquina->id , 10);
+        $this->redirect('Copias:default', $maquina->id, 10);
     }
 
 }

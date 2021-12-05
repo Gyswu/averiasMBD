@@ -1,75 +1,75 @@
 {block content}
-    
-    <div class = "container">
+
+    <div class="container">
 
         <br>
-    
-        <div class = "row">
-    
+
+        <div class="row">
+
             <h1 n:block = "title"> Usuarios </h1>
-    
+
         </div>
 
         <br>
-    
-        <div class = "row">
-    
-            <div class = "col col-lg-6">
+
+        <div class="row">
+
+            <div class="col col-lg-6">
 
                 {ifset $empresa}
 
-                    <a n:href = "Usuarios:add $empresa->id" class = "btn btn-xs btn-success"> Añadir Usuario </a>
+                    <a n:href = "Usuarios:add $empresa->id" class="btn btn-xs btn-success"> Añadir Usuario </a>
 
-                    {else}
+                {else}
 
-                        <a n:href = "Usuarios:add" class = "btn btn-xs btn-success"> Añadir Usuario </a>
+                    <a n:href = "Usuarios:add" class="btn btn-xs btn-success"> Añadir Usuario </a>
 
                 {/ifset}
-    
+
             </div>
-    
+
         </div>
 
         <br>
-    
-        <div class = "row">
-    
-            <div class = "col col-lg-12">
-    
-                <table class = "table">
-    
-                    <thead class = "thead-dark">
 
-                        <tr>
+        <div class="row">
 
-                            {if $rol == 'admin'}
+            <div class="col col-lg-12">
 
-                                <th> Empresa </th>
+                <table class="table">
 
-                            {/if}
+                    <thead class="thead-dark">
 
-                            <th> Nombre </th>
+                    <tr>
 
-                            <th> Apellidos </th>
+                        {if $rol == 'admin'}
 
-                            <th> Correo </th>
+                            <th> Empresa</th>
 
-                            <th> Rol </th>
-                        
-                            <th> Telefono </th>
+                        {/if}
 
-                            <th> Extension </th>
+                        <th> Nombre</th>
 
-                            <th> Opciones </th>
-                       
-                        </tr>
-                    
+                        <th> Apellidos</th>
+
+                        <th> Correo</th>
+
+                        <th> Rol</th>
+
+                        <th> Telefono</th>
+
+                        <th> Extension</th>
+
+                        <th> Opciones</th>
+
+                    </tr>
+
                     </thead>
-                    
+
                     <tbody>
 
-                        {foreach $usuarios as $usuario}
-                            {if $usuario->id !== 666}
+                    {foreach $usuarios as $usuario}
+                        {if $usuario->id !== 666}
                             <tr>
 
                                 {if $rol == 'admin'}
@@ -78,33 +78,53 @@
 
                                 {/if}
 
-                                    <td> {$usuario->nombre} </td>
 
-                                    <td> {$usuario->apellidos}</td>
 
-                                    <td> {$usuario->correo} </td>
 
-                                    <td> {$usuario->rol} </td>
+                                <td> {$usuario->nombre} </td>
 
-                                    <td> {$usuario->telefono} </td>
 
-                                    <td>{$usuario->extensiontelefono}</td>
+
+
+                                <td> {$usuario->apellidos}</td>
+
+
+
+
+                                <td> {$usuario->correo} </td>
+
+
+
+
+                                <td> {$usuario->rol} </td>
+
+
+
+
+                                <td> {$usuario->telefono} </td>
+
+
+
+
+                                <td>{$usuario->extensiontelefono}</td>
 
                                 {if $rol == 'admin'}
 
                                     <td>
-                            
-                                        <a n:href = "Usuarios:editar $usuario->id" class = "btn btn-xs btn-primary"> Editar </a>
-                            
-                                        <a n:href = "Usuarios:borrarUsuario $usuario->id" class = "btn btn-xs btn-danger del"> Borrar </a>
-                            
+
+                                        <a n:href = "Usuarios:editar $usuario->id" class="btn btn-xs btn-primary">
+                                            Editar </a>
+
+                                        <a n:href = "Usuarios:borrarUsuario $usuario->id"
+                                                class="btn btn-xs btn-danger del"> Borrar </a>
+
                                     </td>
 
                                 {/if}
 
                             </tr>
-                            {/if}
-                        {/foreach}
+                        {/if}
+                    {/foreach}
 
                     </tbody>
 

@@ -3,66 +3,69 @@
 namespace App\AdminModule\Presenters;
 
 use App\Forms\AveriasFormFactory;
-
 use App\Model\Orm\Averias;
-
-use App\Model\Orm\Usuario;
-
+use Exception;
 use Nette\Application\UI\Form;
-
 use Nextras\Orm\Collection\ICollection;
+use stdClass;
 
-class AveriasPresenter extends BaseAdminPresenter {
+class AveriasPresenter extends BaseAdminPresenter
+{
 
-    /** @var $averiaEditada Averia*/
-    
+    /** @var $averiaEditada Averia */
+
     private $averiaEditada;
 
-    public function renderDefault ($idAveria): void {
+    public function renderDefault($idAveria): void
+    {
 
         $this->template->averias = $this->orm->averias->findAll();
-        
+
         $this->template->rol = $this->getDbUser()->rol;
-        
-         if (!$idAveria) {$this->template->averias = $this->orm->averias->findAll();}
 
-         else {
+        if (!$idAveria) {
+            $this->template->averias = $this->orm->averias->findAll();
+        } else {
 
-            $this->template->averias = $this->orm->averias->findBy(['id' => $idAveria])->orderBy('id', ICollection::DESC);
-         }
+            $this->template->averias = $this->orm->averias->findBy(['id' => $idAveria])
+                                                          ->orderBy('id', ICollection::DESC);
+        }
 
     }
 
 // _____________________________ EDITAR _______________________________________________
 
-    public function actionEdit( $idAveria) {
-        
+    public function actionEdit($idAveria)
+    {
+
         $averia = $this->orm->averias->getById($idAveria);
-        
+
         $this->averiaEditada = $averia;
-        
+
         $this->template->averia = $averia;
     }
-    
-    public function createComponentEditarAveriaForm() {
+
+    public function createComponentEditarAveriaForm()
+    {
 
         $empresasarray = $this->orm->empresa->findAll()->fetchPairs("id", "nombre");
 
-        $form = ( new AveriasFormFactory() )->createEdit($this->averiaEditada, $empresasarray);
-        
-        $form->onSuccess[] = [ $this, 'onSuccessEditarAveria' ];
+        $form = (new AveriasFormFactory())->createEdit($this->averiaEditada, $empresasarray);
+
+        $form->onSuccess[] = [$this, 'onSuccessEditarAveria'];
 
         return $form;
     }
-    
-    public function onSuccessEditarAveria (Form $form, \stdClass $values ): void {
-        
+
+    public function onSuccessEditarAveria(Form $form, stdClass $values): void
+    {
+
         $averiax = new Averias();
-        
+
         try {
-            
+
             $id = $values->id;
-            
+
             $averiax = $this->orm->averias->getById($id);
 
             //$averiax->descripcion = $values->descripcion;
@@ -82,13 +85,13 @@ class AveriasPresenter extends BaseAdminPresenter {
             $averiax->horasfuera = $values->horasfuera;
 
             $this->averiaEditada = $averiax;
-            
+
             $this->orm->persistAndFlush($averiax);
-            
+
             $this->flashMessage('Averia editada correctamente', 'success');
+        } catch (Exception $e) {
+            $this->flashMessage("Error: " . $e->getMessage(), 'danger');
         }
-         
-        catch( \Exception $e ) {$this->flashMessage("Error: " . $e->getMessage(), 'danger');}
 
         $this->redirect('Averias:default');
     }
@@ -96,21 +99,23 @@ class AveriasPresenter extends BaseAdminPresenter {
 
 //__________________AÑADIR____________________________
 
-    public function createComponentAddAveriaForm ($empresaId){
-        
+    public function createComponentAddAveriaForm($empresaId)
+    {
+
         $averia = new Averias();
 
         $empresasarray = $this->orm->empresa->findAll()->fetchPairs('id', 'nombre');
 
-        $form = ( new AveriasFormFactory() )->createNuevo($empresasarray);
+        $form = (new AveriasFormFactory())->createNuevo($empresasarray);
 
         $form->onSuccess[] = [$this, 'onSuccessAddAveria'];
 
         return $form;
     }
 
-    public function onSuccessAddAveria (Form $form, \stdClass $values ): void {
-        
+    public function onSuccessAddAveria(Form $form, stdClass $values): void
+    {
+
         try {
 
             $averiax = new Averias();
@@ -132,12 +137,12 @@ class AveriasPresenter extends BaseAdminPresenter {
             $usuario = $this->orm->usuarios->getById($this->getDbUser()->id);
 
             $usuario->averias->add($averiax);
-           
+
             $this->orm->persistAndFlush($usuario);
-            
+
             $this->flashMessage('Averia añadida correctamente', 'success');
-        
-        } catch( \Exception $e ) {
+
+        } catch (Exception $e) {
 
             dd($e->getMessage());
 
@@ -148,27 +153,31 @@ class AveriasPresenter extends BaseAdminPresenter {
     }
 
 //____________________BORRAR_____________________________________
-    
-    public function actionBorrarAverias ($idAveria){
+
+    public function actionBorrarAverias($idAveria)
+    {
 
         try {
-            
-            if (!$averia = $this->orm->averias->getById($idAveria)) {$this->flashMessage("La averia no existe", "danger");};
-            
+
+            if (!$averia = $this->orm->averias->getById($idAveria)) {
+                $this->flashMessage("La averia no existe", "danger");
+            }
+
             $this->orm->averias->removeAndFlush($averia);
-            
+
             $this->flashMessage("Averia eliminada", "success");
-        
-        } catch( \Exception $e ) {
-            
-            $this->flashMessage("Error al eliminar la averia, contacte con el administrador",'danger');
+
+        } catch (Exception $e) {
+
+            $this->flashMessage("Error al eliminar la averia, contacte con el administrador", 'danger');
         }
-        
+
         $this->redirect('Averias:default', $idAveria);
     }
 
     //____________________COMBIO DE ESTADO_____________________________________
-    public function actionProceso ($idAveria) {
+    public function actionProceso($idAveria)
+    {
 
         $averia = $this->orm->averias->getById($idAveria);
 
@@ -182,11 +191,12 @@ class AveriasPresenter extends BaseAdminPresenter {
 
     }
 
-    public function actionFinalizado ($idAveria) {
+    public function actionFinalizado($idAveria)
+    {
 
         $averia = $this->orm->averias->getById($idAveria);
 
-        if ( (!empty($averia->insitu) || !empty($averia->horasfuera)) && !empty($averia->resolucion)) {
+        if ((!empty($averia->insitu) || !empty($averia->horasfuera)) && !empty($averia->resolucion)) {
 
             $averia->estado = 2;
 
@@ -200,7 +210,7 @@ class AveriasPresenter extends BaseAdminPresenter {
 
             $this->flashMessage('Completa el campo de resolucion y horas antes de finalizar', 'danger');
 
-            $this->redirect('Averias:edit',$idAveria);
+            $this->redirect('Averias:edit', $idAveria);
 
         }
 

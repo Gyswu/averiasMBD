@@ -1,10 +1,10 @@
 {block content}
 
-    <div class = "container">
+    <div class="container">
 
         <br>
 
-        <div class = "row">
+        <div class="row">
 
             <h1 n:block = "title"> Usuarios </h1>
 
@@ -12,79 +12,93 @@
 
         <br>
 
-        <div class = "row">
+        <div class="row">
 
-            <div class = "col col-lg-12">
+            <div class="col col-lg-12">
 
-                <table class = "table">
+                <table class="table">
 
-                    <thead class = "thead-dark">
+                    <thead class="thead-dark">
 
-                        <tr>
+                    <tr>
 
-                            {if $rol == 'admin'}
+                        {if $rol == 'admin'}
 
-                                <th> Empresa </th>
+                            <th> Empresa</th>
 
-                            {/if}
+                        {/if}
 
-                            <th> Nombre </th>
+                        <th> Nombre</th>
 
-                            <th> Apellidos </th>
+                        <th> Apellidos</th>
 
-                            <th> Correo </th>
+                        <th> Correo</th>
 
-                            <th> Rol </th>
+                        <th> Rol</th>
 
-                            <th> Telefono </th>
+                        <th> Telefono</th>
 
-                            <th> Extension </th>
+                        <th> Extension</th>
 
-                            <th> Opciones </th>
+                        <th> Opciones</th>
 
-                        </tr>
+                    </tr>
 
                     </thead>
 
                     <tbody>
 
-                        {foreach $usuarios as $usuario}
+                    {foreach $usuarios as $usuario}
 
-                            <tr>
+                        <tr>
+
+                            {if $rol == 'admin'}
+
+                                <td> {$usuario->empresa->nombre} </td>
+
+                            {/if}
+
+
+
+                            <td> {$usuario->nombre} </td>
+
+
+
+                            <td> {$usuario->apellidos}</td>
+
+
+
+                            <td> {$usuario->correo} </td>
+
+
+
+                            <td> {$usuario->rol} </td>
+
+
+
+                            <td> {$usuario->telefono} </td>
+
+
+
+                            <td>{$usuario->extensiontelefono}</td>
 
                                 {if $rol == 'admin'}
 
-                                    <td> {$usuario->empresa->nombre} </td>
+                                <td>
 
-                                {/if}
+                                    <a n:href = "Usuarios:editar $usuario->id" class="btn btn-xs btn-primary">
+                                        Editar </a>
 
-                                    <td> {$usuario->nombre} </td>
+                                    <a n:href = "Usuarios:borrarUsuario $usuario->id" class="btn btn-xs btn-danger del">
+                                        Borrar </a>
 
-                                    <td> {$usuario->apellidos}</td>
+                                </td>
 
-                                    <td> {$usuario->correo} </td>
+                            {/if}
 
-                                    <td> {$usuario->rol} </td>
+                        </tr>
 
-                                    <td> {$usuario->telefono} </td>
-
-                                    <td>{$usuario->extensiontelefono}</td>
-
-                                {if $rol == 'admin'}
-
-                                    <td>
-
-                                        <a n:href = "Usuarios:editar $usuario->id" class = "btn btn-xs btn-primary"> Editar </a>
-
-                                        <a n:href = "Usuarios:borrarUsuario $usuario->id" class = "btn btn-xs btn-danger del"> Borrar </a>
-
-                                    </td>
-
-                                {/if}
-
-                            </tr>
-
-                        {/foreach}
+                    {/foreach}
 
                     </tbody>
 

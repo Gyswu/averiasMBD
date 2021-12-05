@@ -1,50 +1,50 @@
 {block content}
 
-    <div class = "container">
-
-    <br>
-
-    <div class = "row"> <h1 n:block = "title"> Mi Empresa </h1> </div>
-
-    <div class = "row">
-
-        <div class = "col col-lg-12">
+    <div class="container">
 
         <br>
 
-            <table class = "table">
+        <div class="row"><h1 n:block = "title"> Mi Empresa </h1></div>
 
-                <tbody>
+        <div class="row">
 
-                        <tr>
+            <div class="col col-lg-12">
 
-                            <td> NIF: {$empresa->nif}  </td>
+                <br>
 
-                            <td> NOMBRE: {$empresa->nombre} </td>
+                <table class="table">
 
-                            <td> TELEFONO: {$empresa->telefono} </td>
+                    <tbody>
 
-                            <td> DIRECCION: {$empresa->direccion} </td>
+                    <tr>
 
-                            <td>
+                        <td> NIF: {$empresa->nif}  </td>
 
-                               <a n:href = "Usuarios:default $empresa->id" class = "btn btn-xs btn-primary"> Usuarios </a>
+                        <td> NOMBRE: {$empresa->nombre} </td>
 
-                                <a n:href = "Empresas:edit $empresa->id" class = "btn btn-xs btn-primary "> Editar </a>
+                        <td> TELEFONO: {$empresa->telefono} </td>
 
-                                <a n:href = "Empresas:borrar $empresa->id" class = "btn btn-xs btn-danger "> Borrar </a>
+                        <td> DIRECCION: {$empresa->direccion} </td>
 
-                            </td>
+                        <td>
 
-                        </tr>
+                            <a n:href = "Usuarios:default $empresa->id" class="btn btn-xs btn-primary"> Usuarios </a>
 
-                </tbody>
+                            <a n:href = "Empresas:edit $empresa->id" class="btn btn-xs btn-primary "> Editar </a>
 
-            </table>
+                            <a n:href = "Empresas:borrar $empresa->id" class="btn btn-xs btn-danger "> Borrar </a>
 
-    </div>
+                        </td>
 
-    </div>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
     </div>
 

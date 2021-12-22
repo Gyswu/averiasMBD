@@ -68,7 +68,7 @@
                         </td>
                         <td>
                             {ifset $maquina->proveedor}
-                                <a href="">{$maquina->proveedor->nombre}</a>
+                                <a n:href = "Maquinas:default, id=> $maquina->proveedor->id , mode=> 9 ">{$maquina->proveedor->nombre}</a>
                             {else}
                                 Sin DATOS
                             {/ifset}
@@ -195,6 +195,94 @@
                             </td>
                         </tr>
                     {/ifset}
+                    <tr>
+                        <td>
+                            <h5>Entradas de copias</h5>
+                        </td>
+                        <td>
+                            {count($maquina->copias)}
+                        </td>
+                    </tr>
+                    {if count($maquina->copias) >= "1"}
+                    {if $maquina->tipocontador >= "0"}
+                    <tr>
+                        <td>
+                            <h5>
+                                Media de copias BN
+                            </h5>
+                        </td>
+                        <td>
+                            {$copiasTotalBn} Copias / dia <br>
+                            {$copiasTotalBn * 30} Copias / MES
+                        </td>
+                    </tr>
+                    {/if}
+                    {if $maquina->tipocontador >= "1"}
+                    <tr>
+                        <td>
+                            <h5>
+                                Media de copias CL
+                            </h5>
+                        </td>
+                        <td>
+                            {$copiasTotalCl} Copias / dia <br>
+                            {$copiasTotalCl * 30} Copias / MES
+                        </td>
+                    </tr>
+                    {/if}
+                    {if $maquina->tipocontador >= "0"}
+                    <tr>
+                        <td>
+                            <h5>
+                                Media de Escaneos
+                            </h5>
+                        </td>
+                        <td>
+                            {$copiasTotalEsc} Escaneos / dia <br>
+                            {$copiasTotalEsc * 30} Escaneos / MES
+                        </td>
+                    </tr>
+                    {/if}
+                    {if $maquina->tipocontador >= "2"}
+                    <tr>
+                        <td>
+                            <h5>
+                                Media de L1
+                            </h5>
+                        </td>
+                        <td>
+                            {$copiasTotalL} Copias / dia <br>
+                            {$copiasTotalL * 30} Copias / MES
+                        </td>
+                    </tr>
+                    {/if}
+                    {if $maquina->tipocontador >= "2"}
+                    <tr>
+                        <td>
+                            <h5>
+                                Media de L2
+                            </h5>
+                        </td>
+                        <td>
+                            {$copiasTotalLl} Copias / dia <br>
+                            {$copiasTotalLl * 30} Copias / MES
+                        </td>
+                    </tr>
+                    {/if}
+                    {if $maquina->tipocontador >= "2"}
+                    <tr>
+                        <td>
+                            <h5>
+                                Media de L3
+                            </h5>
+                        </td>
+                        <td>
+                            {$copiasTotalLll} Copias/ dia <br>
+                            {$copiasTotalLll * 30} Copias / MES
+                        </td>
+                    </tr>
+                    {/if}
+                    {/if}
                 </table>
             </div>
         </div>

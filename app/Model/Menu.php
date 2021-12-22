@@ -16,6 +16,11 @@ class Menu {
                 'nhref'   => 'Empresas:default',
             ],
             [
+                'nombre'  => 'Proveedores',
+                'mostrar' => $user->isAllowed(Roles::SECCION_EMPRESAS),
+                'nhref'   => 'Proveedores:default',
+            ],
+            [
                 'nombre'  => 'Usuarios',
                 'mostrar' => $user->isAllowed(Roles::SECCION_USUARIOS),
                 'nhref'   => 'Usuarios:default',

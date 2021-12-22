@@ -40,97 +40,97 @@ final class Template28edf53b6e extends Latte\Runtime\Template
 		extract($this->params);
 		extract($ʟ_args);
 		unset($ʟ_args);
-		echo '    <div class="container">
-        <div class="row">
-            <div class="col col-lg-6">
-                <h1>Cambios de Piezas</h1>
-            </div>
-            <div class="col col-lg-6">
+		echo '<div class="container">
+    <div class="row">
+        <div class="col col-lg-6">
+            <h1>Cambios de Piezas</h1>
+        </div>
+        <div class="col col-lg-6">
 
-            </div>
-            <div class="col col-lg-10">
-                <table class="table">
-                    <thead class="thead-dark">
+        </div>
+        <div class="col col-lg-10">
+            <table class="table">
+                <thead class="thead-dark">
 ';
 		if ($mode == 0) /* line 13 */ {
-			echo '                            <th>
-                                Maquina
-                            </th>
+			echo '                    <th>
+                        Maquina
+                    </th>
 ';
 		}
-		echo '                        <th>
-                            Pieza
-                        </th>
-                        <th>
-                            Fecha
-                        </th>
-                        <th>
-                            Razón
-                        </th>
-                        <th>
-                            Origen
-                        </th>
-                        <th>
-                            Tecnico
-                        </th>
-                        <th>
-                            Garantía
-                        </th>
-                    </thead>
+		echo '                <th>
+                    Pieza
+                </th>
+                <th>
+                    Fecha
+                </th>
+                <th>
+                    Razón
+                </th>
+                <th>
+                    Origen
+                </th>
+                <th>
+                    Tecnico
+                </th>
+                <th>
+                    Garantía
+                </th>
+                </thead>
 ';
 		$iterations = 0;
 		foreach ($cambios as $cambio) /* line 37 */ {
-			echo '                        <tr>
+			echo '                    <tr>
 ';
 			if ($mode == 0) /* line 39 */ {
-				echo '                                <td>x
-                                    ';
+				echo '                            <td>x
+                                ';
 				echo LR\Filters::escapeHtmlText($cambio->maquina->id) /* line 41 */;
 				echo '
-                                </td>
+                            </td>
 ';
 			}
-			echo '                            <td>
-                                Pieza (TODO)
-                            </td>
-                            <td>
-                                Añadir campo fecha
-                            </td>
-                            <td>
-                                ';
+			echo '                        <td>
+                            Pieza (TODO)
+                        </td>
+                        <td>
+                            Añadir campo fecha
+                        </td>
+                        <td>
+                            ';
 			echo LR\Filters::escapeHtmlText($cambio->causa) /* line 51 */;
 			echo '
-                            </td>
-                            <td>
-                                ';
+                        </td>
+                        <td>
+                            ';
 			echo LR\Filters::escapeHtmlText($cambio->origen) /* line 54 */;
 			echo '
-                            </td>
-                            <td>
-                                ';
+                        </td>
+                        <td>
+                            ';
 			echo LR\Filters::escapeHtmlText($cambio->tecnico) /* line 57 */;
 			echo '
-                            </td>
-                            <td>
+                        </td>
+                        <td>
 ';
 			if ($cambio->garantia) /* line 60 */ {
-				echo '                                    Si
+				echo '                                Si
 ';
 			}
 			else /* line 62 */ {
-				echo '                                    No
+				echo '                                No
 ';
 			}
-			echo '                            </td>
-                        </tr>
+			echo '                        </td>
+                    </tr>
 ';
 			$iterations++;
 		}
-		echo '                </table>
+		echo '            </table>
 
-            </div>
         </div>
-    </div>';
+    </div>
+</div>';
 	}
 
 }

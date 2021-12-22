@@ -35,16 +35,16 @@ final class Templatef932496288 extends Latte\Runtime\Template
 		extract($this->params);
 		extract($ʟ_args);
 		unset($ʟ_args);
-		echo '<div class="container">
-    <div class="row">
-        <div class="col-6 col-lg-6">
-            <h1>Dar maquina de alta</h1>
+		echo '    <div class="container">
+        <div class="row">
+            <div class="col-6 col-lg-6">
+                <h1>Dar maquina de alta</h1>
+            </div>
+            <div class="col-6-col-lg-6">
+            </div>
         </div>
-        <div class="col-6-col-lg-6">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12-col-lg-12">
+        <div class="row">
+            <div class="col-12-col-lg-12">
 ';
 		if (isset($empresaId)) /* line 13 */ {
 			echo "\n";
@@ -60,9 +60,9 @@ final class Templatef932496288 extends Latte\Runtime\Template
 			$_tmp->render();
 			echo "\n";
 		}
-		echo '        </div>
+		echo '            </div>
+        </div>
     </div>
-</div>
 
 
 ';

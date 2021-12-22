@@ -13,6 +13,7 @@ row .card .card-body{position:relative;padding-bottom:50px}
 
 
 @media screen and (min-width: 1px) {
+
     .id{
         display: none;
     }
@@ -33,6 +34,11 @@ row .card .card-body{position:relative;padding-bottom:50px}
     }
     .proveedor{
         display: none;
+    }
+    .nounderline{
+        color: darkblue;
+        font-weight: bolder;
+        text-decoration: none !important ;
     }
 }
 
@@ -58,6 +64,11 @@ row .card .card-body{position:relative;padding-bottom:50px}
     .proveedor{
         display: none;
     }
+    .nounderline{
+        color: darkblue;
+        font-weight: bolder;
+        text-decoration: none !important ;
+    }
 }
 @media screen and (min-width: 768px) {
     .id{
@@ -80,6 +91,11 @@ row .card .card-body{position:relative;padding-bottom:50px}
     }
     .proveedor{
         display: none;
+    }
+    .nounderline{
+        color: darkblue;
+        font-weight: bolder;
+        text-decoration: none !important ;
     }
 }
 
@@ -105,6 +121,11 @@ row .card .card-body{position:relative;padding-bottom:50px}
     .proveedor{
         display: none;
     }
+    .nounderline{
+        color: darkblue;
+        font-weight: bolder;
+        text-decoration: none !important ;
+    }
 }
 
 @media screen and (min-width: 1200px) {
@@ -129,6 +150,11 @@ row .card .card-body{position:relative;padding-bottom:50px}
     .proveedor{
         display: revert;
     }
+    .nounderline{
+        color: darkblue;
+        font-weight: bolder;
+        text-decoration: none !important ;
+    }
 }
 
 label{
@@ -145,5 +171,7 @@ th a i{
 th a i:hover{
 
 }
+
+
 
 /*# sourceMappingURL=style.css.map */

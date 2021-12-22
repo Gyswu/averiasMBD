@@ -67,7 +67,13 @@ class MaquinasPresenter extends BaseAdminPresenter
             $this->template->maquinas = $this->orm->maquinas->findBy(['estado' => $mode]);
         }
     }
-
+//
+//
+//
+//          INFORMACION
+//
+//
+//
     public function actioninfo($id): void
     {
         if (!$this->orm->maquinas->getById($id)) {
@@ -75,8 +81,63 @@ class MaquinasPresenter extends BaseAdminPresenter
             $this->redirect("Maquinas:default");
 
         }
+        $maquina = $this->orm->maquinas->getById($id);
+        $mediaCopiasBn = 0;
+
+        $contador = 0;
+        $cuentaBn = 0;
+        $cuentaCl = 0;
+        $cuentaEsc = 0;
+        $cuentaL = 0;
+        $cuentaLl = 0;
+        $cuentaLll = 0;
         $modo = 10;
-        $this->template->maquina = $this->orm->maquinas->getById($id);
+
+        $firstCopia = new Copias();
+        $lastCopia = new Copias();
+        if (count($maquina->copias) >= '1') {
+            foreach ($maquina->copias as $copia) {
+                if ($contador == 0) {
+                    $firstCopia = $copia;
+                    $contador++;
+                }
+                $lastCopia = $copia;
+            }
+            if (!$lastCopia->copiasbn == null) {
+                $cuentaBn = $lastCopia->copiasbn - $firstCopia->copiasbn;
+            }
+            if (!$lastCopia->copiascl == null) {
+                $cuentaCl = $lastCopia->copiascl - $firstCopia->copiascl;
+            }
+            if (!$lastCopia->escaneos == null) {
+                $cuentaEsc = $lastCopia->escaneos - $firstCopia->escaneos;
+            }
+            if (!$lastCopia->copiasl == null) {
+                $cuentaL = $lastCopia->copiasl - $firstCopia->copiasl;
+            }
+            if (!$lastCopia->copiasll == null) {
+                $cuentaLl = $lastCopia->copiasll - $firstCopia->copiasll;
+            }
+            if (!$lastCopia->copiaslll == null) {
+                $cuentaLll = $lastCopia->copiaslll - $firstCopia->copiaslll;
+            }
+        }
+        $fechauno = explode('/', $firstCopia->fecha);
+        $fechados = explode('/', $lastCopia->fecha);
+        $diferencia = date_diff(date_create($fechauno[2] . '-' . $fechauno[1] . '-' .
+                                            $fechauno[0]), date_create($fechados[2] . '-' . $fechados[1] . '-' .
+                                                                       $fechados[0]));
+
+        //$this->template->copiasTotalBn = ceil($cuentaBn / (($diferencia->d / 7) * 5));
+        $this->template->copiasTotalBn = ceil($cuentaBn / $diferencia->d);
+        $this->template->copiasTotalCl = ceil($cuentaCl / $diferencia->d);
+        $this->template->copiasTotalEsc = ceil($cuentaEsc / $diferencia->d);
+        $this->template->copiasTotalL = ceil($cuentaL / $diferencia->d);
+        $this->template->copiasTotalLl = ceil($cuentaLl / $diferencia->d);
+        $this->template->copiasTotalLll = ceil($cuentaLll / $diferencia->d);
+
+
+        $this->template->maquina = $maquina;
         $this->template->mode = $modo;
     }
 //
@@ -144,6 +205,7 @@ class MaquinasPresenter extends BaseAdminPresenter
             $maquina->tipocontrato = $values->tipocontrato;
             $maquina->tipogarantia = $values->tipogarantia;
             $maquina->comentario = $values->comentario;
+
 
             if (!is_null($values->firmwarebackup)) {
                 $firmware = $values->firmwarebackup;

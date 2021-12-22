@@ -22,9 +22,9 @@
 
                         <td> NOMBRE: {$empresa->nombre} </td>
 
-                        <td> TELEFONO: {$empresa->telefono} </td>
+                        <td> TELEFONO: <a class="nounderline" href="tel:{$empresa->telefono}">{$empresa->telefono}</a> </td>
 
-                        <td> DIRECCION: {$empresa->direccion} </td>
+                        <td> DIRECCION: <a class="nounderline" href="https://www.google.com/maps/search/?api=1&query={str_replace(" ", "+", $empresa->direccion)}">{$empresa->direccion}</a> </td>
 
                         <td>
 

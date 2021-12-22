@@ -129,7 +129,9 @@ final class Template7031762e99 extends Latte\Runtime\Template
                         <td>
 ';
 		if (isset($maquina->proveedor)) /* line 70 */ {
-			echo '                                <a href="">';
+			echo '                                <a href="';
+			echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Maquinas:default", ['id'=> $maquina->proveedor->id , 'mode'=> 9 ])) /* line 71 */;
+			echo '">';
 			echo LR\Filters::escapeHtmlText($maquina->proveedor->nombre) /* line 71 */;
 			echo '</a>
 ';
@@ -307,18 +309,46 @@ final class Template7031762e99 extends Latte\Runtime\Template
                         </tr>
 ';
 		}
+		echo '                    <tr>
+                        <td>
+                            <h5>Entradas de copias</h5>
+                        </td>
+                        <td>
+                            ';
+		echo LR\Filters::escapeHtmlText(count($maquina->copias)) /* line 203 */;
+		echo '
+                        </td>
+                    </tr>
+';
+		if (count($maquina->copias) >= "10") /* line 206 */ {
+			echo '                    <tr>
+                        <td>
+                            <h5>
+                                Media de copias
+                            </h5>
+                        </td>
+                        <td>
+                            ';
+			echo LR\Filters::escapeHtmlText($mediaCopiasBn) /* line 214 */;
+			echo '
+                        </td>
+                    </tr>
+';
+		}
 		echo '                </table>
             </div>
         </div>
         <div class="row text-center">
             <div class="col-12 col-lg-12">
                 <a class="btn btn-info" href="';
-		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:default", ['value'=> $maquina->id , 'mode'=>$mode])) /* line 203 */;
-		echo '"><i class="bi bi-clipboard-data"></i> Copias</a>
+		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:default", ['value'=> $maquina->id , 'mode'=>$mode])) /* line 223 */;
+		echo '"><i
+                            class="bi bi-clipboard-data"></i> Copias</a>
                 <a href="" class="btn btn-warning"><i class="bi bi-gear-fill"></i> Cambios de piezas</a>
                 <a class="btn btn-info" href="';
-		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Maquinas:edit", [$maquina->id])) /* line 205 */;
-		echo '"><i class="bi bi-pencil-square"></i> Editar</a>
+		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Maquinas:edit", [$maquina->id])) /* line 226 */;
+		echo '"><i class="bi bi-pencil-square"></i>
+                    Editar</a>
             </div>
         </div>
     </div>

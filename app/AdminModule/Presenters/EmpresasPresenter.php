@@ -140,9 +140,12 @@ class EmpresasPresenter extends BaseAdminPresenter
 
             $empresa->nombre = $values->nombre;
 
+
             $empresa->telefono = $values->telefono;
 
             $empresa->direccion = $values->direccion;
+
+            $empresa->contacto = $values->contacto;
 
             $this->orm->persistAndFlush($empresa);
 

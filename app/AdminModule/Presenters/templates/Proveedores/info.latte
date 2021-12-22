@@ -1,0 +1,57 @@
+{block content}
+    <div class="cotnainer">
+        <div class="row">
+            <div class="col col-lg-12">
+                <h1 class="text-center">
+                    Información del proveedor {$proveedor->nombre}
+                </h1>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-12 col-lg-12 col-md-12">
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <h5>ID</h5>
+                        </td>
+                        <td>
+                            {$proveedor->id}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>NIF</h5>
+                        </td>
+                        <td>
+                            {$proveedor->nif}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Nombre</h5>
+                        </td>
+                        <td>
+                            {$proveedor->nombre}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Telefono</h5>
+                        </td>
+                        <td>
+                            {$proveedor->telefono}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Dirección</h5>
+                        </td>
+                        <td>
+                            {$proveedor->direccion}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}

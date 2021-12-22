@@ -36,11 +36,11 @@ final class Templateb432d56543 extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 		echo '
-    <div class = "container">
+    <div class="container">
 
         <br>
 
-        <div class = "row">
+        <div class="row">
 
 ';
 		$this->renderBlock('title', get_defined_vars()) /* line 9 */;
@@ -49,19 +49,19 @@ final class Templateb432d56543 extends Latte\Runtime\Template
 
         <br>
 
-        <div class = "row">
+        <div class="row">
 
-            <div class = "col col-lg-6"> <a class = "btn btn-info" href="';
+            <div class="col col-lg-6"><a class="btn btn-info" href="';
 		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Empresas:default")) /* line 17 */;
-		echo '"> Volver </a> </div>
+		echo '"> Volver </a></div>
 
         </div>
 
         <br>
 
-        <div class = "row">
+        <div class="row">
 
-            <div class = "col col-lg-6"> ';
+            <div class="col col-lg-6"> ';
 		/* line 25 */ $_tmp = $this->global->uiControl->getComponent("addEmpresaForm");
 		if ($_tmp instanceof Nette\Application\UI\Renderable) $_tmp->redrawControl(null, false);
 		$_tmp->render();

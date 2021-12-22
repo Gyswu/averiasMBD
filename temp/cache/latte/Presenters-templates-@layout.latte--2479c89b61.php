@@ -57,27 +57,27 @@ final class Template2479c89b61 extends Latte\Runtime\Template
 		extract($ʟ_args);
 		unset($ʟ_args);
 		echo '
-    <nav class = "navbar navbar-expand-lg navbar-dark bg-primary mb-5">
-	<div class="container-fluid">
-        <a class = "navbar-brand" href="';
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="';
 		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Homepage:default")) /* line 11 */;
 		echo '"> Home </a>
 
-        <button class = "navbar-toggler" type = "button" data-bs-toggle = "collapse"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 
-                data-bs-target = ".dual-collapse2"
+                    data-bs-target=".dual-collapse2"
 
-                aria-controls = "navbarSupportedContent" aria-expanded = "false"
+                    aria-controls="navbarSupportedContent" aria-expanded="false"
 
-                aria-label = "Toggle navigation">
+                    aria-label="Toggle navigation">
 
-            <span class="navbar-toggler-icon"> </span>
+                <span class="navbar-toggler-icon"> </span>
 
-        </button>
+            </button>
 
-        <div class = "collapse navbar-collapse w-100 order-0 dual-collapse2 ml-3" id = "navbarSupportedContent">
+            <div class="collapse navbar-collapse w-100 order-0 dual-collapse2 ml-3" id="navbarSupportedContent">
 
-            <ul class = "navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto">
 
 ';
 		$iterations = 0;
@@ -85,17 +85,18 @@ final class Template2479c89b61 extends Latte\Runtime\Template
 			echo "\n";
 			if ($datos['mostrar']) /* line 31 */ {
 				echo '
-                        <li class="nav-item">
+                            <li class="nav-item">
 
-                            <a class = "nav-link" href="';
+                                <a class="nav-link" href="';
 				echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link($datos['nhref'])) /* line 35 */;
 				echo '"> ';
 				echo LR\Filters::escapeHtmlText($datos['nombre']) /* line 35 */;
 				echo '
 
-                            </a>
+                                </a>
 
-                        </li>
+                            </li>
+
 
 ';
 			}
@@ -103,40 +104,40 @@ final class Template2479c89b61 extends Latte\Runtime\Template
 			$iterations++;
 		}
 		echo '
-            </ul>
+                </ul>
 
-        </div>
+            </div>
 
-        <div class = "d-flex navbar-collapse collapse w-100 order-3 dual-collapse2 justify-content-end">
+            <div class="d-flex navbar-collapse collapse w-100 order-3 dual-collapse2 justify-content-end">
 
-            <ul class = "navbar-nav ml-auto mr-3">
+                <ul class="navbar-nav ml-auto mr-3">
 
-                <li class = "nav-item">
+                    <li class="nav-item">
 
 ';
-		if ($usuarioDb) /* line 55 */ {
+		if ($usuarioDb) /* line 56 */ {
 			echo '
-                        <a class = "nav-link" href="';
-			echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link(":Sign:out")) /* line 57 */;
+                            <a class="nav-link" href="';
+			echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link(":Sign:out")) /* line 58 */;
 			echo '"> ';
-			echo LR\Filters::escapeHtmlText($usuarioDb->nombre) /* line 57 */;
+			echo LR\Filters::escapeHtmlText($usuarioDb->nombre) /* line 58 */;
 			echo ' (<b> Salir </b>)</a>
 
 ';
 		}
-		else /* line 59 */ {
+		else /* line 60 */ {
 			echo '
-                        Invitado
+                            Invitado
 
 ';
 		}
 		echo '
-                </li>
+                    </li>
 
-            </ul>
+                </ul>
 
+            </div>
         </div>
-	</div>
     </nav>
 
 ';

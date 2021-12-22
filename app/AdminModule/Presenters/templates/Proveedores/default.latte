@@ -1,0 +1,60 @@
+{block content}
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-6">
+                <h1>Todos los proveedores</h1>
+            </div>
+            <div class="col col-lg-6">
+                <h2>Work in Progress</h2>
+            </div>
+            <div class="col-lg-10">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <th class="id">
+                        ID
+                    </th>
+                    <th class="nif">
+                        Nif
+                    </th>
+                    <th class="nombre">
+                        Nombre
+                    </th>
+                    <th class="telefono">
+                        Telefono
+                    </th>
+                    <th class="direccion">
+                        Dirección
+                    </th>
+                    <th class="opciones">
+                        Opciones
+                    </th>
+                    </thead>
+                    {foreach $proveedores as $proveedor}
+                        <tr>
+                            <td class="id">
+                                {$proveedor->id}
+                            </td>
+                            <td class="nif">
+                                {$proveedor->nif}
+                            </td>
+                            <td class="nombre">
+                                {$proveedor->nombre}
+                            </td>
+                            <td class="telefono">
+                                <a class="nounderline" href="tel:{$proveedor->telefono}">{$proveedor->telefono}</a>
+                            </td>
+                            <td class="direccion">
+                                {$proveedor->direccion}
+                            </td>
+                            <td class="opciones">
+                                <a n:href = "Maquinas:default, id=> $proveedor->id , mode=> 9 "
+                                        class="btn btn-xs btn-primary"> Maquinas</a>
+                                <a n:href= "Proveedores:info $proveedor->id " class="btn btn btn-xs btn-primary">Información</a>
+                            </td>
+                        </tr>
+                    {/foreach}
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}

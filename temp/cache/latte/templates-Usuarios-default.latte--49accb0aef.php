@@ -40,28 +40,28 @@ final class Template49accb0aef extends Latte\Runtime\Template
 		extract($this->params);
 		extract($ʟ_args);
 		unset($ʟ_args);
-		echo '    
-    <div class = "container">
+		echo '
+    <div class="container">
 
         <br>
-    
-        <div class = "row">
-    
+
+        <div class="row">
+
 ';
 		$this->renderBlock('title', get_defined_vars()) /* line 9 */;
-		echo '    
+		echo '
         </div>
 
         <br>
-    
-        <div class = "row">
-    
-            <div class = "col col-lg-6">
+
+        <div class="row">
+
+            <div class="col col-lg-6">
 
 ';
 		if (isset($empresa)) /* line 19 */ {
 			echo '
-                    <a class = "btn btn-xs btn-success" href="';
+                    <a class="btn btn-xs btn-success" href="';
 			echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Usuarios:add", [$empresa->id])) /* line 21 */;
 			echo '"> Añadir Usuario </a>
 
@@ -69,55 +69,55 @@ final class Template49accb0aef extends Latte\Runtime\Template
 		}
 		else /* line 23 */ {
 			echo '
-                        <a class = "btn btn-xs btn-success" href="';
+                    <a class="btn btn-xs btn-success" href="';
 			echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Usuarios:add")) /* line 25 */;
 			echo '"> Añadir Usuario </a>
 
 ';
 		}
-		echo '    
+		echo '
             </div>
-    
+
         </div>
 
         <br>
-    
-        <div class = "row">
-    
-            <div class = "col col-lg-12">
-    
-                <table class = "table">
-    
-                    <thead class = "thead-dark">
 
-                        <tr>
+        <div class="row">
+
+            <div class="col col-lg-12">
+
+                <table class="table">
+
+                    <thead class="thead-dark">
+
+                    <tr>
 
 ';
 		if ($rol == 'admin') /* line 45 */ {
 			echo '
-                                <th> Empresa </th>
+                            <th> Empresa</th>
 
 ';
 		}
 		echo '
-                            <th> Nombre </th>
+                        <th> Nombre</th>
 
-                            <th> Apellidos </th>
+                        <th> Apellidos</th>
 
-                            <th> Correo </th>
+                        <th> Correo</th>
 
-                            <th> Rol </th>
-                        
-                            <th> Telefono </th>
+                        <th> Rol</th>
 
-                            <th> Extension </th>
+                        <th> Telefono</th>
 
-                            <th> Opciones </th>
-                       
-                        </tr>
-                    
+                        <th> Extension</th>
+
+                        <th> Opciones</th>
+
+                    </tr>
+
                     </thead>
-                    
+
                     <tbody>
 
 ';
@@ -136,43 +136,63 @@ final class Template49accb0aef extends Latte\Runtime\Template
 ';
 				}
 				echo '
-                                    <td> ';
-				echo LR\Filters::escapeHtmlText($usuario->nombre) /* line 81 */;
+
+
+
+                                <td> ';
+				echo LR\Filters::escapeHtmlText($usuario->nombre) /* line 84 */;
 				echo ' </td>
 
-                                    <td> ';
-				echo LR\Filters::escapeHtmlText($usuario->apellidos) /* line 83 */;
+
+
+
+                                <td> ';
+				echo LR\Filters::escapeHtmlText($usuario->apellidos) /* line 89 */;
 				echo '</td>
 
-                                    <td> ';
-				echo LR\Filters::escapeHtmlText($usuario->correo) /* line 85 */;
+
+
+
+                                <td> ';
+				echo LR\Filters::escapeHtmlText($usuario->correo) /* line 94 */;
 				echo ' </td>
 
-                                    <td> ';
-				echo LR\Filters::escapeHtmlText($usuario->rol) /* line 87 */;
+
+
+
+                                <td> ';
+				echo LR\Filters::escapeHtmlText($usuario->rol) /* line 99 */;
 				echo ' </td>
 
-                                    <td> ';
-				echo LR\Filters::escapeHtmlText($usuario->telefono) /* line 89 */;
+
+
+
+                                <td> ';
+				echo LR\Filters::escapeHtmlText($usuario->telefono) /* line 104 */;
 				echo ' </td>
 
-                                    <td>';
-				echo LR\Filters::escapeHtmlText($usuario->extensiontelefono) /* line 91 */;
+
+
+
+                                <td>';
+				echo LR\Filters::escapeHtmlText($usuario->extensiontelefono) /* line 109 */;
 				echo '</td>
 
 ';
-				if ($rol == 'admin') /* line 93 */ {
+				if ($rol == 'admin') /* line 111 */ {
 					echo '
                                     <td>
-                            
-                                        <a class = "btn btn-xs btn-primary" href="';
-					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Usuarios:editar", [$usuario->id])) /* line 97 */;
-					echo '"> Editar </a>
-                            
-                                        <a class = "btn btn-xs btn-danger del" href="';
-					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Usuarios:borrarUsuario", [$usuario->id])) /* line 99 */;
+
+                                        <a class="btn btn-xs btn-primary" href="';
+					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Usuarios:editar", [$usuario->id])) /* line 115 */;
+					echo '">
+                                            Editar </a>
+
+                                        <a
+                                                class="btn btn-xs btn-danger del" href="';
+					echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Usuarios:borrarUsuario", [$usuario->id])) /* line 118 */;
 					echo '"> Borrar </a>
-                            
+
                                     </td>
 
 ';

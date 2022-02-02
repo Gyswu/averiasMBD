@@ -49,7 +49,7 @@ final class SignInFormFactory
 
         $form->addPassword('password', 'Contraseña:')->setRequired('Introduce tu Contraseña.');
 
-        $form->addCheckbox('remember', 'Mantener sesión');
+        $form->addCheckbox('remember', 'Mantener sesión')->setDefaultValue(true);
 
         $form->addSubmit('send', 'Conectar')->setHtmlAttribute("class", "btn btn-success");
 

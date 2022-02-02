@@ -180,31 +180,31 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
                             Fecha
                         </th>
 ';
-			if ($copias->tipocontador <= 1) /* line 112 */ {
+			if ($copias->tipocontador >= "1") /* line 112 */ {
 				echo '                            <th class="copiasc">
                                 Copias C
                             </th>
 ';
 			}
-			if ($copias->tipocontador >= 0) /* line 117 */ {
+			if ($copias->tipocontador >= "0") /* line 117 */ {
 				echo '                            <th class="copiasbn">
                                 Copias BN
                             </th>
 ';
 			}
-			if ($copias->tipocontador == 2) /* line 122 */ {
+			if ($copias->tipocontador == "2") /* line 122 */ {
 				echo '                            <th class="conpiasl">
                                 Copias L1
                             </th>
 ';
 			}
-			if ($copias->tipocontador == 2) /* line 127 */ {
+			if ($copias->tipocontador == "2") /* line 127 */ {
 				echo '                            <th class="copiasll">
                                 Copias L2
                             </th>
 ';
 			}
-			if ($copias->tipocontador == 2) /* line 132 */ {
+			if ($copias->tipocontador == "2") /* line 132 */ {
 				echo '                            <th class="copiaslll">
                                 Copias L3
                             </th>
@@ -581,7 +581,7 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 				echo '
                         </td>
 ';
-				if ($copias->tipocontador <= 1) /* line 356 */ {
+				if ($copias->tipocontador >= "1") /* line 356 */ {
 					echo '                            <td class="copiasc">
 ';
 					if (isset($copia->copiascl)) /* line 358 */ {
@@ -596,7 +596,7 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 					echo '                            </td>
 ';
 				}
-				if ($copias->tipocontador >= 0) /* line 365 */ {
+				if ($copias->tipocontador >= "0") /* line 365 */ {
 					echo '                            <td class="copiasbn">
 ';
 					if (isset($copia->copiasbn)) /* line 367 */ {
@@ -611,7 +611,7 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 					echo '                            </td>
 ';
 				}
-				if ($copias->tipocontador == 2) /* line 374 */ {
+				if ($copias->tipocontador == "2") /* line 374 */ {
 					echo '                            <td class="copiasl">
 ';
 					if (isset($copia->copiasl)) /* line 376 */ {
@@ -626,7 +626,7 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 					echo '                            </td>
 ';
 				}
-				if ($copias->tipocontador == 2) /* line 383 */ {
+				if ($copias->tipocontador == "2") /* line 383 */ {
 					echo '                            <td class="copiasll">
 ';
 					if (isset($copia->copiasll)) /* line 385 */ {
@@ -641,7 +641,7 @@ final class Templatefd53f39066 extends Latte\Runtime\Template
 					echo '                            </td>
 ';
 				}
-				if ($copias->tipocontador == 2) /* line 392 */ {
+				if ($copias->tipocontador == "2") /* line 392 */ {
 					echo '                            <td class="copiaslll">
 ';
 					if (isset($copia->copiasll)) /* line 394 */ {

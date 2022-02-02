@@ -47,9 +47,8 @@
                                 {$proveedor->direccion}
                             </td>
                             <td class="opciones">
-                                <a n:href = "Maquinas:default, id=> $proveedor->id , mode=> 9 "
-                                        class="btn btn-xs btn-primary"> Maquinas</a>
-                                <a n:href= "Proveedores:info $proveedor->id " class="btn btn btn-xs btn-primary">Información</a>
+                                <a n:href = "Maquinas:default, id=> $proveedor->id , mode=> 9 " class=""><i class="fa-solid fa-print"></i></a>
+                                <a n:href= "Proveedores:info $proveedor->id " class=""><i class="fa-solid fa-file-lines"></i></a>
                             </td>
                         </tr>
                     {/foreach}

@@ -39,6 +39,11 @@ class Menu {
                 'nombre'  => 'Cambios',
                 'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
                 'nhref'   => 'Piezas:default',
+            ],
+            [
+                'nombre'  => 'Resumen',
+                'mostrar' => $user->isAllowed(Roles::SECCION_AVERIAS),
+                'nhref'   => 'Resumen:default',
             ]
 
         ];

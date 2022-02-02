@@ -18,11 +18,11 @@
 
                 {ifset $empresa}
 
-                    <a n:href = "Usuarios:add $empresa->id" class="btn btn-xs btn-success"> Añadir Usuario </a>
+                    <a n:href = "Usuarios:add $empresa->id" class=""><i class="fa-solid fa-plus h5"></i></a>
 
                 {else}
 
-                    <a n:href = "Usuarios:add" class="btn btn-xs btn-success"> Añadir Usuario </a>
+                    <a n:href = "Usuarios:add" class=""><i class="fa-solid fa-plus"></i></a>
 
                 {/ifset}
 
@@ -112,11 +112,10 @@
 
                                     <td>
 
-                                        <a n:href = "Usuarios:editar $usuario->id" class="btn btn-xs btn-primary">
-                                            Editar </a>
+                                        <a n:href = "Usuarios:editar $usuario->id" class=""><i class="fa-solid fa-pen-to-square"></i></a>
 
                                         <a n:href = "Usuarios:borrarUsuario $usuario->id"
-                                                class="btn btn-xs btn-danger del"> Borrar </a>
+                                                class=""><i class="fa-solid fa-trash-can"></i></a>
 
                                     </td>
 

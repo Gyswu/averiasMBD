@@ -14,6 +14,7 @@
                         <h1>Todas las entradas de copias del proveedor {$proveedor->nombre}</h1>
                     {case 10}
                         <h1>Todos las entradas de copias de la maquina #000{$copias->id} </h1>
+                        <a n:href="Maquinas:info $copias->id" class=""><i class="fa-solid fa-left-long h5"></i></a>
                     {/switch}
                 {else}
                     MAL
@@ -22,10 +23,9 @@
             {*            AÑADIR COPIAS *}
             {ifset $modo}
                 {if $modo == 10}
-
                     <div class="col-12 col-12-lg">
-                        <a n:href="Copias:add $copias->id" class="btn btn-success"><i
-                                    class="bi bi-plus-circle-fill"></i> Nuevo registro</a>
+                        <a n:href="Copias:add $copias->id" class=""><i
+                                    class="bi bi-plus-circle-fill h5"></i></a>
                     </div>
 
                 {/if}
@@ -109,27 +109,27 @@
                         <th class="fecha">
                             Fecha
                         </th>
-                        {if $copias->tipocontador <= 1}
+                        {if $copias->tipocontador >= "1"}
                             <th class="copiasc">
                                 Copias C
                             </th>
                         {/if}
-                        {if $copias->tipocontador >= 0}
+                        {if $copias->tipocontador >= "0"}
                             <th class="copiasbn">
                                 Copias BN
                             </th>
                         {/if}
-                        {if $copias->tipocontador == 2}
+                        {if $copias->tipocontador == "2"}
                             <th class="conpiasl">
                                 Copias L1
                             </th>
                         {/if}
-                        {if $copias->tipocontador == 2}
+                        {if $copias->tipocontador == "2"}
                             <th class="copiasll">
                                 Copias L2
                             </th>
                         {/if}
-                        {if $copias->tipocontador == 2}
+                        {if $copias->tipocontador == "2"}
                             <th class="copiaslll">
                                 Copias L3
                             </th>
@@ -205,10 +205,10 @@
                             </td>
                             {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
                                 <td>
-                                    <a n:href="Copias:edit, $copia->id" class="btn btn-info"><i
-                                                class="bi bi-pencil-square"></i> Editar</a>
+                                    <a n:href="Copias:edit, $copia->id" class=""><i
+                                                class="bi bi-pencil-square"></i></a>
                                     <a n:href="Copias:removeCopia, idcopia => $copia->id, modo => $modo"
-                                            class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</a>
+                                            class=""><i class="bi bi-trash-fill"></i></a>
                                 </td>
                             {/if}
                         </tr>
@@ -271,10 +271,10 @@
                                 </td>
                                 {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
                                     <td>
-                                        <a n:href="Copias:edit, $copia->id" class="btn btn-info"><i
-                                                    class="bi bi-pencil-square"></i> Editar</a>
+                                        <a n:href="Copias:edit, $copia->id" class=""><i
+                                                    class="bi bi-pencil-square"></i></a>
                                         <a n:href="Copias:removeCopia, idcopia => $copia->id, modo => $modo"
-                                                class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</a>
+                                                class=""><i class="bi bi-trash-fill"></i></a>
                                     </td>
                                 {/if}
                             </tr>
@@ -338,10 +338,10 @@
                                 </td>
                                 {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
                                     <td>
-                                        <a n:href="Copias:edit, $copia->id" class="btn btn-info"><i
-                                                    class="bi bi-pencil-square"></i> Editar</a>
+                                        <a n:href="Copias:edit, $copia->id" class=""><i
+                                                    class="bi bi-pencil-square"></i></a>
                                         <a n:href="Copias:removeCopia, idcopia => $copia->id, modo => $modo"
-                                                class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</a>
+                                                class=""><i class="bi bi-trash-fill"></i></a>
                                     </td>
                                 {/if}
                             </tr>
@@ -353,7 +353,7 @@
                         <td class="fecha">
                             {$copia->fecha}
                         </td>
-                        {if $copias->tipocontador <= 1}
+                        {if $copias->tipocontador >= "1"}
                             <td class="copiasc">
                                 {ifset $copia->copiascl}
                                     {$copia->copiascl}
@@ -362,7 +362,7 @@
                                 {/ifset}
                             </td>
                         {/if}
-                        {if $copias->tipocontador >= 0}
+                        {if $copias->tipocontador >= "0"}
                             <td class="copiasbn">
                                 {ifset $copia->copiasbn}
                                     {$copia->copiasbn}
@@ -371,7 +371,7 @@
                                 {/ifset}
                             </td>
                         {/if}
-                        {if $copias->tipocontador == 2}
+                        {if $copias->tipocontador == "2"}
                             <td class="copiasl">
                                 {ifset $copia->copiasl}
                                     {$copia->copiasl}
@@ -380,7 +380,7 @@
                                 {/ifset}
                             </td>
                         {/if}
-                        {if $copias->tipocontador == 2}
+                        {if $copias->tipocontador == "2"}
                             <td class="copiasll">
                                 {ifset $copia->copiasll}
                                     {$copia->copiasll}
@@ -389,7 +389,7 @@
                                 {/ifset}
                             </td>
                         {/if}
-                        {if $copias->tipocontador == 2}
+                        {if $copias->tipocontador == "2"}
                             <td class="copiaslll">
                                 {ifset $copia->copiasll}
                                     {$copia->copiasll}
@@ -407,10 +407,10 @@
                         </td>
                         {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
                             <td>
-                                <a n:href="Copias:edit, $copia->id" class="btn btn-info"><i
-                                            class="bi bi-pencil-square"></i> Editar</a>
+                                <a n:href="Copias:edit, $copia->id" class=""><i
+                                            class="bi bi-pencil-square"></i></a>
                                 <a n:href="Copias:removeCopia, idcopia => $copia->id, modo => $modo"
-                                        class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</a>
+                                        class=""><i class="bi bi-trash-fill"></i></a>
                             </td>
                         {/if}
                     <tr>

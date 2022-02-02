@@ -309,31 +309,128 @@ final class Template7031762e99 extends Latte\Runtime\Template
                         </tr>
 ';
 		}
-		echo '                    <tr>
-                        <td>
-                            <h5>Entradas de copias</h5>
-                        </td>
-                        <td>
-                            ';
-		echo LR\Filters::escapeHtmlText(count($maquina->copias)) /* line 203 */;
-		echo '
-                        </td>
-                    </tr>
-';
-		if (count($maquina->copias) >= "10") /* line 206 */ {
-			echo '                    <tr>
-                        <td>
-                            <h5>
-                                Media de copias
-                            </h5>
-                        </td>
-                        <td>
-                            ';
-			echo LR\Filters::escapeHtmlText($mediaCopiasBn) /* line 214 */;
+		if (count($maquina->copias) >= '2') /* line 199 */ {
+			echo '                        <tr>
+                            <td>
+                                <h5>Entradas de copias</h5>
+                            </td>
+                            <td>
+                                ';
+			echo LR\Filters::escapeHtmlText(count($maquina->copias)) /* line 205 */;
 			echo '
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
 ';
+			if (count($maquina->copias) >= "1") /* line 208 */ {
+				if ($maquina->tipocontador >= "0") /* line 209 */ {
+					echo '                                <tr>
+                                    <td>
+                                        <h5>
+                                            Media de copias BN
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        ';
+					echo LR\Filters::escapeHtmlText($copiasTotalBn) /* line 217 */;
+					echo ' Copias / dia <br>
+                            ';
+					echo LR\Filters::escapeHtmlText($copiasTotalBn * 30) /* line 218 */;
+					echo ' Copias / MES
+                                    </td>
+                                </tr>
+';
+				}
+				if ($maquina->tipocontador >= "1") /* line 222 */ {
+					echo '                                <tr>
+                                    <td>
+                                        <h5>
+                                            Media de copias CL
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        ';
+					echo LR\Filters::escapeHtmlText($copiasTotalCl) /* line 230 */;
+					echo ' Copias / dia <br>
+                            ';
+					echo LR\Filters::escapeHtmlText($copiasTotalCl * 30) /* line 231 */;
+					echo ' Copias / MES
+                                    </td>
+                                </tr>
+';
+				}
+				if ($maquina->tipocontador >= "0") /* line 235 */ {
+					echo '                                <tr>
+                                    <td>
+                                        <h5>
+                                            Media de Escaneos
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        ';
+					echo LR\Filters::escapeHtmlText($copiasTotalEsc) /* line 243 */;
+					echo ' Escaneos / dia <br>
+                            ';
+					echo LR\Filters::escapeHtmlText($copiasTotalEsc * 30) /* line 244 */;
+					echo ' Escaneos / MES
+                                    </td>
+                                </tr>
+';
+				}
+				if ($maquina->tipocontador >= "2") /* line 248 */ {
+					echo '                                <tr>
+                                    <td>
+                                        <h5>
+                                            Media de L1
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        ';
+					echo LR\Filters::escapeHtmlText($copiasTotalL) /* line 256 */;
+					echo ' Copias / dia <br>
+                            ';
+					echo LR\Filters::escapeHtmlText($copiasTotalL * 30) /* line 257 */;
+					echo ' Copias / MES
+                                    </td>
+                                </tr>
+';
+				}
+				if ($maquina->tipocontador >= "2") /* line 261 */ {
+					echo '                                <tr>
+                                    <td>
+                                        <h5>
+                                            Media de L2
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        ';
+					echo LR\Filters::escapeHtmlText($copiasTotalLl) /* line 269 */;
+					echo ' Copias / dia <br>
+                            ';
+					echo LR\Filters::escapeHtmlText($copiasTotalLl * 30) /* line 270 */;
+					echo ' Copias / MES
+                                    </td>
+                                </tr>
+';
+				}
+				if ($maquina->tipocontador >= "2") /* line 274 */ {
+					echo '                                <tr>
+                                    <td>
+                                        <h5>
+                                            Media de L3
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        ';
+					echo LR\Filters::escapeHtmlText($copiasTotalLll) /* line 282 */;
+					echo ' Copias/ dia <br>
+                            ';
+					echo LR\Filters::escapeHtmlText($copiasTotalLll * 30) /* line 283 */;
+					echo ' Copias / MES
+                                    </td>
+                                </tr>
+';
+				}
+			}
 		}
 		echo '                </table>
             </div>
@@ -341,12 +438,12 @@ final class Template7031762e99 extends Latte\Runtime\Template
         <div class="row text-center">
             <div class="col-12 col-lg-12">
                 <a class="btn btn-info" href="';
-		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:default", ['value'=> $maquina->id , 'mode'=>$mode])) /* line 223 */;
+		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Copias:default", ['value'=> $maquina->id , 'mode'=>$mode])) /* line 294 */;
 		echo '"><i
                             class="bi bi-clipboard-data"></i> Copias</a>
                 <a href="" class="btn btn-warning"><i class="bi bi-gear-fill"></i> Cambios de piezas</a>
                 <a class="btn btn-info" href="';
-		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Maquinas:edit", [$maquina->id])) /* line 226 */;
+		echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Maquinas:edit", [$maquina->id])) /* line 297 */;
 		echo '"><i class="bi bi-pencil-square"></i>
                     Editar</a>
             </div>

@@ -121,21 +121,25 @@ class MaquinasPresenter extends BaseAdminPresenter
             if (!$lastCopia->copiaslll == null) {
                 $cuentaLll = $lastCopia->copiaslll - $firstCopia->copiaslll;
             }
-        }
+
         $fechauno = explode('/', $firstCopia->fecha);
         $fechados = explode('/', $lastCopia->fecha);
+        d($fechauno);
+        d($fechados);
         $diferencia = date_diff(date_create($fechauno[2] . '-' . $fechauno[1] . '-' .
                                             $fechauno[0]), date_create($fechados[2] . '-' . $fechados[1] . '-' .
                                                                        $fechados[0]));
-
+        }
         //$this->template->copiasTotalBn = ceil($cuentaBn / (($diferencia->d / 7) * 5));
-        $this->template->copiasTotalBn = ceil($cuentaBn / $diferencia->d);
-        $this->template->copiasTotalCl = ceil($cuentaCl / $diferencia->d);
-        $this->template->copiasTotalEsc = ceil($cuentaEsc / $diferencia->d);
-        $this->template->copiasTotalL = ceil($cuentaL / $diferencia->d);
-        $this->template->copiasTotalLl = ceil($cuentaLl / $diferencia->d);
-        $this->template->copiasTotalLll = ceil($cuentaLll / $diferencia->d);
-
+        if (count($maquina->copias) >= '2') {
+            dd($diferencia->d);
+            $this->template->copiasTotalBn = ceil($cuentaBn / $diferencia->d);
+            $this->template->copiasTotalCl = ceil($cuentaCl / $diferencia->d);
+            $this->template->copiasTotalEsc = ceil($cuentaEsc / $diferencia->d);
+            $this->template->copiasTotalL = ceil($cuentaL / $diferencia->d);
+            $this->template->copiasTotalLl = ceil($cuentaLl / $diferencia->d);
+            $this->template->copiasTotalLll = ceil($cuentaLll / $diferencia->d);
+        }
 
         $this->template->maquina = $maquina;
         $this->template->mode = $modo;

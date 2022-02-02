@@ -62,6 +62,11 @@ return array (
       0 => '/var/www/nette/app/Model/Listas.php',
       1 => 1640172314,
     ),
+    'App\\Model\\Menu' => 
+    array (
+      0 => '/var/www/nette/app/Model/Menu.php',
+      1 => 1640176509,
+    ),
     'App\\Model\\UserManager' => 
     array (
       0 => '/var/www/nette/app/Model/UserManager.php',
@@ -210,7 +215,7 @@ return array (
     'App\\Forms\\MaquinasFormFactory' => 
     array (
       0 => '/var/www/nette/app/Forms/MaquinasFormFactory.php',
-      1 => 1638706489,
+      1 => 1640941141,
     ),
     'App\\Forms\\FormFactory' => 
     array (
@@ -220,7 +225,7 @@ return array (
     'App\\Forms\\CopiasFormFactory' => 
     array (
       0 => '/var/www/nette/app/Forms/CopiasFormFactory.php',
-      1 => 1638706488,
+      1 => 1640947816,
     ),
     'App\\Forms\\AveriasFormFactory' => 
     array (
@@ -247,10 +252,15 @@ return array (
       0 => '/var/www/nette/app/AdminModule/Presenters/SupportPresenter.php',
       1 => 1638706493,
     ),
+    'App\\AdminModule\\Presenters\\MaquinasPresenter' => 
+    array (
+      0 => '/var/www/nette/app/AdminModule/Presenters/MaquinasPresenter.php',
+      1 => 1640939604,
+    ),
     'App\\AdminModule\\Presenters\\CopiasPresenter' => 
     array (
       0 => '/var/www/nette/app/AdminModule/Presenters/CopiasPresenter.php',
-      1 => 1638706490,
+      1 => 1640940804,
     ),
     'App\\AdminModule\\Presenters\\EmpresasPresenter' => 
     array (
@@ -282,15 +292,10 @@ return array (
       0 => '/var/www/nette/app/AdminModule/Presenters/PiezasPresenter.php',
       1 => 1638706490,
     ),
-    'App\\Model\\Menu' => 
+    'App\\AdminModule\\Presenters\\ResumenPresenter' => 
     array (
-      0 => '/var/www/nette/app/Model/Menu.php',
-      1 => 1640176509,
-    ),
-    'App\\AdminModule\\Presenters\\MaquinasPresenter' => 
-    array (
-      0 => '/var/www/nette/app/AdminModule/Presenters/MaquinasPresenter.php',
-      1 => 1640178023,
+      0 => '/var/www/nette/app/AdminModule/Presenters/ResumenPresenter.php',
+      1 => 1640954354,
     ),
   ),
   1 => 
@@ -334,6 +339,8 @@ return array (
     'App\\AdminModule\\Presenters\\ProveedoresDefaultTemplate' => 3,
     'App\\AdminModule\\Presenters\\ProveedoresTemplate' => 3,
     'App\\AdminModule\\Presenters\\ProveedoresInfoTemplate' => 3,
+    'App\\AdminModule\\Presenters\\ResumenDefaultTemplate' => 3,
+    'App\\AdminModule\\Presenters\\ResumenTemplate' => 3,
   ),
   2 => 
   array (

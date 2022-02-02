@@ -16,6 +16,13 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/svg-with-js.min.css"
+          integrity="sha512-T+W8aCLi/CrpBhX5eX42Kw0/oGb/cxhQHYsQDIXx7UgK8c0A4CWw+TOQIqNJms1AZHI+6eKE4U1GubeLrguNww=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
@@ -25,7 +32,6 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
     <link rel="stylesheet" href="{$basePath}/css/style.css">
-
 
     {block head} {/block}
 
@@ -78,7 +84,7 @@
             <ul class="navbar-nav ">
                 <li class="nav-item ">
                     {if $usuarioDb}
-                        <a class="nav-link " n:href="Sign:out">{$usuarioDb->nombre} (salir)</a>
+                        <a>{$usuarioDb->nombre} <a class="nav-link " n:href="Sign:out"> (salir)</a></a>
                     {else}
                         Invitado
                     {/if}
@@ -160,6 +166,11 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
     <script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+
     <!-- Bootstrap Date-Picker Plugin -->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -176,7 +187,9 @@
     <script src="{$basePath}/js/nette.ajax.js"></script>
 
     <script src="{$basePath}/js/main.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"
+            integrity="sha512-Tn2m0TIpgVyTzzvmxLNuqbSJH3JP8jm+Cy3hvHrW7ndTDcJ1w5mBiksqDBb8GpE2ksktFvDB/ykZ0mDpsZj20w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
     <script>
@@ -197,6 +210,7 @@
 
     </script>
     <script>
+        $.fn.datepicker.defaults.format = "dd/mm/yyyy";
         $('.datepicker').datepicker({
             format: 'dd/mm/yyyy',
             startDate: '-3d'

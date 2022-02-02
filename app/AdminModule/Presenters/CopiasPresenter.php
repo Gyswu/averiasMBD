@@ -43,6 +43,7 @@ class CopiasPresenter extends BaseAdminPresenter
             $this->template->modo = $mode;
             $maquinas = $this->orm->maquinas->findBy(['empresa' => $value]);
             $this->template->maquinas = $this->orm->proveedor->getById($value)->maquinas;
+
         } elseif ($mode == 10) {
             $this->template->modo = (int)$mode;
 //            MODO MAQUINAS

@@ -117,11 +117,11 @@ final class Template2479c89b61 extends Latte\Runtime\Template
 ';
 		if ($usuarioDb) /* line 56 */ {
 			echo '
-                            <a class="nav-link" href="';
-			echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link(":Sign:out")) /* line 58 */;
-			echo '"> ';
+                            <a>';
 			echo LR\Filters::escapeHtmlText($usuarioDb->nombre) /* line 58 */;
-			echo ' (<b> Salir </b>)</a>
+			echo ' <a class="nav-link" href="';
+			echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link(":Sign:out")) /* line 58 */;
+			echo '">  (<b> Salir </b>)</a></a>
 
 ';
 		}

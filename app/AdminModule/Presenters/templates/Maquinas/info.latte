@@ -56,7 +56,7 @@
                         </td>
                         <td>
                             {ifset $maquina->empresa}
-                                <a n:href="Empresas:edit $maquina->empresa->id">{$maquina->empresa->nombre}</a>
+                                <a n:href="Empresas:info $maquina->empresa->id">{$maquina->empresa->nombre}</a>
                             {else}
                                 Taller
                             {/ifset}

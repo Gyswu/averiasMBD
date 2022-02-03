@@ -62,12 +62,15 @@
 
                                 <td><a class="nounderline" href="tel:{$empresa->telefono}">{$empresa->telefono}</a></td>
 
-                                <td> <a class="nounderline" href="https://www.google.com/maps/search/?api=1&query={str_replace(" ", "+", $empresa->direccion)}">{$empresa->direccion}</a> </td>
+                                <td><a class="nounderline"
+                                       href="https://www.google.com/maps/search/?api=1&query={str_replace(" ", "+", $empresa->direccion)}">{$empresa->direccion}</a>
+                                </td>
 
                                 <td> {$empresa->contacto} </td>
 
                                 <td>
-
+                                    <a n:href= "Empresas:info $empresa->id"><i
+                                                class="bi bi-info-circle-fill"></i></a>
                                     <a n:href = "Usuarios:default $empresa->id" class="">
                                         <i class="fa-solid fa-user"></i></a>
                                     <a n:href = "Maquinas:default, id=> $empresa->id , mode=> 8 "
@@ -104,7 +107,8 @@
                             <td> {$empresax->contacto} </td>
 
                             <td>
-
+                                <a n:href= "Empresas:info $empresa->id"><i
+                                            class="bi bi-info-circle-fill"></i></a>
                                 <a n:href = "Usuarios:default $empresax->id" class="">
                                     <i class="fa-solid fa-user"></i></a>
                                 <a n:href = "Maquinas:default, id=> $empresax->id , mode=> 8 "
@@ -142,7 +146,8 @@
                                 <td> {$empresa->contacto} </td>
 
                                 <td>
-
+                                    <a n:href= "Empresas:info $empresa->id"><i
+                                                class="bi bi-info-circle-fill"></i></a>
                                     <a n:href = "Usuarios:default $empresa->id" class="">
                                         <i class="fa-solid fa-user"></i></a>
                                     <a n:href = "Maquinas:default, id=> $empresa->id , mode=> 8 "

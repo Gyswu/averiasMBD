@@ -1,0 +1,46 @@
+{block content}
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <table class="table table-striped">
+                    <tr>
+                        <td><h5>ID</h5></td>
+                        <td>{$empresa->id}</td>
+                    </tr>
+                    <tr>
+                        <td><h5>Nombre</h5></td>
+                        <td>{$empresa->nombre}</td>
+                    </tr>
+                    <tr>
+                        <td><h5>Nif</h5></td>
+                        <td>{$empresa->nif}</td>
+                    </tr>
+                    <tr>
+                        <td><h5>Telefono</h5></td>
+                        <td><a class="nounderline" href="tel:{$empresa->telefono}">{$empresa->telefono}</a></td>
+                    </tr>
+                    <tr>
+                        <td><h5>Dirección</h5></td>
+                        <td><a class="nounderline"
+                               href="https://www.google.com/maps/search/?api=1&query={str_replace(" ", "+", $empresa->direccion)}">{$empresa->direccion}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><h5>Persona de contacto</h5></td>
+                        <td>{$empresa->contacto}</td>
+                    </tr>
+                    <tr>
+                        <td><h5>Nº Usuarios</h5></td>
+                        <td><a n:href = "Usuarios:default $empresa->id"
+                                    class="nounderline">{count($empresa->usuarios)}</a></td>
+                    </tr>
+                    <tr>
+                        <td><h5>Nº Maquinas</h5></td>
+                        <td><a n:href = "Maquinas:default, id=> $empresa->id , mode=> 8 "
+                                    class="nounderline">{count($empresa->maquinas)}</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}

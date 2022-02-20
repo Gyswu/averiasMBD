@@ -1,0 +1,49 @@
+# Got from VicHaunter: https://github.com/vichaunter/docker_lamp
+version: "3.6"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APACHE_DOCUMENT_ROOT: /var/www/html/www
+    container_name: "averiasmbd_web"
+    environment:
+      - NETTE_DEBUG=true
+    volumes:
+      - "${PWD}/:/var/www/html/"
+    ports:
+      - 8088:80
+    depends_on:
+      - mariadb
+
+  mariadb:
+    # Fucking slow first run (CREATING DB) YOU MUST WAIT 30min!!!
+    image: mariadb:10.5
+    container_name: "averiasmbd_db"
+    command:
+      - "--character-set-serve=utf8mb4"
+      - "--collation-server=utf8mb4_general_ci"
+    environment:
+      MYSQL_DATABASE: averiasmbd
+      MYSQL_PASSWORD: 123456789
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_USER: user
+    volumes:
+      - "${PWD}/db_data:/var/lib/mysql"
+      - "${PWD}/db/init.sql:/docker-entrypoint-initdb.d/dump.sql"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: "averiasmbd_phpmyadmin"
+    environment:
+      PHPMYADMIN_HTTPS: "false"
+      PMA_ARBITRARY: "1"
+      PMA_HOST: mariadb
+      PMA_PORT: "3306"
+    ports:
+      - 8081:80
+    logging:
+      driver: json-file
+    depends_on:
+      - mariadb

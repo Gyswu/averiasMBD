@@ -15,7 +15,6 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 
-
     /** @var Orm\Orm @inject */
 
     public $orm;
@@ -43,11 +42,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
             if ($this->user->isLoggedIn()) {
 
                 $this->redirect(":Homepage:default");
-
             }
 
             $this->redirect(":Sign:in");
-
         }
 
         return true;
@@ -55,21 +52,20 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
     protected function startup()
     {
-//	dd($this->presenter->getName());
         $this->getUser()->setAuthorizator(new Roles());
 
-        if (!$this->user->isLoggedIn() && !in_array($this->presenter->getName(), ['Sign'])) {
+        $redirectLogin = !empty($this->redirectLogin) ? $this->redirectLogin : false;
+
+        if ($redirectLogin && !$this->user->isLoggedIn() && !in_array($this->presenter->getName(), ['Sign'])) {
 
             $this->flashMessage('Debes iniciar sesión primero');
 
-            $this->redirect('Sign:in');
-
+            $this->redirect(':Sign:in');
         }
 
         if ($this->getDbUser()) {
 
             $this->getDbUser()->rol == ("encargado");
-
         }
 
         $this->template->activeUser = $this->getDbUser();
@@ -90,7 +86,5 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     {
 
         return $this->orm->usuarios->getById($this->user->getId());
-
     }
-
 }

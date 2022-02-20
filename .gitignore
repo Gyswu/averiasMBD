@@ -4,3 +4,4 @@ app/config/local.neon
 
 temp
 log
+db_data

@@ -17,8 +17,8 @@ class CopiasRepository extends Repository
         return [Copias::class];
     }
 
-    public function findByPrinterId($printerId)
+    public function findLastByPrinterId($printerId)
     {
-        return $this->findBy(['maquina' => $printerId])->fetch();
+        return $this->findBy(['maquina' => $printerId])->orderBy("id", "DESC")->fetch();
     }
 }

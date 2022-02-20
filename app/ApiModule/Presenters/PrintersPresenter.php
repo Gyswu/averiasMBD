@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ApiModule\Presenters;
 
+use App\Model\Orm\Copias;
+use DateTime;
 use Nette\Utils\Json;
 
 final class PrintersPresenter extends BaseApiPresenter
@@ -37,18 +39,31 @@ final class PrintersPresenter extends BaseApiPresenter
         $printer = $this->getPrinter();
         $type = $data->type;
 
-        $copias = $this->orm->copias->findByPrinterId($printer->id);
-        if (!$copias) {
-            $this->sendErrors("No copies found for this printer");
+        $copia = $this->orm->copias->findLastByPrinterId($printer->id);
+
+        //check past date (better using some library)
+        $today = new DateTime("today");
+        $diffDays = 0;
+        if ($copia) {
+            $date = DateTime::createFromFormat('d/m/Y', $copia->fecha)->setTime(0, 0, 0);
+            $diff = $today->diff($date);
+            $diffDays = (int)$diff->format("%R%a"); // Extract days count in interval
+        }
+
+        if (!$copia || $diffDays < 0) {
+            $copia = new Copias();
+            $copia->fecha = $today->format("d/m/Y");
+            $copia->maquina = $printer;
+            $copia->escaneos = 0;
         }
 
         //update only if given total is greater than previous (maybe is how to unprint pages in youtube xD)
-        if (!is_numeric($data->total) || $data->total <= $copias->$type) {
+        if (!is_numeric($data->total) || $data->total <= $copia->$type) {
             $this->sendErrors("You cannot unprint pages, total must be greater than the last one");
         }
 
-        $copias->$type = $data->total;
-        $this->orm->copias->persistAndFlush($copias);
+        $copia->$type = $data->total;
+        $this->orm->copias->persistAndFlush($copia);
 
         $this->sendJson(["status" => 1]);
     }

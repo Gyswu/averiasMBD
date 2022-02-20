@@ -6,6 +6,7 @@ use Nextras\Orm\Repository\Repository;
 
 /**
  * @method Copias|NULL getById( $id )
+ * @method Copias|NULL getReport()
  */
 
 class CopiasRepository extends Repository

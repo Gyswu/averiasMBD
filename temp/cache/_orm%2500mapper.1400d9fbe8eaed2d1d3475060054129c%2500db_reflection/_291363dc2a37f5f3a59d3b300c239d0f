@@ -1,1 +1,0 @@
-000068a:2:{s:4:"time";s:21:"0.90840800 1625769006";s:10:"serialized";b:1;}a:2:{s:7:"empresa";a:4:{s:4:"name";s:14:"Maquina_ibfk_1";s:6:"column";s:7:"empresa";s:9:"ref_table";s:7:"Empresa";s:10:"ref_column";s:2:"id";}s:9:"proveedor";a:4:{s:4:"name";s:14:"Maquina_ibfk_2";s:6:"column";s:9:"proveedor";s:9:"ref_table";s:9:"Proveedor";s:10:"ref_column";s:2:"id";}}

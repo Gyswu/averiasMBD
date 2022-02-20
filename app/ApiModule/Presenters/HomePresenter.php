@@ -9,9 +9,4 @@ use Nette\Application\Responses\JsonResponse;
 
 final class HomePresenter extends BaseApiPresenter
 {
-
-    public function renderdefault(): void
-    {
-        $this->sendJson("Y si me dices las palabras mágicas?");
-    }
 }

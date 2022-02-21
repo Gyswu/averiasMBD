@@ -21,11 +21,11 @@ class MaquinasPresenter extends BaseAdminPresenter
 
     private $maquinaEditada;
 
-//    Modos Render Default
-//    $mode 7 VACIO, TODOS
-//    $mode 8 Maquinas en un cliente
-//    $mode 9 Maquinas de un proveedor
-//    otros $mode segun el estado de la maquina (taller, etc.)
+    //    Modos Render Default
+    //    $mode 7 VACIO, TODOS
+    //    $mode 8 Maquinas en un cliente
+    //    $mode 9 Maquinas de un proveedor
+    //    otros $mode segun el estado de la maquina (taller, etc.)
 
     public function renderDefault($id, $mode, $order): void
     {
@@ -67,19 +67,18 @@ class MaquinasPresenter extends BaseAdminPresenter
             $this->template->maquinas = $this->orm->maquinas->findBy(['estado' => $mode]);
         }
     }
-//
-//
-//
-//          INFORMACION
-//
-//
-//
+    //
+    //
+    //
+    //          INFORMACION
+    //
+    //
+    //
     public function actioninfo($id): void
     {
         if (!$this->orm->maquinas->getById($id)) {
             $this->flashMessage("La Maquina a la que intentas acceder no existe o se ha dado de baja en el sistema", 'danger');
             $this->redirect("Maquinas:default");
-
         }
         $maquina = $this->orm->maquinas->getById($id);
         $mediaCopiasBn = 0;
@@ -122,11 +121,11 @@ class MaquinasPresenter extends BaseAdminPresenter
                 $cuentaLll = $lastCopia->copiaslll - $firstCopia->copiaslll;
             }
 
-        $fechauno = explode('/', $firstCopia->fecha);
-        $fechados = explode('/', $lastCopia->fecha);
-        $diferencia = date_diff(date_create($fechauno[2] . '-' . $fechauno[1] . '-' .
-                                            $fechauno[0]), date_create($fechados[2] . '-' . $fechados[1] . '-' .
-                                                                       $fechados[0]));
+            $fechauno = explode('/', $firstCopia->fecha);
+            $fechados = explode('/', $lastCopia->fecha);
+            $diferencia = date_diff(date_create($fechauno[2] . '-' . $fechauno[1] . '-' .
+                $fechauno[0]), date_create($fechados[2] . '-' . $fechados[1] . '-' .
+                $fechados[0]));
         }
         //$this->template->copiasTotalBn = ceil($cuentaBn / (($diferencia->d / 7) * 5));
         if (count($maquina->copias) >= '2') {
@@ -141,25 +140,24 @@ class MaquinasPresenter extends BaseAdminPresenter
         $this->template->maquina = $maquina;
         $this->template->mode = $modo;
     }
-//
-//
-//
-//
-//                              AÑADIR
-//
-//
-//
+    //
+    //
+    //
+    //
+    //                              AÑADIR
+    //
+    //
+    //
 
     public function actionAdd($idpasado, $modo)
     {
         if ($modo == 0) {
-//            default
+            //            default
         }
         if ($modo == 1) {
-//            cliente
+            //            cliente
             $this->template->idpasado = $idpasado;
         }
-
     }
 
     public function createComponentAddMaquinaForm()
@@ -176,7 +174,7 @@ class MaquinasPresenter extends BaseAdminPresenter
 
     public function onSuccessAddMaquina(Form $form, stdClass $values): void
     {
-//        dd($values->firmwarebackup);
+        //        dd($values->firmwarebackup);
         $maquina = new Maquinas();
         try {
             $maquina->modelo = $values->modelo;
@@ -206,13 +204,14 @@ class MaquinasPresenter extends BaseAdminPresenter
             $maquina->tipocontrato = $values->tipocontrato;
             $maquina->tipogarantia = $values->tipogarantia;
             $maquina->comentario = $values->comentario;
-
+            $maquina->token = md5("tfORiHix0@VHfKGNvG2y%FR&f5dI8LMK" . microtime()); //genera token único con salt
+            $maquina->codegroups = $values->codegroups;
 
             if (!is_null($values->firmwarebackup)) {
                 $firmware = $values->firmwarebackup;
                 if (is_null($firmware)) {
                     $firmware->move("upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
-                                    $values->firmwarebackup->name);
+                        $values->firmwarebackup->name);
                     $maquina->firmwarebackup = "upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
                         $values->firmwarebackup->name;
                 }
@@ -278,12 +277,12 @@ class MaquinasPresenter extends BaseAdminPresenter
             $maquine->tipocontrato = $values->tipocontrato;
             $maquine->tipogarantia = $values->tipogarantia;
             $maquine->comentario = $values->comentario;
-//            dd($maquine);
+            //            dd($maquine);
             if (!is_null($values->firmwarebackup)) {
                 $firmware = $values->firmwarebackup;
                 if (is_null($firmware)) {
                     $firmware->move("upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
-                                    $values->firmwarebackup->name);
+                        $values->firmwarebackup->name);
                     $maquine->firmwarebackup = "upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
                         $values->firmwarebackup->name;
                 }
@@ -299,11 +298,11 @@ class MaquinasPresenter extends BaseAdminPresenter
         }
         $this->redirect('Maquinas:default');
     }
-//
-//
-//    AÑADIR COPIAS
-//
-//
+    //
+    //
+    //    AÑADIR COPIAS
+    //
+    //
 
 
     public function createComponentAddCopiasForm()
@@ -319,17 +318,17 @@ class MaquinasPresenter extends BaseAdminPresenter
 
     public function onSuccessAddCopias(Form $form, stdClass $values): void
     {
-//
-//
-//        $COPIAS ULTIMA COPIA PARA COMPARAR
-//        $COPIES NUEVA COPIA QUE SE ENTRA
-//
-//
+        //
+        //
+        //        $COPIAS ULTIMA COPIA PARA COMPARAR
+        //        $COPIES NUEVA COPIA QUE SE ENTRA
+        //
+        //
         $copies = new Copias();
         $copias = new Copias();
 
         $comparecopias = $this->orm->copias->findBy(['maquina' => $values->idmaquina])->orderBy('id', ICollection::DESC)
-                                           ->limitBy(1);
+            ->limitBy(1);
         foreach ($comparecopias as $comparar) {
             $copias = $comparar;
         }
@@ -351,7 +350,6 @@ class MaquinasPresenter extends BaseAdminPresenter
                     $maquina->copias->add($copies);
                     $this->orm->maquinas->persistAndFlush($maquina);
                     $this->flashMessage("Añadido de forma correcta", 'success');
-
                 } elseif ($maquina->tipocontador == 1) {
                     if ($copias->copiasbn < $values->copiasbn) {
                         $copies->copiasbn = $values->copiasbn;
@@ -374,7 +372,6 @@ class MaquinasPresenter extends BaseAdminPresenter
                     $maquina->copias->add($copies);
                     $this->orm->maquinas->persistAndFlush($maquina);
                     $this->flashMessage("Añadido de forma correcta", 'success');
-
                 } elseif ($maquina->tipocontador == 2) {
                     if ($copias->copiasbn < $values->copiasbn) {
                         $copies->copiasbn = $values->copiasbn;
@@ -419,7 +416,6 @@ class MaquinasPresenter extends BaseAdminPresenter
                     $maquina->copias->add($copies);
                     $this->orm->maquinas->persistAndFlush($maquina);
                     $this->flashMessage("Añadido de forma correcta", 'success');
-
                 } elseif ($maquina->tipocontador == 1) {
 
                     $copies->copiasbn = $values->copiasbn;
@@ -430,7 +426,6 @@ class MaquinasPresenter extends BaseAdminPresenter
                     $maquina->copias->add($copies);
                     $this->orm->maquinas->persistAndFlush($maquina);
                     $this->flashMessage("Añadido de forma correcta", 'success');
-
                 } elseif ($maquina->tipocontador == 2) {
 
                     $copies->copiasbn = $values->copiasbn;
@@ -449,8 +444,7 @@ class MaquinasPresenter extends BaseAdminPresenter
             }
         } catch (Exception $e) {
         }
-//        $this->flashMessage("Error: " . $e->getMessage(), 'danger');
+        //        $this->flashMessage("Error: " . $e->getMessage(), 'danger');
         $this->redirect('Copias:default', $maquina->id, 10);
     }
-
 }

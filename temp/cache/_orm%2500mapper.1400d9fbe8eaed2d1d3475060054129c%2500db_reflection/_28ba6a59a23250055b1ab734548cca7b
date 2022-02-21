@@ -1,1 +1,0 @@
-000068a:2:{s:4:"time";s:21:"0.16001200 1625769002";s:10:"serialized";b:1;}a:1:{s:7:"empresa";a:4:{s:4:"name";s:14:"Usuario_ibfk_1";s:6:"column";s:7:"empresa";s:9:"ref_table";s:7:"Empresa";s:10:"ref_column";s:2:"id";}}

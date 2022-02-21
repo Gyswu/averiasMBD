@@ -6,11 +6,19 @@ use Nextras\Orm\Repository\Repository;
 
 /**
  * @method Copias|NULL getById( $id )
+ * @method Copias|NULL getReport()
  */
 
-class CopiasRepository extends Repository {
+class CopiasRepository extends Repository
+{
 
-    static function getEntityClassNames(): array {
-        return [ Copias::class ];
+    static function getEntityClassNames(): array
+    {
+        return [Copias::class];
+    }
+
+    public function findLastByPrinterId($printerId)
+    {
+        return $this->findBy(['maquina' => $printerId])->orderBy("id", "DESC")->fetch();
     }
 }

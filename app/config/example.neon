@@ -1,0 +1,13 @@
+dbal:
+    driver: mysqli
+    host: mariadb
+    database: averiasmbd
+    username: root
+    password: toor
+    
+parameters:
+    smtp:
+        host:   smtp.gmail.com
+        username:   user@gmail.com
+        password:   pass
+        secure: tls    

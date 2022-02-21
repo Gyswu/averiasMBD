@@ -165,6 +165,22 @@
                             </td>
                         </tr>
                     {/ifset}
+                    <tr n:if="$maquina->token">
+                        <td>
+                            Api token:
+                        </td>
+                        <td>
+                            {$maquina->token}
+                        </td>
+                    </tr>
+                    <tr n:if="$maquina->codegroups">
+                        <td>
+                            Códigos monitorizados:
+                        </td>
+                        <td style="text-align:left">
+                            <pre>{$maquina->codegroups}</pre>
+                        </td>
+                    </tr>
                     {ifset $maquina->tcontrato}
                         <tr>
                             <td>

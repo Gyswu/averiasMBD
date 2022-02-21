@@ -2,10 +2,11 @@
 
 namespace App\Model;
 
-use Nette\Security\IAuthorizator;
+use Nette\Security\Authorizator;
 
-class Roles implements IAuthorizator {
-    
+class Roles implements Authorizator
+{
+
     //Secciones
 
     const SECCION_ADMIN = 'administracion';
@@ -44,23 +45,25 @@ class Roles implements IAuthorizator {
 
 
     private static $permissions;
-    
-    public function getRoles() {
+
+    public function getRoles()
+    {
 
         $roles = [];
 
-        foreach( self::getPermisos() as $permiso => $x ) {
+        foreach (self::getPermisos() as $permiso => $x) {
 
             $roles[] = $permiso;
         }
-        
+
         return $roles;
     }
-    
-    private static function getPermisos() {
-        
-        if( !self::$permissions ) {
-            
+
+    private static function getPermisos()
+    {
+
+        if (!self::$permissions) {
+
             $acl = [
 
                 'superadmin' => [], //este puede hacer todo solo por ser el
@@ -115,24 +118,26 @@ class Roles implements IAuthorizator {
 
             self::$permissions = $acl; //set the permissions once
         }
-        
+
         return self::$permissions;
     }
-    
-    public function isAllowed( $role, $resource, $privilege ): bool {
 
-        if( $role === 'superadmin' ) {return true;}
+    public function isAllowed($role, $resource, $privilege): bool
+    {
+
+        if ($role === 'superadmin') {
+            return true;
+        }
 
         //
 
         $acl = self::getPermisos();
 
-        if (isset($acl[ $role ][ $resource ]) && count($acl[ $role ][ $resource ]) === 0 ) {
+        if (isset($acl[$role][$resource]) && count($acl[$role][$resource]) === 0) {
 
             return true;
         }
-        
-        return isset ($acl[ $role ][ $resource ]) && in_array($privilege, $acl[ $role ][ $resource ]);
+
+        return isset($acl[$role][$resource]) && in_array($privilege, $acl[$role][$resource]);
     }
-    
 }

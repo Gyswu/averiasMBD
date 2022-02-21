@@ -2,7 +2,7 @@
 
 namespace App\AdminModule\Presenters;
 
-use App\Model\listas;
+use App\Model\Listas;
 use App\Model\Orm\Maquinas;
 use App\Model\Orm\Piezas;
 
@@ -32,7 +32,6 @@ class PiezasPresenter extends BaseAdminPresenter
         } elseif ($mode == 1) {
             $this->template->cambios = $this->orm->maquinas->getById($idMaquina)->cambios;
         }
-
     }
 
     public function actionAdd($idMaquina)

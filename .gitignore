@@ -1,3 +1,7 @@
 app/config/local.neon
 .idea
 .vscode
+
+temp
+log
+db_data

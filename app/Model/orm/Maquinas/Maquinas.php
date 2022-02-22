@@ -28,7 +28,7 @@ use Nextras\Orm\Relationships\OneHasMany;
  * @property    OneHasMany|Cambios[]    $cambios {1:m Cambios::$maquina}
  * @property    OneHasMany|Copias[]     $copias {1:m Copias::$maquina}
  * @property    string                  $token
- * @property    string                  $codegroups
+ * @property    string|null             $codegroups
  *
  */
 class Maquinas extends Entity

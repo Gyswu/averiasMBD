@@ -33,7 +33,7 @@ class GeneralfunctionsPresenter extends BaseAdminPresenter
             }
         }
 
-        $this->redirect("Resumen:default");
+        $this->redirect("Generalfunctions:default");
     }
 
     public function actionGenerateCodeGroups()
@@ -143,6 +143,6 @@ class GeneralfunctionsPresenter extends BaseAdminPresenter
             } //if tipocontador 2
             $this->orm->maquinas->persistAndFlush($maquina);
         } //foreach maquina
-        $this->redirect("Resumen:default");
+        $this->redirect("Generalfunctions:default");
     } //actionGenerateCodeGroups
 }//presenter˘

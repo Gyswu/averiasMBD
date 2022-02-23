@@ -21,14 +21,14 @@
                     data.addColumn('string', 'Topping');
                     data.addColumn('number', 'Slices');
                     data.addRows([
-                    {for $i = 0; $i < count($datosMaquinasCantidadKey); $i++}
+                        {for $i = 0; $i < count($datosMaquinasCantidadKey); $i++}
                         [{$datosMaquinasCantidadKey[$i]}, {$datosMaquinasCantidad[$datosMaquinasCantidadKey[$i]]}],
-                    {/for}
+                        {/for}
                     ]);
                     // Set chart options
                     var options = {
                         'title': 'Fotocopiadoras en la empresa',
-                        'width':900,
+                        'width': 900,
                         'height': 1000
                     };
 
@@ -39,9 +39,6 @@
             </script>
             <div id="chart_div"></div>
 
-        </div>
-        <div class="row">
-            <a n:href="Resumen:generateTokens" class="btn btn-info">Generar Tokens Vacios</a>
         </div>
     </div>
 

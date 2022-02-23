@@ -277,6 +277,7 @@ class MaquinasPresenter extends BaseAdminPresenter
             $maquine->tipocontrato = $values->tipocontrato;
             $maquine->tipogarantia = $values->tipogarantia;
             $maquine->comentario = $values->comentario;
+            $maquine->codegroups = $values->codegroups;
             //            dd($maquine);
             if (!is_null($values->firmwarebackup)) {
                 $firmware = $values->firmwarebackup;

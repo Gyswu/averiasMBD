@@ -219,6 +219,11 @@ final class MaquinasFormFactory
           $form->addTextArea('comentario', 'Comentario')
                ->setHtmlAttribute('class', 'form-control')
                ->setHtmlAttribute('rows', 3);
+
+         $form->addTextArea('codegroups', 'Códigos de seguimiento')
+              ->setHtmlAttribute('class', 'form-control')
+              ->setHtmlAttribute('rows', 5);
+
           $form->addUpload('firmwarebackup', 'Firmware Backup');
 
           $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');

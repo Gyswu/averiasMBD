@@ -29,7 +29,7 @@ class ResumenPresenter extends BaseAdminPresenter
             }
         }
         $pnt = 100 / count($datosMaquinas);
-        foreach (array_count_values($datosMaquinas) as $dato){
+        foreach (array_count_values($datosMaquinas) as $dato) {
             array_push($porcentajesMaquinas, str_replace(".", ",", $dato * $pnt));
         }
 
@@ -42,20 +42,4 @@ class ResumenPresenter extends BaseAdminPresenter
         $this->template->borrar = "\.";
 
     }
-
-    public function actionGenerateTokens(){
-
-        $maquinas = $this->orm->maquinas->findAll();
-        $maquina = new Maquinas();
-        foreach ($maquinas as $maquina){
-            if($maquina->token == null ){
-                $listas = new Listas();
-                $secreto = md5($listas->generateRandomString(32));
-                $maquina->token = $secreto;
-                $this->orm->maquinas->persistAndFlush($maquina);
-            }
-        }
-
-        $this->redirect("Resumen:default");
-    }
-}
+}//presenter˘

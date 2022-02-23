@@ -37,8 +37,8 @@
                 {foreach $cambios as $cambio}
                     <tr>
                         {if $mode == 0}
-                            <td>x
-                                {$cambio->maquina->id}
+                            <td>
+                                {$cambio->maquina->id} - {$cambio->maquina->modelo}
                             </td>
                         {/if}
                         <td>

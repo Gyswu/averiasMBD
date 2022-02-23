@@ -2,6 +2,7 @@ app/config/local.neon
 .idea
 .vscode
 
+docker-compose.yml
 temp
 log
 db_data

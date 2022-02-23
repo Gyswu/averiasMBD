@@ -4,6 +4,8 @@ namespace App\AdminModule\Presenters;
 
 use App\Forms\AveriasFormFactory;
 use App\Model\Orm\Averias;
+use App\Model\Listas;
+use App\Model\Orm\Maquinas;
 use Exception;
 use Nette\Application\UI\Form;
 use Nextras\Orm\Collection\ICollection;
@@ -39,5 +41,21 @@ class ResumenPresenter extends BaseAdminPresenter
         $this->template->porcentajeMaquinas = $porcentajesMaquinas;
         $this->template->borrar = "\.";
 
+    }
+
+    public function actionGenerateTokens(){
+
+        $maquinas = $this->orm->maquinas->findAll();
+        $maquina = new Maquinas();
+        foreach ($maquinas as $maquina){
+            if($maquina->token == null ){
+                $listas = new Listas();
+                $secreto = md5($listas->generateRandomString(32));
+                $maquina->token = $secreto;
+                $this->orm->maquinas->persistAndFlush($maquina);
+            }
+        }
+
+        $this->redirect("Resumen:default");
     }
 }

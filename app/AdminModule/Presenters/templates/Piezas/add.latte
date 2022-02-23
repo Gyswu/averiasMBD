@@ -1,16 +1,17 @@
-{block container}
+{block content}
     <div class="container">
         <div class="row">
             <div class="col col-lg-6">
                 <h1>Cambio de pieza</h1>
             </div>
             <div class="col col-lg-6">
+                <a n:href="Piezas:default, mode=> 1, idMaquina=>$maquina->id" class="btn btn-info">Volver</a>
 
             </div>
             <div class="col col-lg-10">
                 {ifset $idMaquina}
 
-                    {control addCambio->$idMaquina}
+                    {control addCambioForm}
                 {/ifset}
             </div>
         </div>

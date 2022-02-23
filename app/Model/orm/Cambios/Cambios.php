@@ -16,6 +16,7 @@ use Nextras\Orm\Relationships\OneHasMany;
  * @property    int|null            $copias
  * @property    string|null         $causa
  * @property    int|null            $garantia
+ * @property    string|null         $fecha
  */
 class Cambios extends Entity {
 

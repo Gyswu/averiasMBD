@@ -2,14 +2,14 @@
 
 
 namespace App\Model;
-
+use App\Model\Orm\Usuarios;
 
 class Listas
 {
     public static function getPiezas()
     {
         $piezas = [
-            '0' => '',
+            '0' => ' ',
             '11' => 'Rodillos carga Papel Cajon 1',
             '12' => 'Rodillos carga Papel Cajon 2',
             '13' => 'Rodillos carga Papel Cajon 3',
@@ -93,4 +93,17 @@ class Listas
         ];
         return $cajones;
     }
+
+    public static function generateRandomString($length = 25)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+
 }

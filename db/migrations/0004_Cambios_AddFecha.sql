@@ -1,0 +1,1 @@
+ALTER TABLE `Cambio` ADD `fecha` VARCHAR(32) NULL DEFAULT NULL AFTER `garantia`;

@@ -15,6 +15,7 @@
     </thead>
     <tbody>
         <tr n:foreach="$copies as $copy">
+            {if $copy->maquina->estado == 3}
             <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->maquina->empresa->nombre}</td>
             <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->maquina->modelo} ({$copy->maquina->id})</td>
             <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->copiasbn}</td>
@@ -24,6 +25,7 @@
             <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->copiaslll}</td>
             <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->escaneos}</td>
             <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->fecha}</td>
+            {/if}
         </tr>
     </tbody>
 </table>

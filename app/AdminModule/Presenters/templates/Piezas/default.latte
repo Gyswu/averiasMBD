@@ -42,10 +42,10 @@
                             </td>
                         {/if}
                         <td>
-                            Pieza (TODO)
+                            {(new App\Model\Listas)->getPieza($cambio->pieza)}
                         </td>
                         <td>
-                            Añadir campo fecha
+                            {$cambio->fecha}
                         </td>
                         <td>
                             {$cambio->causa}
@@ -69,4 +69,13 @@
 
         </div>
     </div>
+    {ifset $idMaquina}
+    <div class="row">
+        <div class="col col-lg-10">
+            <div class="d-flex">
+                <a n:href="Piezas:add $idMaquina" class="btn btn-danger">Añadir Cambio</a>
+            </div>
+        </div>
+    </div>
+    {/ifset}
 </div>

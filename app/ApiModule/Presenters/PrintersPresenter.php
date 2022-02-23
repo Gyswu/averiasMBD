@@ -17,7 +17,6 @@ final class PrintersPresenter extends BaseApiPresenter
     private function getPrinter()
     {
         $data = $this->getPostData();
-
         $printer = $this->orm->maquinas->findByToken($data->token);
         if (!$printer) {
             $this->sendErrors("Invalid printer");

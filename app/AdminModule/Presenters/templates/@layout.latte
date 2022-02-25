@@ -12,7 +12,7 @@
 
         {if $datos['mostrar']}
 
-            <a class="nav-link" n:href = "$datos['nhref']"> {$datos['nombre']}
+            <a class="nav-link nav-left" n:href = "$datos['nhref']"> {$datos['nombre']}
 
             </a>
 
@@ -22,8 +22,15 @@
 
     <p>
         {if $usuarioDb}
+            <div class="chip">
 
-            <a>{$usuarioDb->nombre} <a class="nav-link" n:href = ":Sign:out"> (<b> Salir </b>)</a></a>
+                <img src="{$basePath}/img/img-avatar.JPG" alt="Person" width="96" height="96">
+
+                {$usuarioDb->nombre}
+
+            </div>
+
+            <a class="nav-link" n:href = ":Sign:out">(<b> Salir </b>)</a>
 
         {else}
 
@@ -34,6 +41,9 @@
 </div>
 </li>
     <div id="main">
-        <p class="open-menu"><a class="gray" href="#" onclick="openNav()"><i class="fas fa-bars"></i></a></p>
+        <div class="sticky-top">
+            <p class="open-menu"><a class="gray" href="#" onclick="openNav()"><i class="fas fa-bars"></i></a></p>
+        </div>
+
 
 {/block}

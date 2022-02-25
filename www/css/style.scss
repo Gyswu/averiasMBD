@@ -89,7 +89,52 @@ p.open-menu{
 a.nav-link:hover{
   transition: 1s;
   background-color: #095bd4;
+
 }
+a.nav-left{
+  text-align: left;
+}
+a.nav-left:hover{
+  transition: 1s;
+  font-size: 30px;
+  margin-left: 1rem;
+}
+
+table.table tr:hover{
+  background-color: #eeeeee;
+  transition: 0.5s;
+}
+
+table.table tr td a i{
+  font-size: 1rem;
+}
+table.table tr td a i:hover{
+  font-size: 1.25rem;
+  transition: 0.5s;
+}
+
+/* CHIP */
+.chip {
+  margin-left: 1rem;
+  display: inline-block;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 19px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: #1f5cf6;
+  font-color: white;
+  border: white solid 2px;
+}
+
+.chip img {
+  float: left;
+  margin: 0 9px 0 -25px;
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+}
+
 /* The side navigation menu */
 .sidenav {
   height: 100%; /* 100% Full-height */
@@ -104,22 +149,19 @@ a.nav-link:hover{
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
-/* The navigation menu links */
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
-  color: #d7d5d5;
+  color: #e1e1e1;
   display: block;
   transition: 0.3s;
 }
 
-/* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
   color: #f1f1f1;
 }
 
-/* Position and style the close button (top right corner) */
 .sidenav .closebtn {
   position: absolute;
   top: 0;
@@ -128,12 +170,11 @@ a.nav-link:hover{
   margin-left: 50px;
 }
 
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
   transition: margin-left .5s;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;

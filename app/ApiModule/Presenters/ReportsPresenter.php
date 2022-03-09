@@ -59,6 +59,6 @@ final class ReportsPresenter extends BaseApiPresenter
 
 
         $this->template->copies = $copies;
-        // $this->sendEmail("Report of printers", "vichaunter@gmail.com", $body);
+        $this->sendEmail("Report of printers", "info@mbdinformatica.es", $body);
     }
 }

@@ -25,6 +25,13 @@ final class PrintersPresenter extends BaseApiPresenter
         return $printer;
     }
 
+    private function getAllPrinters()
+    {
+        $printers = $this->orm->maquinas->findAll();
+
+        return $printers;
+    }
+
     /**
      * Will update number of copies reported in the printer for given type
      * 
@@ -86,5 +93,48 @@ final class PrintersPresenter extends BaseApiPresenter
 
         $whitelist = ["id", "ip", "codegroups"];
         $this->sendJson(array_intersect_key($info, array_flip($whitelist)));
+    }
+
+    public function actionAll($token)
+    {
+        if($token == "idinafig"){
+            $data = array();
+            $printers = $this->getAllPrinters();
+            foreach ($printers as $printer) {
+                if($printer->modelo == "blank"){
+
+                } else {
+                    $printerArray = $printer->toArray();
+                    $printerArray[empresa] = $printer->empresa->nombre;
+                    $printerArray[proveedor] = $printer->proveedor->nombre;
+                    if($printer->estado == 0){
+                        $printerArray[estado] = "Sin Preparar";
+                    }
+                    if($printer->estado == 1){
+                        $printerArray[estado] = "Puesta a punto";
+                    }
+                    if($printer->estado == 2){
+                        $printerArray[estado] = "Preparada";
+                    }
+                    if($printer->estado == 3){
+                        $printerArray[estado] = "In Situ";
+                    }
+                    if($printer->estado == 4){
+                        $printerArray[estado] = "Out of Service";
+                    }
+                    if($printer->estado == 5){
+                        $printerArray[estado] = "En Taller";
+                    }
+                    if($printer->estado == 6){
+                        $printerArray[estado] = "Desguace";
+                    }
+                    array_push($data, $printerArray);
+                }
+            }
+        } else {
+            $data = "Dime la palabra magica";
+        }
+
+        $this->sendJson($data);
     }
 }

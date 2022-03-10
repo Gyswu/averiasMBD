@@ -40,6 +40,9 @@ row .card .card-body{position:relative;padding-bottom:50px}
         font-weight: bolder;
         text-decoration: none !important ;
     }
+    .codigos{
+        display: none;
+    }
 }
 
 @media screen and (min-width: 576px) {
@@ -69,6 +72,9 @@ row .card .card-body{position:relative;padding-bottom:50px}
         font-weight: bolder;
         text-decoration: none !important ;
     }
+    .codigos{
+        display: none;
+    }
 }
 @media screen and (min-width: 768px) {
     .id{
@@ -96,6 +102,9 @@ row .card .card-body{position:relative;padding-bottom:50px}
         color: darkblue;
         font-weight: bolder;
         text-decoration: none !important ;
+    }
+    .codigos{
+        display: none;
     }
 }
 
@@ -126,6 +135,9 @@ row .card .card-body{position:relative;padding-bottom:50px}
         font-weight: bolder;
         text-decoration: none !important ;
     }
+    .codigos{
+        display: none;
+    }
 }
 
 @media screen and (min-width: 1200px) {
@@ -154,6 +166,9 @@ row .card .card-body{position:relative;padding-bottom:50px}
         color: darkblue;
         font-weight: bolder;
         text-decoration: none !important ;
+    }
+    .codigos{
+        display: revert;
     }
 }
 

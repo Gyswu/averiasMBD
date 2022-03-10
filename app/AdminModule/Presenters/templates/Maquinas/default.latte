@@ -1,4 +1,5 @@
 {block content}
+
     <div class="container">
         <div class="row">
             <div class="col col-lg-6">
@@ -14,11 +15,12 @@
             <div class="col col-lg-6">
                 <a n:href="Maquinas:add" class="btn text-success"><i class="bi bi-plus-circle-fill"></i>
                     </a>
+                <input type="search" id="search" data-input-search>
 
 
             </div>
             <div class="col col-lg-10">
-                <table class="table">
+                <table class="table" >
                     <thead class="thead-dark">
                     {switch $mode}
                     {case 7}
@@ -27,30 +29,18 @@
                     </th>
                     <th class="modelo">
                         Modelo
-                        <a n:href="Maquinas:default, mode=> 7 , order=> 1"><i
-                                    class="bi bi-arrow-up-circle-fill"></i></a>
-                        <a n:href="Maquinas:default, mode=> 7 , order=> 2"><i class="bi bi-arrow-down-circle-fill"></i></a>
                     </th>
                     <th class="proveedor">
                         Proveedor
-                        <a n:href="Maquinas:default, mode=> 7 , order=> 3">
-                            <i class="bi bi-arrow-up-circle-fill"></i></a>
-                        <a n:href="Maquinas:default, mode=> 7 , order=> 4"><i class="bi bi-arrow-down-circle-fill"></i></a>
                     </th>
                     <th class="cliente">
                         Cliente
-                        <a n:href="Maquinas:default, mode=> 7 , order=> 5"><i
-                                    class="bi bi-arrow-up-circle-fill"></i></a>
-                        <a n:href="Maquinas:default, mode=> 7 , order=> 6"><i class="bi bi-arrow-down-circle-fill"></i></a>
                     </th>
                     <th class="estado">
                         Estado
-                        <a n:href="Maquinas:default, mode=> 7 , order=> 7"><i
-                                    class="bi bi-arrow-up-circle-fill"></i></a>
-                        <a n:href="Maquinas:default, mode=> 7 , order=> 8"><i class="bi bi-arrow-down-circle-fill"></i></a>
                     </th>
                     <th class="opciones">
-                        Opciones
+
                     </th>
                     </thead>
                     {case 8}
@@ -95,83 +85,90 @@
                     </thead>
                     {/switch}
 
+                        <template class="table" data-maquina-template>
+                                <tr id="card">
+                                    <td class="id" data-identificador>
+                                    </td>
 
-                    {foreach $maquinas as $maquina}
-                        {if $maquina->modelo !== "blank"}
-                            <tr>
-                                <td class="id">
-                                    {$maquina->id}
-                                </td>
+                                    <td class="modelo" data-modelo>
+                                    </td>
 
-                                <td class="modelo">
-                                    {$maquina->modelo}
-                                </td>
+                                    <td class="proveedor" data-proveedor>
+                                    </td>
 
-                                <td class="proveedor">
-                                    {$maquina->proveedor->nombre}
-                                </td>
+                                    <td class="cliente" data-cliente>
+                                    </td>
 
-                                <td class="cliente">
-                                    {ifset $maquina->empresa->nombre}
-                                        {$maquina->empresa->nombre}
-                                    {/ifset}
-                                </td>
+                                    <td class="estado" data-estado>
+                                    </td>
+                                    <td class="opciones" data-opciones>
+                                        <a href="" data-action-info><i class="bi bi-info-circle-fill"></i></a>
+                                    </td>
+                                </tr>
+                        </template>
 
-                                <td class="estado">
-                                    {switch $maquina->estado}
-                                        {case 0}
-                                        Sin preparar
-                                        {case 1}
-                                        Puesta a punto
-                                        {case 2}
-                                        Preparada
-                                        {case 3}
-                                        In Situ
-                                        {case 4}
-                                        Out of Service
-                                        {case 5}
-                                        En taller
-                                        {case 6}
-                                        Desguace
-                                    {/switch}
-                                </td>
-                                <td class="opciones">
-                                    <a n:href= "Maquinas:info $maquina->id"><i
-                                                class="bi bi-info-circle-fill"></i></a>
-                                    <a  href="#" class="text-success" data-bs-toggle="modal"
-                                             data-bs-target="#myModal{$maquina->id}"><i class="fa-solid fa-plus"></i>
-                                    </a>
-                                    <div class="modal fade" id="myModal{$maquina->id}" tabindex="-1"
-                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Añadir copias a
-                                                        maquina #000{$maquina->id}</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
 
-                                                    {control addCopiasForm-$maquina->id}
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Cerrar
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </td>
-                            </tr>
-                        {/if}
-                    {/foreach}
+                    <tbody data-content-container>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <script>
+        const maquinatemplate = document.querySelector("[data-maquina-template]")
+        const dataContentContainer = document.querySelector("[data-content-container]")
+        const searchInput = document.querySelector("[data-input-search]")
+
+
+
+        let datos
+
+        searchInput.addEventListener("input", e =>{
+            const value = e.target.value.toLowerCase()
+            datos.forEach(dato => {
+                const isVisible = dato.modelo.toLowerCase().includes(value) || dato.identifier.toString().includes(value) || dato.empresa.toLowerCase().includes(value) || dato.estado.toLowerCase().includes(value) || dato.comentario.toLowerCase().includes(value)
+                dato.element.classList.toggle("d-none", !isVisible)
+            })
+
+        })
+
+
+
+        fetch({$basePath. "/api/printers/all/?token=idinafig&_tracy_skip_error"})
+            .then(res => res.json())
+            .then(data => {
+                datos = data.map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.id
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath. "/admin/maquinas/info/"} + Object.id
+
+                    dataContentContainer.append(card)
+
+                    return {
+                        identifier: Object.id,
+                        modelo: Object.modelo,
+                        proveedor: Object.proveedor,
+                        empresa: Object.empresa,
+                        estado: Object.estado,
+                        comentario: Object.comentario,
+                        origen: Object.origen,
+                        tipocontrato: Object.tipocontrato,
+                        element: card
+                    }
+                })
+            })
+
+    </script>
 {/block}
 {block mas_scripts}
     <script>
@@ -184,4 +181,5 @@
         })
         {/foreach}
     </script>
+
 {/block}

@@ -64,7 +64,8 @@ final class MaquinasFormFactory
           $form->addSelect('tipocontador', 'Tipo de Contador', [
                '0' => 'BN',
                '1' => 'Color',
-               '2' => 'Triple'
+               '2' => 'Triple',
+               '3' => 'Impresora BN',
           ]);
           $form->addSelect('estado', 'Estado', [
                '0' => 'Sin Preparar',
@@ -171,7 +172,8 @@ final class MaquinasFormFactory
           $form->addSelect('tipocontador', 'Tipo de Contador', [
                '0' => 'BN',
                '1' => 'Color',
-               '2' => 'Triple'
+               '2' => 'Triple',
+               '3' => 'Impresora BN'
           ]);
           $form->addSelect('estado', 'Estado', [
                '0' => 'Sin Preparar',

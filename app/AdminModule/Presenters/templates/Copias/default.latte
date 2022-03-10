@@ -109,7 +109,7 @@
                         <th class="fecha">
                             Fecha
                         </th>
-                        {if $copias->tipocontador >= "1"}
+                        {if $copias->tipocontador == "1"}
                             <th class="copiasc">
                                 Copias C
                             </th>
@@ -353,7 +353,7 @@
                         <td class="fecha">
                             {$copia->fecha}
                         </td>
-                        {if $copias->tipocontador >= "1"}
+                        {if $copias->tipocontador == "1"}
                             <td class="copiasc">
                                 {ifset $copia->copiascl}
                                     {$copia->copiascl}

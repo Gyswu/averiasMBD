@@ -35,6 +35,9 @@ final class CopiasFormFactory
         } elseif ($mode == 2) {
             $form = $this->createTriple($idmaquina);
             return $form;
+        } elseif ($mode == 3) {
+            $form = $this->createBn($idmaquina);
+            return $form;
         }
 
     }

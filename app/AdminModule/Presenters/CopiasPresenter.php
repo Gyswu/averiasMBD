@@ -201,6 +201,16 @@ class CopiasPresenter extends BaseAdminPresenter
                     $maquina->copias->add($copies);
                     $this->orm->maquinas->persistAndFlush($maquina);
                     $this->flashMessage("Añadido de forma correcta", 'success');
+                } elseif ($maquina->tipocontador == 3) {
+
+                    $copies->copiasbn = $values->copiasbn;
+                    $copies->escaneos = 0;
+                    $copies->fecha = $values->fecha;
+
+                    $maquina->copias->add($copies);
+                    $this->orm->maquinas->persistAndFlush($maquina);
+                    $this->flashMessage("Añadido de forma correcta", 'success');
+
                 } else {
                     $this->redirect('Copias:default');
                 }

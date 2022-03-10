@@ -48,8 +48,8 @@ class GeneralfunctionsPresenter extends BaseAdminPresenter
                                             {
                                                 "type": "copiasbn",
                                                 "codes": [
-                                                    "1.3.6.1.4.1.1347.42.3.1.2.1.1.1.1",
-                                                    "1.3.6.1.4.1.1347.42.3.1.2.1.1.2.1"
+                                                    "1.3.6.1.4.1.1347.42.3.1.1.1.1.2",
+                                                    "1.3.6.1.4.1.1347.42.3.1.1.1.1.1"
                                                 ]
                                             },
                                             {
@@ -141,6 +141,19 @@ class GeneralfunctionsPresenter extends BaseAdminPresenter
                                         ';
 
             } //if tipocontador 2
+            if ($maquina->tipocontador == 3) {
+
+                $maquina->codegroups = '[
+                                            {
+                                                "type": "copiasbn",
+                                                "codes": [
+                                                    "1.3.6.1.4.1.1347.43.10.1.1.12.1.1"
+                                                ]
+                                            }             
+                                        ]
+                                        ';
+
+            } //if tipocontador 3
             $this->orm->maquinas->persistAndFlush($maquina);
         } //foreach maquina
         $this->redirect("Generalfunctions:default");

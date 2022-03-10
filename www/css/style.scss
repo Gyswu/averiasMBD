@@ -183,3 +183,29 @@ table.table tr td a i:hover{
     font-size: 18px;
   }
 }
+
+@media screen and (max-width: 1px) {
+  td.codigos {
+    display: none;
+  }
+}
+@media screen and (max-width: 576px) {
+  td.codigos {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  td.codigos {
+    display: none;
+  }
+}
+@media screen and (max-width: 992px) {
+  td.codigos {
+    display: none;
+  }
+}
+@media screen and (max-width: 1200px) {
+  td.codigos {
+    display: revert;
+  }
+}

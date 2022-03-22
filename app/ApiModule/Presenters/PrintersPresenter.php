@@ -95,14 +95,19 @@ final class PrintersPresenter extends BaseApiPresenter
         $this->sendJson(array_intersect_key($info, array_flip($whitelist)));
     }
 
-    public function actionAll($token)
+    public function actionAll($token, $mode, $id)
     {
         if($token == "idinafig"){
             $data = array();
             $printers = $this->getAllPrinters();
+            if($mode == 8){
+                $printers = $this->orm->maquinas->findBy(['empresa' => $id]);
+            }
+            if($mode == 9){
+                $printers = $this->orm->maquinas->findBy(['proveedor' => $id]);
+            }
             foreach ($printers as $printer) {
                 if($printer->modelo == "blank"){
-
                 } else {
                     $printerArray = $printer->toArray();
                     $printerArray[empresa] = $printer->empresa->nombre;

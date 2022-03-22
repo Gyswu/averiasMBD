@@ -134,7 +134,15 @@
 
 
 
-        fetch({$basePath. "/api/printers/all/?token=idinafig&_tracy_skip_error"})
+        fetch(
+            {if $mode == 7}
+                {$basePath. "/api/printers/all/?token=idinafig&_tracy_skip_error"}
+            {elseif $mode == 8}
+                {$basePath . "/api/printers/all/?token=idinafig&?mode=8&?id=" . $empresa->id . "&_tracy_skip_error"}
+            {elseif $mode == 9}
+                {$basePath . "/api/printers/all/?token=idinafig&?mode=9&?id=" . $proveedor->id . "&_tracy_skip_error"}
+            {/if}
+        )
             .then(res => res.json())
             .then(data => {
                 datos = data.map(Object => {

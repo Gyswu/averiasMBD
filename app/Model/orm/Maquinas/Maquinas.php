@@ -29,6 +29,7 @@ use Nextras\Orm\Relationships\OneHasMany;
  * @property    OneHasMany|Copias[]     $copias {1:m Copias::$maquina}
  * @property    string|null             $token
  * @property    string|null             $codegroups
+ * @property    int|null             $facturationgroup
  *
  */
 class Maquinas extends Entity

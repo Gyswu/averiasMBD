@@ -23,4 +23,19 @@ class CopiasMapper extends Mapper
             ->orderBy("this->maquina->empresa->nombre")
             ->orderBy("this->maquina->modelo");
     }
+
+    public function getReportByFacturationGroup(): ICollection
+    {
+        return $this->toCollection($this->connection->query("
+            SELECT * 
+            FROM Copia 
+            JOIN ( 
+                SELECT max(id) as maxid FROM `Copia` GROUP BY maquina 
+                ) as pt 
+            ON pt.maxid = id 
+        "))
+                    ->orderBy("this->maquina->empresa->nombre")
+                    ->orderBy("this->maquina->modelo")
+        ;
+    }
 }

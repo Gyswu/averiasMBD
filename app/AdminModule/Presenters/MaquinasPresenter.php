@@ -30,28 +30,6 @@ class MaquinasPresenter extends BaseAdminPresenter
     public function renderDefault($id, $mode, $order): void
     {
         if (!isset($id)) {
-            if (!isset($order)) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('id', ICollection::DESC);
-            } elseif ($order == 1) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('modelo', ICollection::DESC);
-            } elseif ($order == 2) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('modelo', ICollection::ASC);
-            } elseif ($order == 3) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('proveedor', ICollection::DESC);
-            } elseif ($order == 4) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('proveedor', ICollection::ASC);
-            } elseif ($order == 5) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('empresa', ICollection::DESC);
-            } elseif ($order == 6) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('empresa', ICollection::ASC);
-            } elseif ($order == 7) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('estado', ICollection::DESC);
-            } elseif ($order == 8) {
-                $this->template->maquinas = $this->orm->maquinas->findAll()->orderBy('estado', ICollection::ASC);
-            }
-
-            $listaCajones = Listas::getCajones();
-
             $this->template->mode = 7;
         } elseif ($mode == 8) {
             //MODO CLIENTE
@@ -174,24 +152,23 @@ class MaquinasPresenter extends BaseAdminPresenter
 
     public function onSuccessAddMaquina(Form $form, stdClass $values): void
     {
-        //        dd($values->firmwarebackup);
         $maquina = new Maquinas();
         try {
             $maquina->modelo = $values->modelo;
-            if (is_null($values->ip)) {
+            if (!is_null($values->ip)) {
                 if (testip($values->ip)) {
                     $maquina->ip = $values->ip;
                 } else {
                     $this->flashMessage("IP Incorrecta", 'danger');
-                    $this->redirect("Maquinas:add");
+                    $this->redirect("Maquinas:edit", $maquina->id);
                 }
             }
-            if (is_null($values->mascara)) {
+            if (!is_null($values->mascara)) {
                 if (testip($values->mascara)) {
-                    $maquina->mascara = $values->ip;
+                    $maquina->mascara = $values->mascara;
                 } else {
                     $this->flashMessage("Mascara Incorrecta", 'danger');
-                    $this->redirect("Maquinas:add");
+                    $this->redirect("Maquinas:edit", $maquina->id);
                 }
             }
             $maquina->vfirmware = $values->vfirmware;
@@ -211,7 +188,7 @@ class MaquinasPresenter extends BaseAdminPresenter
                 $firmware = $values->firmwarebackup;
                 if (is_null($firmware)) {
                     $firmware->move("upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
-                        $values->firmwarebackup->name);
+                                    $values->firmwarebackup->name);
                     $maquina->firmwarebackup = "upload/" . $values->modelo . $values->empresa . "Backup" . date('dmY') .
                         $values->firmwarebackup->name;
                 }
@@ -278,7 +255,6 @@ class MaquinasPresenter extends BaseAdminPresenter
             $maquine->tipogarantia = $values->tipogarantia;
             $maquine->comentario = $values->comentario;
             $maquine->codegroups = $values->codegroups;
-            //            dd($maquine);
             if (!is_null($values->firmwarebackup)) {
                 $firmware = $values->firmwarebackup;
                 if (is_null($firmware)) {

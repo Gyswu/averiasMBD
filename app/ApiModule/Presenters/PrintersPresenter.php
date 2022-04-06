@@ -97,7 +97,7 @@ final class PrintersPresenter extends BaseApiPresenter
 
     public function actionAll($token, $mode, $ide)
     {
-        if($token == "idinafig"){
+        if ($this->ifUserToken($token)){
             $data = array();
             $printers = $this->getAllPrinters();
             if($mode == 8){

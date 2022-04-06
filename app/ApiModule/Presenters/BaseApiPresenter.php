@@ -27,4 +27,15 @@ class BaseApiPresenter extends BasePresenter
     {
         $this->sendJson(["errors" => $errors]);
     }
+
+    public function ifUserToken($token){
+        if ($this->orm->usuarios->getBy(
+            ['token' => $token]
+        )) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }

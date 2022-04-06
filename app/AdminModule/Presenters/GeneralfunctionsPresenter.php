@@ -19,7 +19,7 @@ class GeneralfunctionsPresenter extends BaseAdminPresenter
     {
     }
 
-    public function actionGenerateTokens()
+    public function actionGenerateMachineTokens()
     {
 
         $maquinas = $this->orm->maquinas->findAll();
@@ -30,6 +30,22 @@ class GeneralfunctionsPresenter extends BaseAdminPresenter
                 $secreto = md5($listas->generateRandomString(32));
                 $maquina->token = $secreto;
                 $this->orm->maquinas->persistAndFlush($maquina);
+            }
+        }
+
+        $this->redirect("Generalfunctions:default");
+    }
+    public function actionGenerateUserTokens()
+    {
+
+        $users = $this->orm->usuarios->findAll();
+        $maquina = new Maquinas();
+        foreach ($users as $user) {
+            if ($user->token == null) {
+                $listas = new Listas();
+                $secreto = md5($listas->generateRandomString(32));
+                $user->token = $secreto;
+                $this->orm->usuarios->persistAndFlush($user);
             }
         }
 

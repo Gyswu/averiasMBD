@@ -114,13 +114,13 @@
                     dir.href= "https://www.google.com/maps/search/?api=1&query=" + Object.direccion.replace( ' ', '+')
                     contact.textContent = Object.contacto
 
-                    info.href = {$basePath . "/admin/empresas/info/"} + Object.id
-                    edit.href = {$basePath . "/admin/empresas/edit/"} + Object.id
+                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} + Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} + Object.id
                     printers.href = {$basePath . "/admin/maquinas/default/"} + Object.id + "?mode=8"
                     users.href = {$basePath . "/admin/usuarios/?empresaId="} + Object.id + "?mode=8"
 
                     {if $usuarioDb->rol == "admin"}
-                    edit.href = {$basePath . "/admin/empresas/borrar/"} +Object.id
+                        remove.href = {$basePath . "/admin/empresas/borrar/"} + Object.id
                     {/if}
 
                     contentContainer.append(card)

@@ -10,7 +10,9 @@ row .card .card-body{position:relative;padding-bottom:50px}
     padding:0}
 .row .card .card-body .btn{
     position:absolute;bottom:5px;left:200px}
-
+td.options{
+    width: 10%;
+}
 
 @media screen and (min-width: 1px) {
 

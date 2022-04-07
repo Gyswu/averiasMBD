@@ -147,14 +147,17 @@ class EmpresasPresenter extends BaseAdminPresenter
         try {
             $empresa = new Empresa();
             $empresa = $this->orm->empresa->getById($idEmpresa);
-            foreach ($empresa->usuarios as $usuario) {
-                foreach ($usuario->averias as $averia) {
-                    $borrado = $this->orm->usuarios->getById(666);
-                    $borrado->averias->add($averia);
-                    $this->orm->usuarios->persistAndFlush($borrado);
+            if(count($empresa->usuarios) >= 1){
+                foreach ($empresa->usuarios as $usuario) {
+                    foreach ($usuario->averias as $averia) {
+                        $borrado = $this->orm->usuarios->getById(666);
+                        $borrado->averias->add($averia);
+                        $this->orm->usuarios->persistAndFlush($borrado);
+                    }
+                    $this->orm->usuarios->removeAndFlush($usuario);
                 }
-                $this->orm->usuarios->removeAndFlush($usuario);
             }
+
 
             $this->orm->empresa->removeAndFlush($empresa);
             $this->flashMessage('Empresa borrada correctamente', 'success');
@@ -167,29 +170,5 @@ class EmpresasPresenter extends BaseAdminPresenter
         $this->redirect('Empresas:default');
 
     }
-
-//   ____________________BUSCAR___________________________
-
-    public function createComponentAddSearchClientForm()
-    {
-        $form = (new EmpresasFormFactory())->createSearch();
-        $form->onSuccess[] = [$this, 'onSuccessBuscarEmpresa'];
-        $render = $form->getRenderer();
-        $render->wrappers['pair']['container'] = null;
-        $render->wrappers['controls']['container'] = "div class=input-group";
-
-        return $form;
-    }
-
-    public function onSuccessBuscarEmpresa(Form $form, stdClass $values)
-    {
-        if (is_integer($values->search)) {
-            $this->redirect('Empresas:default', 1, $values->search);
-        } else {
-            $this->redirect('Empresas:default', 2, $values->search);
-        }
-
-    }
-
 
 }

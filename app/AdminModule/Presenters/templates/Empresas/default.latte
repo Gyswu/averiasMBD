@@ -12,7 +12,7 @@
             <div class="col-12 col-lg-6">
 
                 <a n:href = "Empresas:add" class="text-success"><h1><i class="fa-solid fa-plus"></i></h1></a>
-                {control addSearchClientForm}
+                <input type="search" id="search" data-input-search>
 
             </div>
         </div>
@@ -45,131 +45,24 @@
                     </tr>
 
                     </thead>
-
-                    <tbody>
-                    {switch $mode}
-                        {case 0}
-
-                        {foreach $empresas as $empresa}
-
-                            <tr>
-
-                                <td class="id"> {$empresa->id} </td>
-
-                                <td class="nif"> {$empresa->nif} </td>
-
-                                <td> {$empresa->nombre} </td>
-
-                                <td><a class="nounderline" href="tel:{$empresa->telefono}">{$empresa->telefono}</a></td>
-
-                                <td><a class="nounderline"
-                                       href="https://www.google.com/maps/search/?api=1&query={str_replace(" ", "+", $empresa->direccion)}">{$empresa->direccion}</a>
-                                </td>
-
-                                <td> {$empresa->contacto} </td>
-
-                                <td>
-                                    <a n:href= "Empresas:info $empresa->id"><i
-                                                class="bi bi-info-circle-fill"></i></a>
-                                    <a n:href = "Usuarios:default $empresa->id" class="">
-                                        <i class="fa-solid fa-user"></i></a>
-                                    <a n:href = "Maquinas:default, id=> $empresa->id , mode=> 8 "
-                                            class=""><i class="fa-solid fa-print"></i></a>
-                                    {if $rol == 'admin'}
-                                        <a n:href = "Empresas:edit $empresa->id" class="">
-                                            <i class="fa-solid fa-pen-to-square"></i></a>
-                                    {elseif $rol == 'encargado'}
-                                        <a n:href = "Empresas:edit $empresa->id" class="">
-                                            <i class="fa-solid fa-pen-to-square"></i></a>
-                                    {/if}
-                            {if $rol == 'admin'}
-                                        <a n:href = "Empresas:borrar $empresa->id" class="text-danger">
-                                            <i class="fa-solid fa-trash-can"></i></a>
-                                    {/if}
-                                </td>
-
-                            </tr>
-
-                        {/foreach}
-                    {case 1}
-                        <tr>
-
-                            <td class="id"> {$empresax->id} </td>
-
-                            <td class="nif"> {$empresax->nif} </td>
-
-                            <td> {$empresax->nombre} </td>
-
-                            <td> {$empresax->telefono} </td>
-
-                            <td> {$empresax->direccion} </td>
-
-                            <td> {$empresax->contacto} </td>
-
-                            <td>
-                                <a n:href= "Empresas:info $empresa->id"><i
-                                            class="bi bi-info-circle-fill"></i></a>
-                                <a n:href = "Usuarios:default $empresax->id" class="">
-                                    <i class="fa-solid fa-user"></i></a>
-                                <a n:href = "Maquinas:default, id=> $empresax->id , mode=> 8 "
-                                        class=""><i class="fa-solid fa-print"></i></a>
-                                {if $rol == 'admin'}
-                                    <a n:href = "Empresas:edit $empresax->id" class="">
-                                        <i class="fa-solid fa-pen-to-square"></i></a>
-                                {elseif $rol == 'encargado'}
-                                    <a n:href = "Empresas:edit $empresax->id" class="">
-                                        <i class="fa-solid fa-pen-to-square"></i></a>
-                                {/if}
-                            {if $rol == 'admin'}
-                                    <a n:href = "Empresas:borrar $empresax->id" class="">
-                                        <i class="fa-solid fa-trash-can"></i></a>
-                                {/if}
+                        <template class="table" data-client-template>
+                        <tr id="card">
+                            <td class="id" data-identifier></td>
+                            <td class="nif" data-nif></td>
+                            <td class="name" data-name></td>
+                            <td class="telef"><a href="" class="nounderline" data-tel></a></td>
+                            <td class="dir"><a href="" class="nounderline" data-dir></a></td>
+                            <td class="contact" data-contact></td>
+                            <td class="options" data-options>
+                                <a href="" data-action-info><i class="bi bi-info-circle-fill"></i></a>
+                                <a href="" data-action-edit><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="" data-action-printers><i class="fa-solid fa-print"></i></a>
+                                <a href="" data-action-users><i class="fa-solid fa-user"></i></a>
+                                <a href="" data-action-remove class="text-danger"><i class="fa-solid fa-trash-can"></i></a>
                             </td>
-
                         </tr>
-                    {case 2}
-
-                        {foreach $empresat as $empresa}
-
-                            <tr>
-
-                                <td class="id"> {$empresa->id} </td>
-
-                                <td class="nif"> {$empresa->nif} </td>
-
-                                <td> {$empresa->nombre} </td>
-
-                                <td> {$empresa->telefono} </td>
-
-                                <td> {$empresa->direccion} </td>
-
-                                <td> {$empresa->contacto} </td>
-
-                                <td>
-                                    <a n:href= "Empresas:info $empresa->id"><i
-                                                class="bi bi-info-circle-fill"></i></a>
-                                    <a n:href = "Usuarios:default $empresa->id" class="">
-                                        <i class="fa-solid fa-user"></i></a>
-                                    <a n:href = "Maquinas:default, id=> $empresa->id , mode=> 8 "
-                                            class=""> <i class="fa-regular fa-print"></i></a>
-                                    {if $rol == 'admin'}
-                                        <a n:href = "Empresas:edit $empresa->id" class="">
-                                            <i class="fa-solid fa-pen-to-square"></i></a>
-                                    {elseif $rol == 'encargado'}
-                                        <a n:href = "Empresas:edit $empresa->id" class="">
-                                            <i class="fa-solid fa-pen-to-square"></i></a>
-                                    {/if}
-                            {if $rol == 'admin'}
-                                        <a n:href = "Empresas:borrar $empresa->id" class="">
-                                            <i class="fa-solid fa-trash-can"></i></a>
-                                    {/if}
-                                </td>
-
-                            </tr>
-
-                        {/foreach}
-                    {/switch}
-
+                        </template>
+                    <tbody data-content-container>
                     </tbody>
 
                 </table>
@@ -179,5 +72,75 @@
         </div>
 
     </div>
+    <script>
+        const clientTemplate = document.querySelector("[data-client-template]")
+        const contentContainer = document.querySelector("[data-content-container]")
+        const searchInput = document.querySelector("[data-input-search]")
 
+        searchInput.addEventListener( "input", e =>{
+            const value = e.target.value.toLowerCase()
+            datos.forEach(dato => {
+                const isVisible = dato.name.toLowerCase().includes(value) || dato.identifier.toString().includes(value) || dato.tel.toString().includes(value) || dato.dir.toLowerCase().includes(value) || dato.contact.toLowerCase().includes(value) || dato.nif.toLowerCase().includes(value)
+                dato.element.classList.toggle("d-none", !isVisible)
+            })
+        })
+
+        fetch(
+                {$basePath . "/api/clients/all/?token=" . $usuarioDb->token . "&_tracy_skip_error"}
+        )
+            .then(res => res.json())
+            .then(data =>
+                datos = data.map(Object => {
+                    const card = clientTemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identifier]")
+                    const nif = card.querySelector("[data-nif]")
+                    const name = card.querySelector("[data-name]")
+                    const tel = card.querySelector("[data-tel]")
+                    const dir = card.querySelector("[data-dir]")
+                    const contact = card.querySelector("[data-contact]")
+
+                    const info = card.querySelector("[data-action-info]")
+                    const edit = card.querySelector("[data-action-edit]")
+                    const printers = card.querySelector("[data-action-printers]")
+                    const users = card.querySelector("[data-action-users]")
+                    const remove = card.querySelector("[data-action-remove]")
+
+                    ide.textContent = Object.id
+                    nif.textContent = Object.nif
+                    name.textContent = Object.nombre
+                    tel.textContent = Object.telefono
+                    tel.href = "tel:" + Object.telefono
+                    dir.textContent = Object.direccion
+                    dir.href= "https://www.google.com/maps/search/?api=1&query=" + Object.direccion.replace( ' ', '+')
+                    contact.textContent = Object.contacto
+
+                    info.href = {$basePath . "/admin/empresas/info/"} + Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit/"} + Object.id
+                    printers.href = {$basePath . "/admin/maquinas/default/"} + Object.id + "?mode=8"
+                    users.href = {$basePath . "/admin/usuarios/?empresaId="} + Object.id + "?mode=8"
+
+                    {if $usuarioDb->rol == "admin"}
+                    edit.href = {$basePath . "/admin/empresas/borrar/"} +Object.id
+                    {/if}
+
+                    contentContainer.append(card)
+
+                    return {
+                        identifier: Object.id,
+                        nif: Object.nif,
+                        name: Object.nombre,
+                        tel: Object.telefono,
+                        dir: Object.direccion,
+                        contact: Object.contacto,
+                        element: card
+                    }
+
+
+
+
+
+                })
+            )
+
+    </script>
 {/block}

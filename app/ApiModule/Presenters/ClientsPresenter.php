@@ -23,6 +23,12 @@ final class ClientsPresenter extends BaseApiPresenter
                 $clientToArray = $client->toArray();
                 $clientToArray[usuarios] = count($client->usuarios);
                 $clientToArray[maquinas] = count($client->maquinas);
+                if($client->telefono == ""){
+                    $clientToArray[telefono] = " ";
+                }
+                if($client->contacto == ""){
+                    $clientToArray[contacto] = " ";
+                }
                 array_push($data, $clientToArray);
             }
         } else {

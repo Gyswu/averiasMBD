@@ -116,7 +116,7 @@
     </div>
     <script>
         const maquinatemplate = document.querySelector("[data-maquina-template]")
-        const dataContentContainer = document.querySelector("[data-content-container]")
+        const contentContainer = document.querySelector("[data-content-container]")
         const searchInput = document.querySelector("[data-input-search]")
 
 
@@ -136,11 +136,11 @@
 
         fetch(
             {if $mode == 7}
-                {$basePath. "/api/printers/all/?token=" . {$usuarioDb->token} . "&_tracy_skip_error"}
+                {$basePath . "/api/printers/all/?token=" . $usuarioDb->token. "&_tracy_skip_error"}
             {elseif $mode == 8}
-                {$basePath . "/api/printers/all/?token=".{$usuarioDb->token}."&mode=8&ide=" . $empresa->id . "&_tracy_skip_error"}
+                {$basePath . "/api/printers/all/?token=" .$usuarioDb->token. "&mode=8&ide=" . $empresa->id . "&_tracy_skip_error"}
             {elseif $mode == 9}
-                {$basePath . "/api/printers/all/?token=" . {$usuarioDb->token} . "&mode=9&ide=" . $proveedor->id . "&_tracy_skip_error"}
+                {$basePath . "/api/printers/all/?token=" . $usuarioDb->token. "&mode=9&ide=" . $proveedor->id . "&_tracy_skip_error"}
             {/if}
         )
             .then(res => res.json())
@@ -160,7 +160,7 @@
                     estado.textContent = Object.estado
                     info.href = {$basePath. "/admin/maquinas/info/"} + Object.id
 
-                    dataContentContainer.append(card)
+                    contentContainer.append(card)
 
                     return {
                         identifier: Object.id,

@@ -18,40 +18,8 @@ class EmpresasPresenter extends BaseAdminPresenter
     private $empresaEditada;
 
 
-    public function renderDefault($mode, $value): void
+    public function renderDefault($value): void
     {
-
-        if (!isset($mode)) {
-            $mode = 0;
-        }
-
-        if ($mode == 0) {
-            $this->template->mode = 0;
-            $this->template->empresas = $this->orm->empresa->findAll();
-
-        } elseif ($mode == 1) {
-            $this->template->mode = 1;
-            $this->template->empresax = $this->orm->empresa->getById($value);
-
-        } elseif ($mode == 2) {
-            $resultados = [];
-            $this->template->mode = 2;
-            $empresas = $this->orm->empresa->findAll();
-            foreach ($empresas as $empresa) {
-
-                if ($this->str_contains($empresa->nombre, $value) || $this->str_contains($empresa->nif, $value) ||
-                    $this->str_contains($empresa->direccion, $value) ||
-                    $this->str_contains($empresa->contacto, $value)) {
-                    array_push($resultados, $empresa);
-                }
-            }
-
-//            $this->template->empresat = $this->orm->empresa->findBy(['nombre'=>$value]);
-            $this->template->empresat = $resultados;
-
-        } else {
-            $this->redirect('Empresas:default');
-        }
 
 
     }

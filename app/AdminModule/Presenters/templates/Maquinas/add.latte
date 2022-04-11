@@ -22,6 +22,18 @@
             </div>
         </div>
     </div>
+    <script>
+        const modelInput = document.querySelector("#frm-addMaquinaForm-modelo");
+
+        modelInput.addEventListener("input", e=>{
+            const value = e.target.value;
+            if(value.includes("Taskalfa") || value.includes("Ecosys M") || value.includes("Ecosys P") || value.includes("Ecosys FS") || value.includes("DCC")){
+                modelInput.style.cssText = "background-color:hsla(120,100%,75%,0.3)"
+            } else {
+                modelInput.style.cssText = "background-color: hsla(0,100%,50%,0.3)"
+            }
+        })
+    </script>
 
 
 {/block}

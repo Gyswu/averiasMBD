@@ -28,19 +28,17 @@
 
                     <tr>
 
-                        <th class="id"> ID</th>
+                        <th class="id" data-sort-id sortById="0"> ID</th>
 
-                        <th class="nif"> Nif</th>
+                        <th class="nif" data-sort-nif sortByNif="0"> Nif</th>
 
-                        <th> Nombre</th>
+                        <th data-sort-name sortByName="0"> Nombre</th>
 
-                        <th> Telefono</th>
+                        <th data-sort-telf sortByTelf="0"> Telefono</th>
 
-                        <th> Direccion</th>
+                        <th data-sort-dir sortByDir="0"> Direccion</th>
 
-                        <th> Contacto</th>
-
-                        <th> Opciones</th>
+                        <th style="width: 15%;"> Opciones</th>
 
                     </tr>
 
@@ -50,9 +48,8 @@
                             <td class="id" data-identifier></td>
                             <td class="nif" data-nif></td>
                             <td class="name" data-name></td>
-                            <td class="telef"><a href="" class="nounderline" data-tel></a></td>
-                            <td class="dir"><a href="" class="nounderline" data-dir></a></td>
-                            <td class="contact" data-contact></td>
+                            <td class="telef"><a href="" class="text-decoration-none nounderline" data-tel></a></td>
+                            <td class="dir"><a href="" class="text-decoration-none nounderline" data-dir></a></td>
                             <td class="options" data-options>
                                 <a href="" data-action-info><i class="bi bi-info-circle-fill"></i></a>
                                 <a href="" data-action-edit><i class="fa-solid fa-pen-to-square"></i></a>
@@ -79,6 +76,263 @@
         const contentContainer = document.querySelector("[data-content-container]")
         const searchInput = document.querySelector("[data-input-search]")
 
+        let datos;
+        /// Sort by ID
+        const sortById = document.querySelector("[data-sort-id]")
+        sortById.addEventListener("click", a => {
+            var e = contentContainer;
+            var child = contentContainer.lastElementChild;
+            while (child) {
+                e.removeChild(child);
+                child = e.lastElementChild;
+            }
+            if (sortById.getAttribute("sortById") == "0") {
+                datos.sort((a, b) => a.identifier - b.identifier).map(Object => {
+                    const card = clientTemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identifier]")
+                    const nif = card.querySelector("[data-nif]")
+                    const name = card.querySelector("[data-name]")
+                    const tel = card.querySelector("[data-tel]")
+                    const dir = card.querySelector("[data-dir]")
+
+                    const info = card.querySelector("[data-action-info]")
+                    const edit = card.querySelector("[data-action-edit]")
+                    const printers = card.querySelector("[data-action-printers]")
+                    const users = card.querySelector("[data-action-users]")
+                    {if $usuarioDb->rol == "admin"}
+                    const remove = card.querySelector("[data-action-remove]")
+                    {/if}
+                    ide.textContent = Object.identifier
+                    nif.textContent = Object.nif
+                    name.textContent = Object.name
+                    tel.textContent = Object.tel
+                    tel.href = "tel:" + Object.tel
+                    dir.textContent = Object.dir.substring(0, 45) + " ..."
+                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
+
+                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
+                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
+                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
+
+                    {if $usuarioDb->rol == "admin"}
+                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
+                    {/if}
+
+                    contentContainer.append(card)
+                })
+                sortById.setAttribute("sortById", 1);
+            } else {
+                datos.sort((a, b) => b.identifier - a.identifier).map(Object => {
+                    const card = clientTemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identifier]")
+                    const nif = card.querySelector("[data-nif]")
+                    const name = card.querySelector("[data-name]")
+                    const tel = card.querySelector("[data-tel]")
+                    const dir = card.querySelector("[data-dir]")
+
+                    const info = card.querySelector("[data-action-info]")
+                    const edit = card.querySelector("[data-action-edit]")
+                    const printers = card.querySelector("[data-action-printers]")
+                    const users = card.querySelector("[data-action-users]")
+                    {if $usuarioDb->rol == "admin"}
+                    const remove = card.querySelector("[data-action-remove]")
+                    {/if}
+                    ide.textContent = Object.identifier
+                    nif.textContent = Object.nif
+                    name.textContent = Object.name
+                    tel.textContent = Object.tel
+                    tel.href = "tel:" + Object.tel
+                    dir.textContent = Object.dir.substring(0, 45) + " ..."
+                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
+
+                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
+                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
+                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
+
+                    {if $usuarioDb->rol == "admin"}
+                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
+                    {/if}
+
+                    contentContainer.append(card)
+                })
+                sortById.setAttribute("sortById", 0);
+
+            }
+
+        })
+        ///Sort by Nif
+        const sortByNif = document.querySelector("[data-sort-nif]")
+        sortByNif.addEventListener("click", a => {
+            var e = contentContainer;
+            var child = contentContainer.lastElementChild;
+            while (child) {
+                e.removeChild(child);
+                child = e.lastElementChild;
+            }
+            if (sortByNif.getAttribute("sortByNif") == "0") {
+                datos.sort((a, b) => a.nif.localeCompare(b.nif)).map(Object => {
+                    const card = clientTemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identifier]")
+                    const nif = card.querySelector("[data-nif]")
+                    const name = card.querySelector("[data-name]")
+                    const tel = card.querySelector("[data-tel]")
+                    const dir = card.querySelector("[data-dir]")
+
+                    const info = card.querySelector("[data-action-info]")
+                    const edit = card.querySelector("[data-action-edit]")
+                    const printers = card.querySelector("[data-action-printers]")
+                    const users = card.querySelector("[data-action-users]")
+                    {if $usuarioDb->rol == "admin"}
+                    const remove = card.querySelector("[data-action-remove]")
+                    {/if}
+                    ide.textContent = Object.identifier
+                    nif.textContent = Object.nif
+                    name.textContent = Object.name
+                    tel.textContent = Object.tel
+                    tel.href = "tel:" + Object.tel
+                    dir.textContent = Object.dir.substring(0, 45)+" ..."
+                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
+
+                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
+                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
+                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
+
+                    {if $usuarioDb->rol == "admin"}
+                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
+                    {/if}
+
+                    contentContainer.append(card)
+                })
+                sortByNif.setAttribute("sortByNif", 1);
+            } else {
+                datos.sort((a, b) => b.nif.localeCompare(a.nif)).map(Object => {
+                    const card = clientTemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identifier]")
+                    const nif = card.querySelector("[data-nif]")
+                    const name = card.querySelector("[data-name]")
+                    const tel = card.querySelector("[data-tel]")
+                    const dir = card.querySelector("[data-dir]")
+
+                    const info = card.querySelector("[data-action-info]")
+                    const edit = card.querySelector("[data-action-edit]")
+                    const printers = card.querySelector("[data-action-printers]")
+                    const users = card.querySelector("[data-action-users]")
+                    {if $usuarioDb->rol == "admin"}
+                    const remove = card.querySelector("[data-action-remove]")
+                    {/if}
+                    ide.textContent = Object.identifier
+                    nif.textContent = Object.nif
+                    name.textContent = Object.name
+                    tel.textContent = Object.tel
+                    tel.href = "tel:" + Object.tel
+                    dir.textContent = Object.dir.substring(0,45) + " ..."
+                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
+
+                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
+                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
+                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
+
+                    {if $usuarioDb->rol == "admin"}
+                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
+                    {/if}
+
+                    contentContainer.append(card)
+                })
+                sortByNif.setAttribute("sortByNif", 0);
+
+            }
+
+        })
+        ///Sort by Name
+        const sortByName = document.querySelector("[data-sort-name]")
+        sortByName.addEventListener("click", a => {
+            var e = contentContainer;
+            var child = contentContainer.lastElementChild;
+            while (child) {
+                e.removeChild(child);
+                child = e.lastElementChild;
+            }
+            if (sortByName.getAttribute("sortByName") == "0") {
+                datos.sort((a, b) => a.name.localeCompare(b.name)).map(Object => {
+                    const card = clientTemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identifier]")
+                    const nif = card.querySelector("[data-nif]")
+                    const name = card.querySelector("[data-name]")
+                    const tel = card.querySelector("[data-tel]")
+                    const dir = card.querySelector("[data-dir]")
+
+                    const info = card.querySelector("[data-action-info]")
+                    const edit = card.querySelector("[data-action-edit]")
+                    const printers = card.querySelector("[data-action-printers]")
+                    const users = card.querySelector("[data-action-users]")
+                    {if $usuarioDb->rol == "admin"}
+                    const remove = card.querySelector("[data-action-remove]")
+                    {/if}
+                    ide.textContent = Object.identifier
+                    nif.textContent = Object.nif
+                    name.textContent = Object.name
+                    tel.textContent = Object.tel
+                    tel.href = "tel:" + Object.tel
+                    dir.textContent = Object.dir.substring(0, 45) + " ..."
+                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
+
+                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
+                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
+                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
+
+                    {if $usuarioDb->rol == "admin"}
+                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
+                    {/if}
+
+                    contentContainer.append(card)
+                })
+                sortByName.setAttribute("sortByName", 1);
+            } else {
+                datos.sort((a, b) => b.name.localeCompare(a.name)).map(Object => {
+                    const card = clientTemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identifier]")
+                    const nif = card.querySelector("[data-nif]")
+                    const name = card.querySelector("[data-name]")
+                    const tel = card.querySelector("[data-tel]")
+                    const dir = card.querySelector("[data-dir]")
+
+                    const info = card.querySelector("[data-action-info]")
+                    const edit = card.querySelector("[data-action-edit]")
+                    const printers = card.querySelector("[data-action-printers]")
+                    const users = card.querySelector("[data-action-users]")
+                    {if $usuarioDb->rol == "admin"}
+                    const remove = card.querySelector("[data-action-remove]")
+                    {/if}
+                    ide.textContent = Object.identifier
+                    nif.textContent = Object.nif
+                    name.textContent = Object.name
+                    tel.textContent = Object.tel
+                    tel.href = "tel:" + Object.tel
+                    dir.textContent = Object.dir.substring(0, 45) + " ..."
+                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
+
+                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
+                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
+                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
+
+                    {if $usuarioDb->rol == "admin"}
+                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
+                    {/if}
+
+                    contentContainer.append(card)
+                })
+                sortByName.setAttribute("sortByName", 0);
+
+            }
+
+        })
+        /// Buscador
         searchInput.addEventListener( "input", e =>{
             const value = e.target.value.toLowerCase()
             datos.forEach(dato => {
@@ -86,7 +340,7 @@
                 dato.element.classList.toggle("d-none", !isVisible)
             })
         })
-
+        /// API
         fetch(
                 {$basePath . "/api/clients/all/?token=" . $usuarioDb->token . "&_tracy_skip_error"}
         )
@@ -99,7 +353,6 @@
                     const name = card.querySelector("[data-name]")
                     const tel = card.querySelector("[data-tel]")
                     const dir = card.querySelector("[data-dir]")
-                    const contact = card.querySelector("[data-contact]")
 
                     const info = card.querySelector("[data-action-info]")
                     const edit = card.querySelector("[data-action-edit]")
@@ -113,9 +366,8 @@
                     name.textContent = Object.nombre
                     tel.textContent = Object.telefono
                     tel.href = "tel:" + Object.telefono
-                    dir.textContent = Object.direccion
+                    dir.textContent = Object.direccion.substring(0, 45)+" ..."
                     dir.href= "https://www.google.com/maps/search/?api=1&query=" + Object.direccion.replace( ' ', '+')
-                    contact.textContent = Object.contacto
 
                     info.href = {$basePath . "/admin/empresas/info?idEmpresa="} + Object.id
                     edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} + Object.id
@@ -137,11 +389,6 @@
                         contact: Object.contacto,
                         element: card
                     }
-
-
-
-
-
                 })
             )
 

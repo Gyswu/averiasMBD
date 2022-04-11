@@ -24,19 +24,19 @@
                     <thead class="thead-dark">
                     {switch $mode}
                     {case 7}
-                    <th class="id">
+                    <th class="id" sortById="0" data-sort-id>
                         ID
                     </th>
-                    <th class="modelo">
+                    <th class="modelo" sortByModel="0" data-sort-model>
                         Modelo
                     </th>
                     <th class="proveedor">
                         Proveedor
                     </th>
-                    <th class="cliente">
+                    <th class="cliente" sortByClient="0" data-sort-client>
                         Cliente
                     </th>
-                    <th class="estado">
+                    <th class="estado" sortByState="0" data-sort-state>
                         Estado
                     </th>
                     <th class="opciones">
@@ -120,8 +120,214 @@
         const searchInput = document.querySelector("[data-input-search]")
 
 
-
         let datos
+        ///// Sort by Id
+        const sortById = document.querySelector("[data-sort-id]")
+        sortById.addEventListener("click", a => {
+            var e = contentContainer;
+            var child = contentContainer.lastElementChild;
+            while (child) {
+                e.removeChild(child);
+                child = e.lastElementChild;
+            }
+            if (sortById.getAttribute("sortById") == "0") {
+                datos.sort((a, b) => a.identifier - b.identifier).map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.identifier
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
+
+                    contentContainer.append(card)
+                })
+                sortById.setAttribute("sortById", 1);
+            } else {
+                datos.sort((a, b) => b.identifier - a.identifier).map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.identifier
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
+
+                    contentContainer.append(card)
+                })
+                sortById.setAttribute("sortById", 0);
+
+            }
+
+        })
+        //// Sort By Model
+        const sortByModel = document.querySelector("[data-sort-model]")
+        sortByModel.addEventListener("click", a =>{
+            var e = contentContainer;
+            var child = contentContainer.lastElementChild;
+            while(child){
+                e.removeChild(child);
+                child = e.lastElementChild;
+            }
+            if(sortByModel.getAttribute("sortByModel") == "0"){
+                datos.sort((a, b) => a.modelo.localeCompare(b.modelo)).map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.identifier
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
+
+                    contentContainer.append(card)
+                })
+                sortByModel.setAttribute("sortByModel", 1) ;
+            }else{
+                datos.sort((a, b) => b.modelo.localeCompare(a.modelo)).map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.identifier
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
+
+                    contentContainer.append(card)
+                })
+                sortByModel.setAttribute("sortByModel", 0);
+
+            }
+
+        })
+        //// Sort By Client
+        const sortByClient = document.querySelector("[data-sort-client]")
+        sortByClient.addEventListener("click", a => {
+            var e = contentContainer;
+            var child = contentContainer.lastElementChild;
+            while (child) {
+                e.removeChild(child);
+                child = e.lastElementChild;
+            }
+            if (sortByClient.getAttribute("sortByClient") == "0") {
+                datos.sort((a, b) => a.empresa.localeCompare(b.empresa)).map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.identifier
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
+
+                    contentContainer.append(card)
+                })
+                sortByClient.setAttribute("sortByClient", 1);
+            } else {
+                datos.sort((a, b) => b.empresa.localeCompare(a.empresa)).map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.identifier
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
+
+                    contentContainer.append(card)
+                })
+                sortByClient.setAttribute("sortByClient", 0);
+
+            }
+
+        })
+
+        //// Sort By State
+        const sortByState = document.querySelector("[data-sort-state]")
+        sortByState.addEventListener("click", a => {
+            var e = contentContainer;
+            var child = contentContainer.lastElementChild;
+            while (child) {
+                e.removeChild(child);
+                child = e.lastElementChild;
+            }
+            if (sortByState.getAttribute("sortByState") == "0") {
+                datos.sort((a, b) => a.estado.localeCompare(b.estado)).map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.identifier
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
+
+                    contentContainer.append(card)
+                })
+                sortByState.setAttribute("sortByState", 1);
+            } else {
+                datos.sort((a, b) => b.estado.localeCompare(a.estado)).map(Object => {
+                    const card = maquinatemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identificador]")
+                    const modelo = card.querySelector("[data-modelo]")
+                    const proveedor = card.querySelector("[data-proveedor]")
+                    const cliente = card.querySelector("[data-cliente]")
+                    const estado = card.querySelector("[data-estado]")
+                    const info = card.querySelector("[data-action-info]")
+                    ide.textContent = Object.identifier
+                    modelo.textContent = Object.modelo
+                    proveedor.textContent = Object.proveedor
+                    cliente.textContent = Object.empresa
+                    estado.textContent = Object.estado
+                    info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
+
+                    contentContainer.append(card)
+                })
+                sortByState.setAttribute("sortByState", 0);
+
+            }
+
+        })
+
+
 
         searchInput.addEventListener("input", e =>{
             const value = e.target.value.toLowerCase()
@@ -179,15 +385,4 @@
     </script>
 {/block}
 {block mas_scripts}
-    <script>
-        {foreach $maquinas as $maquina}
-        var myModal = document.getElementById('myModal{$maquina->id}')
-        var myInput = document.getElementById('myInput{$maquina->id}')
-
-        myModal.addEventListener('shown.bs.modal', function () {
-            myInput.focus()
-        })
-        {/foreach}
-    </script>
-
 {/block}

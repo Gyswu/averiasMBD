@@ -1,0 +1,31 @@
+
+<table width="100%">
+    <thead style="color: white; background: black; font-weight: bold;">
+        <tr>
+            <td>Empresa</td>
+            <td>Impresora</td>
+            <td>BN</td>
+            <td>Color</td>
+            <td>lvl 1</td>
+            <td>lvl 2</td>
+            <td>lvl 3</td>
+            <td>escaneos</td>
+            <td>Actualizado</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr n:foreach="$copiesFacturation as $copy">
+            {if $copy->maquina->estado == 3}
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->maquina->empresa->nombre}</td>
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->maquina->modelo} ({$copy->maquina->id})</td>
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->copiasbn}</td>
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->copiascl}</td>
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->copiasl}</td>
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->copiasll}</td>
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->copiaslll}</td>
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->escaneos}</td>
+            <td style="border-right: 1px dashed gray; border-bottom: 1px solid gray;">{$copy->fecha}</td>
+            {/if}
+        </tr>
+    </tbody>
+</table>

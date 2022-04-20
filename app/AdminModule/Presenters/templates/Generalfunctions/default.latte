@@ -18,5 +18,29 @@
                 <a n:href="Generalfunctions:generateCodeGroups" class="btn btn-info">Regnerar CodeGroups</a>
             </div>
         </div>
+        <div class="row mt-3 mb-5">
+            <div class="col col-lg-4 col-md-4">
+                <h2>Enviar Correo de estado</h2>
+                <p>Enviar correo con los ultimos estados del contador</p>
+                <form name="facturationGroup" action="" method="post">
+                    <p>
+                        <select class="form-select" name="group" id="">
+                            <option value="1">Primer Mes</option>
+                            <option value="2">Segundo Mes</option>
+                            <option value="3">Tercer Mes</option>
+                            <option value="50">Otro</option>
+                        </select>
+                    </p>
+                    <input class="btn btn-success" type="button" name="groupButton" value="Enviar"
+                           onclick="sendFacturationGroups(this.form)">
+                </form>
+            </div>
+        </div>
     </div>
+    <script>
+        function sendFacturationGroups(form){
+            fetch({$basePath . "/api/reports/printersstatusbyfacturation?token=" . $usuarioDb->token . "&code="} + form.group.value)
+            alert("Mensaje enviado")
+        }
+    </script>
 {/block}

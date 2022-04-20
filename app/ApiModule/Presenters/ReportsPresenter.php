@@ -61,4 +61,28 @@ final class ReportsPresenter extends BaseApiPresenter
         $this->template->copies = $copies;
         $this->sendEmail("Report of printers", "info@mbdinformatica.es", $body);
     }
+    public function actionPrintersStatusByFacturation($token, $code)
+    {
+        if($this->orm->usuarios->getBy(['token' => $token]))
+
+        $copies = $this->orm->copias->getReport();
+        $copiesFacturation = [];
+        foreach ($copies as $copy){
+         if($copy->maquina->facturationgroup == $code){
+             array_push($copiesFacturation, $copy);
+         }
+        }
+
+        $latte = new Engine;
+        $body = $latte->renderToString(
+            __DIR__ . '/templates/Reports/printersStatus.latte',
+            [
+                "copies" => $copiesFacturation
+            ]
+        );
+
+
+        $this->template->copiesFacturation = $copiesFacturation;
+        $this->sendEmail("Report of printers - Group". $code, "info@mbdinformatica.es", $body);
+    }
 }

@@ -29,6 +29,7 @@ class CopiasMapper extends Mapper
         return $this->toCollection($this->connection->query("
             SELECT * 
             FROM Copia 
+            WHERE 
             JOIN ( 
                 SELECT max(id) as maxid FROM `Copia` GROUP BY maquina 
                 ) as pt 

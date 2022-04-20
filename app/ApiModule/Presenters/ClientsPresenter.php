@@ -15,7 +15,7 @@ final class ClientsPresenter extends BaseApiPresenter
         return $data;
     }
 
-    public function actionAll($token, $mode){
+    public function actionAll($token){
         if ($this->ifUserToken($token)){
             $data = array();
             $clients = $this->getAllClients();

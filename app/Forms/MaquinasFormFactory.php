@@ -120,7 +120,12 @@ final class MaquinasFormFactory
                ->setHtmlAttribute('class', 'form-control')
                ->setHtmlAttribute('rows', 5);
 
-          $form->addUpload('firmwarebackup', 'Firmware Backup');
+          $form->addSelect('facturationgroup', 'Grupo de facturacion', [
+              '1' => 'Primer mes',
+              '2' => 'Segundo mes',
+              '3' => 'Tercer mes',
+              '50' => 'Otro'
+          ]);
 
           $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 
@@ -226,7 +231,12 @@ final class MaquinasFormFactory
               ->setHtmlAttribute('class', 'form-control')
               ->setHtmlAttribute('rows', 5);
 
-          $form->addUpload('firmwarebackup', 'Firmware Backup');
+         $form->addSelect('facturationgroup', 'Grupo de facturacion', [
+             '1' => 'Primer mes',
+             '2' => 'Segundo mes',
+             '3' => 'Tercer mes',
+             '50' => 'Otro'
+         ]);
 
           $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 

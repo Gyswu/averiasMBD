@@ -110,8 +110,8 @@ final class PrintersPresenter extends BaseApiPresenter
                 if($printer->modelo == "blank"){
                 } else {
                     $printerArray = $printer->toArray();
-                    $printerArray[empresa] = $printer->empresa->nombre;
-                    $printerArray[proveedor] = $printer->proveedor->nombre;
+                    $printerArray[empresa] = $printer->empresa->toArray();
+                    $printerArray[proveedor] = $printer->proveedor->toArray();
                     if($printer->estado == 0){
                         $printerArray[estado] = "Sin Preparar";
                     }
@@ -141,5 +141,40 @@ final class PrintersPresenter extends BaseApiPresenter
         }
 
         $this->sendJson($data);
+    }
+    public function actionPrinter($token, $ide){
+        $printerArray = array();
+        if ($this->ifUserToken($token)){
+            $printer = $this->orm->maquinas->getById($ide);
+
+            $printerArray = $printer->toArray();
+            $printerArray[empresa] = $printer->empresa->toArray();
+            $printerArray[proveedor] = $printer->proveedor->toArray();
+                    if($printer->estado == 0){
+                        $printerArray[estado] = "Sin Preparar";
+                    }
+                    if($printer->estado == 1){
+                        $printerArray[estado] = "Puesta a punto";
+                    }
+                    if($printer->estado == 2){
+                        $printerArray[estado] = "Preparada";
+                    }
+                    if($printer->estado == 3){
+                        $printerArray[estado] = "In Situ";
+                    }
+                    if($printer->estado == 4){
+                        $printerArray[estado] = "Out of Service";
+                    }
+                    if($printer->estado == 5){
+                        $printerArray[estado] = "En Taller";
+                    }
+                    if($printer->estado == 6){
+                        $printerArray[estado] = "Desguace";
+                    }
+        } else {
+            $printerArray = "Dime la palabra magica";
+        }
+        
+        $this->sendJson($printerArray);
     }
 }

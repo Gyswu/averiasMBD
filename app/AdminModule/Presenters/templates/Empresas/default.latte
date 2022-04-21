@@ -71,12 +71,54 @@
         </div>
 
     </div>
+
+{/block}
+{block presenterScripts}
+<!-- PRESENTER SCRIPTS -->
     <script>
         const clientTemplate = document.querySelector("[data-client-template]")
         const contentContainer = document.querySelector("[data-content-container]")
         const searchInput = document.querySelector("[data-input-search]")
 
         let datos;
+
+        function writeClientCard(){
+            datos.map(Object => {
+                    const card = clientTemplate.content.cloneNode(true).children[0]
+                    const ide = card.querySelector("[data-identifier]")
+                    const nif = card.querySelector("[data-nif]")
+                    const name = card.querySelector("[data-name]")
+                    const tel = card.querySelector("[data-tel]")
+                    const dir = card.querySelector("[data-dir]")
+
+                    const info = card.querySelector("[data-action-info]")
+                    const edit = card.querySelector("[data-action-edit]")
+                    const printers = card.querySelector("[data-action-printers]")
+                    const users = card.querySelector("[data-action-users]")
+                    {if $usuarioDb->rol == "admin"}
+                    const remove = card.querySelector("[data-action-remove]")
+                    {/if}
+                    ide.textContent = Object.identifier
+                    nif.textContent = Object.nif
+                    name.textContent = Object.name
+                    tel.textContent = Object.tel
+                    tel.href = "tel:" + Object.tel
+                    dir.textContent = Object.dir.substring(0, 45) + " ..."
+                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
+
+                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
+                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
+                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
+                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
+
+                    {if $usuarioDb->rol == "admin"}
+                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
+                    {/if}
+
+                    contentContainer.append(card)
+                })
+        }
+
         /// Sort by ID
         const sortById = document.querySelector("[data-sort-id]")
         sortById.addEventListener("click", a => {
@@ -87,76 +129,12 @@
                 child = e.lastElementChild;
             }
             if (sortById.getAttribute("sortById") == "0") {
-                datos.sort((a, b) => a.identifier - b.identifier).map(Object => {
-                    const card = clientTemplate.content.cloneNode(true).children[0]
-                    const ide = card.querySelector("[data-identifier]")
-                    const nif = card.querySelector("[data-nif]")
-                    const name = card.querySelector("[data-name]")
-                    const tel = card.querySelector("[data-tel]")
-                    const dir = card.querySelector("[data-dir]")
-
-                    const info = card.querySelector("[data-action-info]")
-                    const edit = card.querySelector("[data-action-edit]")
-                    const printers = card.querySelector("[data-action-printers]")
-                    const users = card.querySelector("[data-action-users]")
-                    {if $usuarioDb->rol == "admin"}
-                    const remove = card.querySelector("[data-action-remove]")
-                    {/if}
-                    ide.textContent = Object.identifier
-                    nif.textContent = Object.nif
-                    name.textContent = Object.name
-                    tel.textContent = Object.tel
-                    tel.href = "tel:" + Object.tel
-                    dir.textContent = Object.dir.substring(0, 45) + " ..."
-                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
-
-                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
-                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
-                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
-                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
-
-                    {if $usuarioDb->rol == "admin"}
-                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
-                    {/if}
-
-                    contentContainer.append(card)
-                })
+                datos.sort((a, b) => a.identifier - b.identifier);
+                writeClientCard();
                 sortById.setAttribute("sortById", 1);
             } else {
-                datos.sort((a, b) => b.identifier - a.identifier).map(Object => {
-                    const card = clientTemplate.content.cloneNode(true).children[0]
-                    const ide = card.querySelector("[data-identifier]")
-                    const nif = card.querySelector("[data-nif]")
-                    const name = card.querySelector("[data-name]")
-                    const tel = card.querySelector("[data-tel]")
-                    const dir = card.querySelector("[data-dir]")
-
-                    const info = card.querySelector("[data-action-info]")
-                    const edit = card.querySelector("[data-action-edit]")
-                    const printers = card.querySelector("[data-action-printers]")
-                    const users = card.querySelector("[data-action-users]")
-                    {if $usuarioDb->rol == "admin"}
-                    const remove = card.querySelector("[data-action-remove]")
-                    {/if}
-                    ide.textContent = Object.identifier
-                    nif.textContent = Object.nif
-                    name.textContent = Object.name
-                    tel.textContent = Object.tel
-                    tel.href = "tel:" + Object.tel
-                    dir.textContent = Object.dir.substring(0, 45) + " ..."
-                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
-
-                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
-                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
-                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
-                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
-
-                    {if $usuarioDb->rol == "admin"}
-                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
-                    {/if}
-
-                    contentContainer.append(card)
-                })
+                datos.sort((a, b) => b.identifier - a.identifier);
+                writeClientCard();
                 sortById.setAttribute("sortById", 0);
 
             }
@@ -172,76 +150,12 @@
                 child = e.lastElementChild;
             }
             if (sortByNif.getAttribute("sortByNif") == "0") {
-                datos.sort((a, b) => a.nif.localeCompare(b.nif)).map(Object => {
-                    const card = clientTemplate.content.cloneNode(true).children[0]
-                    const ide = card.querySelector("[data-identifier]")
-                    const nif = card.querySelector("[data-nif]")
-                    const name = card.querySelector("[data-name]")
-                    const tel = card.querySelector("[data-tel]")
-                    const dir = card.querySelector("[data-dir]")
-
-                    const info = card.querySelector("[data-action-info]")
-                    const edit = card.querySelector("[data-action-edit]")
-                    const printers = card.querySelector("[data-action-printers]")
-                    const users = card.querySelector("[data-action-users]")
-                    {if $usuarioDb->rol == "admin"}
-                    const remove = card.querySelector("[data-action-remove]")
-                    {/if}
-                    ide.textContent = Object.identifier
-                    nif.textContent = Object.nif
-                    name.textContent = Object.name
-                    tel.textContent = Object.tel
-                    tel.href = "tel:" + Object.tel
-                    dir.textContent = Object.dir.substring(0, 45)+" ..."
-                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
-
-                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
-                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
-                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
-                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
-
-                    {if $usuarioDb->rol == "admin"}
-                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
-                    {/if}
-
-                    contentContainer.append(card)
-                })
+                datos.sort((a, b) => a.nif.localeCompare(b.nif));
+                writeClientCard();
                 sortByNif.setAttribute("sortByNif", 1);
             } else {
-                datos.sort((a, b) => b.nif.localeCompare(a.nif)).map(Object => {
-                    const card = clientTemplate.content.cloneNode(true).children[0]
-                    const ide = card.querySelector("[data-identifier]")
-                    const nif = card.querySelector("[data-nif]")
-                    const name = card.querySelector("[data-name]")
-                    const tel = card.querySelector("[data-tel]")
-                    const dir = card.querySelector("[data-dir]")
-
-                    const info = card.querySelector("[data-action-info]")
-                    const edit = card.querySelector("[data-action-edit]")
-                    const printers = card.querySelector("[data-action-printers]")
-                    const users = card.querySelector("[data-action-users]")
-                    {if $usuarioDb->rol == "admin"}
-                    const remove = card.querySelector("[data-action-remove]")
-                    {/if}
-                    ide.textContent = Object.identifier
-                    nif.textContent = Object.nif
-                    name.textContent = Object.name
-                    tel.textContent = Object.tel
-                    tel.href = "tel:" + Object.tel
-                    dir.textContent = Object.dir.substring(0,45) + " ..."
-                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
-
-                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
-                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
-                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
-                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
-
-                    {if $usuarioDb->rol == "admin"}
-                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
-                    {/if}
-
-                    contentContainer.append(card)
-                })
+                datos.sort((a, b) => b.nif.localeCompare(a.nif));
+                writeClientCard();
                 sortByNif.setAttribute("sortByNif", 0);
 
             }
@@ -257,76 +171,12 @@
                 child = e.lastElementChild;
             }
             if (sortByName.getAttribute("sortByName") == "0") {
-                datos.sort((a, b) => a.name.localeCompare(b.name)).map(Object => {
-                    const card = clientTemplate.content.cloneNode(true).children[0]
-                    const ide = card.querySelector("[data-identifier]")
-                    const nif = card.querySelector("[data-nif]")
-                    const name = card.querySelector("[data-name]")
-                    const tel = card.querySelector("[data-tel]")
-                    const dir = card.querySelector("[data-dir]")
-
-                    const info = card.querySelector("[data-action-info]")
-                    const edit = card.querySelector("[data-action-edit]")
-                    const printers = card.querySelector("[data-action-printers]")
-                    const users = card.querySelector("[data-action-users]")
-                    {if $usuarioDb->rol == "admin"}
-                    const remove = card.querySelector("[data-action-remove]")
-                    {/if}
-                    ide.textContent = Object.identifier
-                    nif.textContent = Object.nif
-                    name.textContent = Object.name
-                    tel.textContent = Object.tel
-                    tel.href = "tel:" + Object.tel
-                    dir.textContent = Object.dir.substring(0, 45) + " ..."
-                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
-
-                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
-                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
-                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
-                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
-
-                    {if $usuarioDb->rol == "admin"}
-                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
-                    {/if}
-
-                    contentContainer.append(card)
-                })
+                datos.sort((a, b) => a.name.localeCompare(b.name));
+                writeClientCard();
                 sortByName.setAttribute("sortByName", 1);
             } else {
-                datos.sort((a, b) => b.name.localeCompare(a.name)).map(Object => {
-                    const card = clientTemplate.content.cloneNode(true).children[0]
-                    const ide = card.querySelector("[data-identifier]")
-                    const nif = card.querySelector("[data-nif]")
-                    const name = card.querySelector("[data-name]")
-                    const tel = card.querySelector("[data-tel]")
-                    const dir = card.querySelector("[data-dir]")
-
-                    const info = card.querySelector("[data-action-info]")
-                    const edit = card.querySelector("[data-action-edit]")
-                    const printers = card.querySelector("[data-action-printers]")
-                    const users = card.querySelector("[data-action-users]")
-                    {if $usuarioDb->rol == "admin"}
-                    const remove = card.querySelector("[data-action-remove]")
-                    {/if}
-                    ide.textContent = Object.identifier
-                    nif.textContent = Object.nif
-                    name.textContent = Object.name
-                    tel.textContent = Object.tel
-                    tel.href = "tel:" + Object.tel
-                    dir.textContent = Object.dir.substring(0, 45) + " ..."
-                    dir.href = "https://www.google.com/maps/search/?api=1&query=" + Object.dir.replace(' ', '+')
-
-                    info.href = {$basePath . "/admin/empresas/info?idEmpresa="} +Object.id
-                    edit.href = {$basePath . "/admin/empresas/edit?idEmpresa="} +Object.id
-                    printers.href = {$basePath . "/admin/maquinas/default/"} +Object.id + "?mode=8"
-                    users.href = {$basePath . "/admin/usuarios/?empresaId="} +Object.id + "?mode=8"
-
-                    {if $usuarioDb->rol == "admin"}
-                    remove.href = {$basePath . "/admin/empresas/borrar?idEmpresa="} +Object.id
-                    {/if}
-
-                    contentContainer.append(card)
-                })
+                datos.sort((a, b) => b.name.localeCompare(a.name));
+                writeClientCard();
                 sortByName.setAttribute("sortByName", 0);
 
             }

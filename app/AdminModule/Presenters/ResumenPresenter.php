@@ -22,7 +22,7 @@ class ResumenPresenter extends BaseAdminPresenter
         $maquinas = $this->orm->maquinas->findAll();
 
         foreach ($maquinas as $maquina) {
-            if ($maquina->modelo == "blank" || $maquina->modelo == "Pruebas") {
+            if ($maquina->modelo == "blank" || $maquina->modelo == "Pruebas" || !$maquina->estado == "3") {
 
             } else {
                 $r = array_push($datosMaquinas, $maquina->modelo);

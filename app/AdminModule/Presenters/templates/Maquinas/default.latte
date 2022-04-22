@@ -335,7 +335,7 @@
         searchInput.addEventListener("input", e =>{
             const value = e.target.value.toLowerCase()
             datos.forEach(dato => {
-                const isVisible = dato.modelo.toLowerCase().includes(value) || dato.identifier.toString().includes(value) || dato.empresa.toLowerCase().includes(value) || dato.estado.toLowerCase().includes(value) || dato.comentario.toLowerCase().includes(value)
+                const isVisible = dato.modelo.toLowerCase().includes(value) || dato.identifier.toString().includes(value) || dato.empresa.nombre.toLowerCase().includes(value) || dato.estado.toLowerCase().includes(value) || dato.comentario.toLowerCase().includes(value)
                 dato.element.classList.toggle("d-none", !isVisible)
             })
 

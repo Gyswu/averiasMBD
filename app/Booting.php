@@ -16,7 +16,7 @@ class Booting {
     
     public static function boot(): Configurator {
         $configurator = new Configurator;
-        $configurator->setDebugMode(true);
+        $configurator->setDebugMode(false);
         $configurator->enableTracy(__DIR__ . '/../log');
         $configurator->setTimeZone('Europe/Prague');
         $configurator->setTempDirectory(__DIR__ . '/../temp');

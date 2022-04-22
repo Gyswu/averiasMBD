@@ -321,10 +321,9 @@
             <div class="col-12 col-lg-12">
                 <a n:href="Copias:default, value=> $maquina->id , mode=>$mode" class="btn btn-info"><i
                             class="bi bi-clipboard-data"></i> Copias</a>
-                <a href="" class="btn btn-warning"><i class="bi bi-gear-fill"></i> Cambios de piezas</a>
+                <a n:href="Piezas:default, mode=> 1, idMaquina=>$maquina->id" class="btn btn-warning"><i class="bi bi-gear-fill"></i> Cambios de piezas</a>
                 <a n:href="Maquinas:edit $maquina->id" class="btn btn-info"><i class="bi bi-pencil-square"></i>
                     Editar</a>
-                <a n:href="Piezas:default, mode=> 1, idMaquina=>$maquina->id" class="btn btn-danger">Cambios de piezas</a>
             </div>
         </div>
     </div>

@@ -172,6 +172,14 @@
                 <td id="modalToken">
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <a href="" id="modalCopies" class="btn btn-info"><i class="bi bi-clipboard-data"></i> Copias</a> <br>
+                    <a href="" id="modalPieces" class="btn btn-warning"><i class="bi bi-gear-fill"></i> Cambios de piezas</a>
+                </td>
+                <td><a href="" id="modalEdit" class="btn btn-info"><i class="bi bi-pencil-square"></i>Editar</a></td>
+            </tr>
+
         </table>
       </div>
       <div class="modal-footer">
@@ -203,6 +211,9 @@
             let modalSatus = document.querySelector("#modalStatus")
             let modalToken = document.querySelector("#modalToken")
             let modalMasInfo = document.querySelector("#modalMasInfo")
+            let modalCopias = document.querySelector("#modalCopias")
+            let modalEdit = document.querySelector("#modalEdit")
+            let modalPieces = document.querySelector("#modalPieces")
             let printer
             let response = await fetch({$basePath . "/api/printers/printer/?token=" . $usuarioDb->token . "&ide="} + identifier + "&_tracy_skip_error")
             .then(res => res.json())
@@ -216,6 +227,9 @@
                 modalSatus.textContent = data.estado
                 modalToken.textContent = data.token
                 modalMasInfo.href = {$basePath. "/admin/maquinas/info/"} + data.id
+                modalCopias.href = {$basePath. "/admin/copias/?value="} + data.id + ("&mode=10")
+                modalEdit.href = {$basePath. "/admin/maquinas/edit?idMaquina="} + data.id
+                modalPieces.href = {$basePath. "/admin/piezas/?mode=1&idMaquina="} + data.id
 
 
             })

@@ -37,4 +37,17 @@ final class ClientsPresenter extends BaseApiPresenter
         $this->sendJson($data);
     }
 
+    public function getClient($token, $ide){
+        $data = array();
+        if ($this->ifUserToken($token)){
+            $client = $this->orm->empresas->findById($ide);
+            $data = $client->toArray();
+            $client[usuarios] = count($client->usuarios);
+            $client[maquinas] = count($client->maquinas);
+        } else {
+            $data = "Dime la palabra magica";
+        }
+        $this->sendJson($data);
+    }
+
 }

@@ -121,6 +121,7 @@ final class MaquinasFormFactory
                ->setHtmlAttribute('rows', 5);
 
           $form->addSelect('facturationgroup', 'Grupo de facturacion', [
+               '0' => 'Ninguno',
               '1' => 'Primer mes',
               '2' => 'Segundo mes',
               '3' => 'Tercer mes',
@@ -232,6 +233,7 @@ final class MaquinasFormFactory
               ->setHtmlAttribute('rows', 5);
 
          $form->addSelect('facturationgroup', 'Grupo de facturacion', [
+              '0' => 'Ninguno',
              '1' => 'Primer mes',
              '2' => 'Segundo mes',
              '3' => 'Tercer mes',

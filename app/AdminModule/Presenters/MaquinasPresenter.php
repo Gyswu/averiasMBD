@@ -21,12 +21,23 @@ class MaquinasPresenter extends BaseAdminPresenter
 
     private $maquinaEditada;
 
-    //    Modos Render Default
+   
+    private $holidaysStarts = [
+        0 => "15-07-2022",
+        1 => "21-12-2022",
+        2 => "01-04-2022"
+     ];
+     private $holidaysEnds = [
+         0 => "01-09-2022",
+         1 => "07-01-2023",
+         2 => "15-04-2022"
+     ];
+
+      //    Modos Render Default
     //    $mode 7 VACIO, TODOS
     //    $mode 8 Maquinas en un cliente
     //    $mode 9 Maquinas de un proveedor
     //    otros $mode segun el estado de la maquina (taller, etc.)
-
     public function renderDefault($id, $mode, $order): void
     {
         if (!isset($id)) {
@@ -45,7 +56,43 @@ class MaquinasPresenter extends BaseAdminPresenter
             $this->template->maquinas = $this->orm->maquinas->findBy(['estado' => $mode]);
         }
     }
-
+    ////
+    //
+    //          SKIP HOLIDAYS
+    //
+    ////
+    private function holidaysToSkip($firstDay , $lastDay){
+        $holidayStart = $this->holidaysStarts;
+        $holidayEnd = $this->holidaysEnds;
+        $diferencia = 0;
+        $firstDay = explode('/', $firstDay);
+        $firstDay = date_create($firstDay[2] . '-' . $firstDay[1] . '-' . $firstDay[0]);
+        $dateone = explode('/', $lastDay);
+        $dateone = date_create($dateone[2] . '-' . $dateone[1] . '-' . $dateone[0]);
+        $i = 0; 
+        while ($i < count($holidayStart)) {
+            
+            $datetwo = explode('-', date('d-m-Y', strtotime($holidayStart[$i])));
+            $datethree = explode('-', date('d-m-Y', strtotime($holidayEnd[$i])));
+            $datetwo = date_create($datetwo[2] . '-' . $datetwo[1] . '-' . $datetwo[0]);
+            $datethree = date_create($datethree[2] . '-' . $datethree[1] . '-' . $datethree[0]);
+            $dateone;
+            $datetwo;
+            $diffBoth = date_diff($datetwo, $datethree);
+            $diffFirst = date_diff($dateone, $datetwo);
+            $diffSecond = date_diff($datethree, $dateone);
+            if(!date_diff($datethree, $dateone)->invert){
+                if($diffFirst->invert && !$diffSecond->invert){
+                    $diferencia = $diferencia + $diffFirst->days;
+                }
+                if(!$diffFirst->invert && !$diffSecond->invert){
+                    $diferencia = $diferencia + $diffBoth->days;
+                }
+            } 
+            $i++;
+        }
+        return $diferencia;
+    }
     ////
     //
     //          FUNCION GET MEDIA
@@ -64,15 +111,15 @@ class MaquinasPresenter extends BaseAdminPresenter
         return $diferencia->days;
     }
 
-    private function getMidCopy($printerId, $type){
+    private function getMidCopy($printerId, $type, $holidays){
         $firstCopy = $this->orm->copias->findFirstByPrinterId($printerId);
         $lastCopy = $this->orm->copias->findLastByPrinterId($printerId);
 
-
-        $media = ceil(($lastCopy->$type - $firstCopy->$type) / $this->getDiffDaysCopy($printerId));
-
+        $media = ceil(($lastCopy->$type - $firstCopy->$type) / ($this->getDiffDaysCopy($printerId)) - $holidays);
+        
         return $media;
     }
+    
     //
     //
     //
@@ -88,19 +135,22 @@ class MaquinasPresenter extends BaseAdminPresenter
         }
         $maquina = $this->orm->maquinas->getById($id);
         $modo = 10;
+        $holidays =  $this->holidaysToSkip($this->orm->copias->findFirstByPrinterId($id)->fecha, $this->orm->copias->findLastByPrinterId($id)->fecha,);
 
         //$this->template->copiasTotalBn = ceil($cuentaBn / (($diferencia->d / 7) * 5));
         if (count($maquina->copias) >= '2') {
-            $this->template->copiasTotalBn = $this->getMidCopy($id, "copiasbn");
-            $this->template->copiasTotalCl = $this->getMidCopy($id, "copiascl");
-            $this->template->copiasTotalEsc = $this->getMidCopy($id, "escaneos");;
-            $this->template->copiasTotalL = $this->getMidCopy($id, "copiasl");
-            $this->template->copiasTotalLl = $this->getMidCopy($id, "copiasll");
-            $this->template->copiasTotalLll = $this->getMidCopy($id, "copiaslll");
+            $this->template->copiasTotalBn = $this->getMidCopy($id, "copiasbn", $holidays);
+            $this->template->copiasTotalCl = $this->getMidCopy($id, "copiascl", $holidays);
+            $this->template->copiasTotalEsc = $this->getMidCopy($id, "escaneos", $holidays);
+            $this->template->copiasTotalL = $this->getMidCopy($id, "copiasl", $holidays);
+            $this->template->copiasTotalLl = $this->getMidCopy($id, "copiasll", $holidays);
+            $this->template->copiasTotalLll = $this->getMidCopy($id, "copiaslll", $holidays);
         }
 
         $this->template->maquina = $maquina;
         $this->template->mode = $modo;
+        
+        
     }
     //
     //

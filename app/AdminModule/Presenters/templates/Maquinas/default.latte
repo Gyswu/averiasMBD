@@ -30,9 +30,6 @@
                     <th class="modelo" sortByModel="0" id="model">
                         Modelo
                     </th>
-                    <th class="proveedor">
-                        Proveedor
-                    </th>
                     <th class="cliente" sortByClient="0" id="client">
                         Cliente
                     </th>
@@ -50,9 +47,6 @@
                     <th class="modelo" sortByModel="0" id="model">
                         Modelo
                     </th>
-                    <th class="proveedor">
-                        Proveedor
-                    </th>
                     <th class="cliente" sortByClient="0" id="client">
                         Cliente
                     </th>
@@ -69,9 +63,6 @@
                     </th>
                     <th class="modelo" sortByModel="0" id="model">
                         Modelo
-                    </th>
-                    <th class="proveedor">
-                        Proveedor
                     </th>
                     <th class="cliente" sortByClient="0" id="client">
                         Cliente
@@ -91,9 +82,6 @@
                                     </td>
 
                                     <td class="modelo" data-modelo>
-                                    </td>
-
-                                    <td class="proveedor" data-proveedor>
                                     </td>
 
                                     <td class="cliente" data-cliente>
@@ -209,7 +197,7 @@
             let modalIp = document.querySelector("#modalIp")
             let modalMask = document.querySelector("#modalMask")
             let modalClient = document.querySelector("#modalClient")
-            let modalProvider = document.querySelector("#modalProvider")
+        //    let modalProvider = document.querySelector("#modalProvider")
             let modalSatus = document.querySelector("#modalStatus")
             let modalToken = document.querySelector("#modalToken")
             let modalMasInfo = document.querySelector("#modalMasInfo")
@@ -225,7 +213,7 @@
                 modalIp.textContent = data.ip
                 modalMask.textContent = data.mascara
                 modalClient.textContent = data.empresa.nombre
-                modalProvider.textContent = data.proveedor.nombre
+        //        modalProvider.textContent = data.proveedor.nombre
                 modalSatus.textContent = data.estado
                 modalToken.textContent = data.token
                 modalMasInfo.href = {$basePath. "/admin/maquinas/info/"} + data.id
@@ -244,13 +232,13 @@
                     const card = maquinatemplate.content.cloneNode(true).children[0]
                     const ide = card.querySelector("[data-identificador]")
                     const modelo = card.querySelector("[data-modelo]")
-                    const proveedor = card.querySelector("[data-proveedor]")
+        //            const proveedor = card.querySelector("[data-proveedor]")
                     const cliente = card.querySelector("[data-cliente]")
                     const estado = card.querySelector("[data-estado]")
                     const info = card.querySelector("[data-action-info]")
                     ide.textContent = Object.identifier
                     modelo.textContent = Object.modelo
-                    proveedor.textContent = Object.proveedor.nombre
+        //            proveedor.textContent = Object.proveedor.nombre
                     cliente.textContent = Object.empresa.nombre
                     estado.textContent = Object.estado
                     //info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
@@ -374,13 +362,13 @@
                     const card = maquinatemplate.content.cloneNode(true).children[0]
                     const ide = card.querySelector("[data-identificador]")
                     const modelo = card.querySelector("[data-modelo]")
-                    const proveedor = card.querySelector("[data-proveedor]")
+            //        const proveedor = card.querySelector("[data-proveedor]")
                     const cliente = card.querySelector("[data-cliente]")
                     const estado = card.querySelector("[data-estado]")
                     const info = card.querySelector("[data-action-info]")
                     ide.textContent = Object.id
                     modelo.textContent = Object.modelo
-                    proveedor.textContent = Object.proveedor.nombre
+            //        proveedor.textContent = Object.proveedor.nombre
                     cliente.textContent = Object.empresa.nombre
                     estado.textContent = Object.estado
                     //info.href = {$basePath. "/admin/maquinas/info/"} + Object.id
@@ -391,7 +379,7 @@
                     return {
                         identifier: Object.id,
                         modelo: Object.modelo,
-                        proveedor: Object.proveedor,
+            //            proveedor: Object.proveedor,
                         empresa: Object.empresa,
                         estado: Object.estado,
                         comentario: Object.comentario,

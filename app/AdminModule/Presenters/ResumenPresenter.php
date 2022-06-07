@@ -22,7 +22,7 @@ class ResumenPresenter extends BaseAdminPresenter
         $maquinas = $this->orm->maquinas->findAll();
 
         foreach ($maquinas as $maquina) {
-            if ($maquina->modelo == "blank" || $maquina->modelo == "Pruebas" || !$maquina->estado == 3) {
+            if ($maquina->modelo == "blank" || $maquina->modelo == "Pruebas" || $maquina->estado !== 3) {
 
             } else {
                 $r = array_push($datosMaquinas, $maquina->modelo);
@@ -40,6 +40,20 @@ class ResumenPresenter extends BaseAdminPresenter
         $this->template->datosMaquinasTotal = 100 / count($datosMaquinas);
         $this->template->porcentajeMaquinas = $porcentajesMaquinas;
         $this->template->borrar = "\.";
+        
+        $copiesLastWeek = array();
 
+        $date = date('d/m/Y');
+        $lastDate = $date;
+        $i = 0;
+        while($i <= 7){
+            $copiesDay = [ $lastDate => count($this->orm->copias->findBy(['fecha' => $lastDate]))];
+            array_push($copiesLastWeek, $copiesDay);
+            $i++;
+            $lastDate = date('d/m/Y', strtotime($lastDate. "-1 day"));
+            
+        }
+        //dd($copiesLastWeek);
+        $this->template->copiesLastWeek = $copiesLastWeek;
     }
 }//presenter˘

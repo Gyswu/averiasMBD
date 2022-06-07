@@ -17,6 +17,7 @@ class EmpresasPresenter extends BasePresenter
 
     public function renderDefault($empresaId)
     {
+        $this->redirect('Admin:Maquinas:default');
 
         $this->template->empresa = $this->orm->empresa->getById($empresaId);
 

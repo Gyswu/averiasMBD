@@ -70,6 +70,12 @@ class Menu {
 
             [
                 'icon' => '',
+                'nombre'  => 'Admin',
+                'mostrar' => $user->isAllowed(Roles::SECCION_EMPRESAS),
+                'nhref'   => 'Admin:Homepage:default',
+            ],
+            [
+                'icon' => '',
                 'nombre'  => 'Empresa',
                 'mostrar' => $user->isAllowed(Roles::SECCION_EMPRESAS),
                 'nhref'   => 'Empresas:default',

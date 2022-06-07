@@ -50,7 +50,7 @@ final class CopiasFormFactory
         $form->addHidden('id', 'Copia ID');
         $form->addText('fecha', 'FECHA DD/MM/YYYY')->setDefaultValue(date('d/m/Y'))
              ->setHtmlAttribute("data-provide", "datepicker")
-             ->setHtmlAttribute("data-date-format", "mm/dd/yyyy")
+             ->setHtmlAttribute("data-date-format", "dd/mm/yyyy")
         ;
         $form->addInteger('copiasbn', 'Copias BN')
              ->setRequired()
@@ -78,7 +78,7 @@ final class CopiasFormFactory
         $form->addHidden('id', 'Copia ID');
         $form->addText('fecha', 'FECHA DD/MM/YYYY')->setDefaultValue(date('d/m/Y'))
              ->setHtmlAttribute("data-provide", "datepicker")
-             ->setHtmlAttribute("data-date-format", "mm/dd/yyyy")
+             ->setHtmlAttribute("data-date-format", "dd/mm/yyyy")
         ;
         $form->addInteger('copiasbn', 'Copias BN')
              ->setRequired()
@@ -109,7 +109,7 @@ final class CopiasFormFactory
         $form->addHidden('idmaquina', 'ID MAQUINA')->setDefaultValue($idmaquina);
         $form->addText('fecha', 'FECHA DD/MM/YYYY')->setDefaultValue(date('d/m/Y'))
              ->setHtmlAttribute("data-provide", "datepicker")
-             ->setHtmlAttribute("data-date-format", "mm/dd/yyyy")
+             ->setHtmlAttribute("data-date-format", "dd/mm/yyyy")
         ;
         $form->addInteger('copiasbn', 'Copias BN')
              ->setRequired()

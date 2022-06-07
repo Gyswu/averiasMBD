@@ -90,10 +90,10 @@ final class MaquinasFormFactory
 
           $form->addText('finicioservicio', 'Fecha Inicio Servicio DD/MM/YYYY')->setDefaultValue(date('d/m/Y'))
                ->setHtmlAttribute("data-provide", "datepicker")
-               ->setHtmlAttribute("data-date-format", "mm/dd/yyyy");
+               ->setHtmlAttribute("data-date-format", "dd/mm/yyyy");
           $form->addText('ffinalservicio', 'Fecha Final Servicio DD/MM/YYYY')
                ->setHtmlAttribute("data-provide", "datepicker")
-               ->setHtmlAttribute("data-date-format", "mm/dd/yyyy");
+               ->setHtmlAttribute("data-date-format", "dd/mm/yyyy");
           $form->addSelect('tipocontrato', 'Contrato', [
                '0' => 'Compra',
                '1' => 'Renting',

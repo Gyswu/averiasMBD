@@ -267,6 +267,6 @@ class MaquinasPresenter extends BaseAdminPresenter
         } catch (Exception $e) {
             $this->flashMessage("Error: " . $e->getMessage(), 'danger');
         }
-        $this->redirect('Maquinas:default');
+        $this->redirect('Maquinas:info', $values->id);
     }
 }

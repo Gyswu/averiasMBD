@@ -31,6 +31,38 @@ final class PrintersPresenter extends BaseApiPresenter
 
         return $printers;
     }
+    private function compareDate($firstDate, $secondDate, $diff, $type){
+        $firstDate = explode('/', $firstDate);
+        $secondDate = explode('/', $secondDate);
+        $firstDate = create_date($firstDate[2] . '-' . $firstDate[1] . '-' . $firstDate[0]);
+        $secondDate = create_date($secondDate[2] . '-' . $secondDate[1] . '-' . $secondDate[0]);
+        $data = date_diff($firstDate, $secondDate);
+        if ($type == "month"){
+            if ($data->$type <= $diff){
+                return $data;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private function getPrinterLastTrimestral(Maquina $maquina){
+        $data = array();
+        $dateToday = date('d/m/Y');
+        if(count($maquina->copias) >= '1'){
+            $copiasTrimestre = array();
+            foreach($maquina->copias as $copy){
+                if($this->compareDate($copy->fecha, $dateToday, 3, "months")){
+                    array_push($data, $copy);
+                }
+            }
+        } else {
+            $data = false;
+        }
+        return $data;
+    }
 
     /**
      * Will update number of copies reported in the printer for given type
@@ -171,10 +203,49 @@ final class PrintersPresenter extends BaseApiPresenter
                     if($printer->estado == 6){
                         $printerArray[estado] = "Desguace";
                     }
+            
         } else {
             $printerArray = "Dime la palabra magica";
         }
         
         $this->sendJson($printerArray);
     }
+
+    public function actionPrinterCopies($token, $ide){
+        $data = array();
+        if ($this->ifUserToken($token)){
+            $printer = $this->orm->maquinas->findById($ide);
+            $data = $printer->copias->toArray();
+        } else {
+            $data = "Dime la palabra magica";
+        }
+        $this->sendJson($data);
+    }
+
+    public function actionPrinterPieces($token, $ide){
+        $data = array();
+        if ($this->ifUserToken($token)){
+            $printer = $this->orm->maquinas->findById($ide);
+            $data = $printer->cambios->toArray();
+        } else {
+            $data = "Dime la palabra magica";
+        }
+        $this->sendJson($data);
+    }
+
+    public function acionPrinterCopiesLastTri($token, $ide){
+
+        $data = array();
+        if ($this->ifUserToken($token)){
+            $printer = $this->orm->maquinas->findById($ide);
+            $data = $this->getPrinterLastTrimestral($printer);
+        } else {
+            $data = "Dime la palabra magica";
+        }
+
+        $this->sendJson($data);
+    }
+
+    
+
 }

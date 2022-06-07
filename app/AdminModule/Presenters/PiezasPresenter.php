@@ -74,5 +74,7 @@ class PiezasPresenter extends BaseAdminPresenter
 
         $this->orm->maquinas->persistAndFlush($maquina);
 
+        $this->redirect('Maquinas:info', $values->idMaquina);
+
     }
 }

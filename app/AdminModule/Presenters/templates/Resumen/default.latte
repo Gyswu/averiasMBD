@@ -37,7 +37,36 @@
                     chart.draw(data, options);
                 }
             </script>
+            <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                ['Fecha', 'Entradas'],
+                {foreach $copiesLastWeek as $copiesDay}
+                [{key($copiesDay)}, {$copiesDay[key($copiesDay)]}],
+                {/foreach}
+                ]);
+
+                var options = {
+                title: 'Entradas de copias',
+                hAxis: {
+                    title: 'Fecha',  titleTextStyle: {
+                        color: '#333'
+                        }
+                    },
+                vAxis: {
+                    minValue: 0}
+                };
+
+                var chart = new google.visualization.AreaChart(document.getElementById('chart_div_copies_last_week'));
+                chart.draw(data, options);
+            }
+            </script>
+
             <div id="chart_div"></div>
+            <div id="chart_div_copies_last_week"></div>
 
         </div>
     </div>

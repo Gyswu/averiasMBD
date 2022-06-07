@@ -50,7 +50,7 @@ class ResumenPresenter extends BaseAdminPresenter
             $copiesDay = [ $lastDate => count($this->orm->copias->findBy(['fecha' => $lastDate]))];
             array_push($copiesLastWeek, $copiesDay);
             $i++;
-            $lastDate = date('d/m/Y', strtotime($lastDate. "-1 day"));
+            $lastDate = date('d/m/Y', strtotime( "-".$i." days"));
             
         }
         //dd($copiesLastWeek);

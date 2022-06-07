@@ -45,6 +45,34 @@ class MaquinasPresenter extends BaseAdminPresenter
             $this->template->maquinas = $this->orm->maquinas->findBy(['estado' => $mode]);
         }
     }
+
+    ////
+    //
+    //          FUNCION GET MEDIA
+    //
+    ////
+    private function getDiffDaysCopy($printerId){
+        $firstCopy = $this->orm->copias->findFirstByPrinterId($printerId);
+        $lastCopy = $this->orm->copias->findLastByPrinterId($printerId);
+
+        $dateone = explode('/', $firstCopy->fecha);
+        $datetwo = explode('/', $lastCopy->fecha);
+        $diferencia = date_diff(date_create($dateone[2] . '-' . $dateone[1] . '-' .
+                $dateone[0]), date_create($datetwo[2] . '-' . $datetwo[1] . '-' .
+                $datetwo[0]));
+
+        return $diferencia->days;
+    }
+
+    private function getMidCopy($printerId, $type){
+        $firstCopy = $this->orm->copias->findFirstByPrinterId($printerId);
+        $lastCopy = $this->orm->copias->findLastByPrinterId($printerId);
+
+
+        $media = ceil(($lastCopy->$type - $firstCopy->$type) / $this->getDiffDaysCopy($printerId));
+
+        return $media;
+    }
     //
     //
     //
@@ -59,60 +87,16 @@ class MaquinasPresenter extends BaseAdminPresenter
             $this->redirect("Maquinas:default");
         }
         $maquina = $this->orm->maquinas->getById($id);
-        $mediaCopiasBn = 0;
-
-        $contador = 0;
-        $cuentaBn = 0;
-        $cuentaCl = 0;
-        $cuentaEsc = 0;
-        $cuentaL = 0;
-        $cuentaLl = 0;
-        $cuentaLll = 0;
         $modo = 10;
 
-        $firstCopia = new Copias();
-        $lastCopia = new Copias();
-        if (count($maquina->copias) >= '1') {
-            foreach ($maquina->copias as $copia) {
-                if ($contador == 0) {
-                    $firstCopia = $copia;
-                    $contador++;
-                }
-                $lastCopia = $copia;
-            }
-            if (!$lastCopia->copiasbn == null) {
-                $cuentaBn = $lastCopia->copiasbn - $firstCopia->copiasbn;
-            }
-            if (!$lastCopia->copiascl == null) {
-                $cuentaCl = $lastCopia->copiascl - $firstCopia->copiascl;
-            }
-            if (!$lastCopia->escaneos == null) {
-                $cuentaEsc = $lastCopia->escaneos - $firstCopia->escaneos;
-            }
-            if (!$lastCopia->copiasl == null) {
-                $cuentaL = $lastCopia->copiasl - $firstCopia->copiasl;
-            }
-            if (!$lastCopia->copiasll == null) {
-                $cuentaLl = $lastCopia->copiasll - $firstCopia->copiasll;
-            }
-            if (!$lastCopia->copiaslll == null) {
-                $cuentaLll = $lastCopia->copiaslll - $firstCopia->copiaslll;
-            }
-
-            $fechauno = explode('/', $firstCopia->fecha);
-            $fechados = explode('/', $lastCopia->fecha);
-            $diferencia = date_diff(date_create($fechauno[2] . '-' . $fechauno[1] . '-' .
-                $fechauno[0]), date_create($fechados[2] . '-' . $fechados[1] . '-' .
-                $fechados[0]));
-        }
         //$this->template->copiasTotalBn = ceil($cuentaBn / (($diferencia->d / 7) * 5));
         if (count($maquina->copias) >= '2') {
-            $this->template->copiasTotalBn = ceil($cuentaBn / $diferencia->days);
-            $this->template->copiasTotalCl = ceil($cuentaCl / $diferencia->days);
-            $this->template->copiasTotalEsc = ceil($cuentaEsc / $diferencia->days);
-            $this->template->copiasTotalL = ceil($cuentaL / $diferencia->days);
-            $this->template->copiasTotalLl = ceil($cuentaLl / $diferencia->days);
-            $this->template->copiasTotalLll = ceil($cuentaLll / $diferencia->days);
+            $this->template->copiasTotalBn = $this->getMidCopy($id, "copiasbn");
+            $this->template->copiasTotalCl = $this->getMidCopy($id, "copiascl");
+            $this->template->copiasTotalEsc = $this->getMidCopy($id, "escaneos");;
+            $this->template->copiasTotalL = $this->getMidCopy($id, "copiasl");
+            $this->template->copiasTotalLl = $this->getMidCopy($id, "copiasll");
+            $this->template->copiasTotalLll = $this->getMidCopy($id, "copiaslll");
         }
 
         $this->template->maquina = $maquina;

@@ -46,14 +46,14 @@ class ResumenPresenter extends BaseAdminPresenter
         $date = date('d/m/Y');
         $lastDate = $date;
         $i = 0;
-        while($i <= 7){
+        //Cambiar valor del while para que se muestren más o menos dias.
+        while($i <= 14){
             $copiesDay = [ $lastDate => count($this->orm->copias->findBy(['fecha' => $lastDate]))];
             array_push($copiesLastWeek, $copiesDay);
             $i++;
             $lastDate = date('d/m/Y', strtotime( "-".$i." days"));
             
         }
-        //dd($copiesLastWeek);
         $this->template->copiesLastWeek = $copiesLastWeek;
     }
 }//presenter˘

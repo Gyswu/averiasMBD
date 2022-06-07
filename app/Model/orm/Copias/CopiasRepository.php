@@ -21,4 +21,9 @@ class CopiasRepository extends Repository
     {
         return $this->findBy(['maquina' => $printerId])->orderBy("id", "DESC")->fetch();
     }
+    
+    public function findFirstByPrinterId($printerId)
+    {
+        return $this->findBy(['maquina' => $printerId])->orderBy("id", "ASC")->fetch();
+    }
 }

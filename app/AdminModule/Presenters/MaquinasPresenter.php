@@ -81,7 +81,7 @@ class MaquinasPresenter extends BaseAdminPresenter
             $diffBoth = date_diff($datetwo, $datethree);
             $diffFirst = date_diff($dateone, $datetwo);
             $diffSecond = date_diff($datethree, $dateone);
-            if(!date_diff($datethree, $dateone)->invert){
+            if(date_diff($datethree, $dateone)->invert){
                 if($diffFirst->invert && !$diffSecond->invert){
                     $diferencia = $diferencia + $diffFirst->days;
                 }

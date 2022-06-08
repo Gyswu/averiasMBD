@@ -1,6 +1,7 @@
 {block content}
     <div class="container">
         <div class="row">
+
             <!--Load the AJAX API-->
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <script type="text/javascript">
@@ -64,12 +65,124 @@
                 chart.draw(data, options);
             }
             </script>
-
-            <div id="chart_div"></div>
-            <div id="chart_div_copies_last_week"></div>
-
+           
+            <div class="col col-lg-10 col-md-10">
+                <div id="changes_div">
+                <h3>Ultimas actualizaciones</h3>
+                    <template id="changes_template" class=" rounded shadow p-3 mb-5 bg-body">
+                        <div>
+                            <h4 data-author></h3>
+                            <p data-commit></p>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div class="col col-lg-10 col-md-10">
+                <div id="chart_div"></div>
+                <div id="chart_div_copies_last_week"></div>
+            </div>
         </div>
     </div>
+     <script type="text/javascript">
+     // GITHUB
+                const token = "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"
+                const changesTemplate = document.querySelector("#changes_template");
+                const changesContainer = document.querySelector("#changes_div");
+                fetch("https://api.github.com/repos/gyswu/averiasmbd/git/refs/heads/master", {
+                          headers: {
+                        Authorization: `token ${ token }`
+                    }
+                })
+                .then(res => res.json())
+                .then( data => {
+                        fetch(data.object.url, {
+                                headers: {
+                                Authorization: `token ${ token }`
+                                }
+                            })
+                        .then(res => res.json())
+                        .then( datos => {
+                            const carta = changesTemplate.content.cloneNode(true).children[0]
+                            const changeAuthor = carta.querySelector("[data-author]")
+                            const commitAuthor = carta.querySelector("[data-commit]")
+                                    //carta.textContent = info.committer.name
+                            changeAuthor.textContent = datos.author.date + " - " + datos.committer.name
+                            commitAuthor.textContent = datos.message
+
+                            changesContainer.append(carta)
+
+                                fetch(datos.parents[0].url, {
+                                        headers: {
+                                        Authorization: `token ${ token }`
+                                        }
+                                    })
+                                .then(res => res.json())
+                                .then( info => {
+                                    const carta = changesTemplate.content.cloneNode(true).children[0]
+                                    const changeAuthor = carta.querySelector("[data-author]")
+                                    const commitAuthor = carta.querySelector("[data-commit]")
+                                    //carta.textContent = info.committer.name
+                                    changeAuthor.textContent = info.author.date + " - " + info.committer.name
+                                    commitAuthor.textContent = info.message
+
+                                    changesContainer.append(carta)
+
+                                    fetch(info.parents[0].url, {
+                                            headers: {
+                                            Authorization: `token ${ token }`
+                                            }
+                                        })
+                                        .then(res => res.json())
+                                        .then( info => {
+                                        const carta = changesTemplate.content.cloneNode(true).children[0]
+                                        const changeAuthor = carta.querySelector("[data-author]")
+                                        const commitAuthor = carta.querySelector("[data-commit]")
+                                        //carta.textContent = info.committer.name
+                                        changeAuthor.textContent = info.author.date + " - " + info.committer.name
+                                        commitAuthor.textContent = info.message
+
+                                        changesContainer.append(carta)
+                                        fetch(info.parents[0].url, {
+                                            headers: {
+                                            Authorization: `token ${ token }`
+                                            }
+                                        })
+                                        .then(res => res.json())
+                                        .then( info => {
+                                        const carta = changesTemplate.content.cloneNode(true).children[0]
+                                        const changeAuthor = carta.querySelector("[data-author]")
+                                        const commitAuthor = carta.querySelector("[data-commit]")
+                                        //carta.textContent = info.committer.name
+                                        changeAuthor.textContent = info.author.date + " - " + info.committer.name
+                                        commitAuthor.textContent = info.message
+
+                                        changesContainer.append(carta)
+                                        fetch(info.parents[0].url, {
+                                            headers: {
+                                            Authorization: `token ${ token }`
+                                            }
+                                            })
+                                            .then(res => res.json())
+                                            .then( info => {
+                                            const carta = changesTemplate.content.cloneNode(true).children[0]
+                                            const changeAuthor = carta.querySelector("[data-author]")
+                                            const commitAuthor = carta.querySelector("[data-commit]")
+                                            //carta.textContent = info.committer.name
+                                            changeAuthor.textContent = info.author.date + " - " + info.committer.name
+                                            commitAuthor.textContent = info.message
+
+                                            changesContainer.append(carta)
+                                            
+                                        })
+                                    })
+                                        
+                                })
+                            })
+                            
+                        })    
+                })
+                
+            </script>
 
 
 {/block}

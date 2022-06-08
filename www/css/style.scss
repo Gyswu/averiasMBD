@@ -33,6 +33,9 @@ form .required label {
 tabladecinco{
   width: 20% !important;
 }
+.bg-light-red{
+  background-color: #ff726f !important;
+}
 
 #cocina {
   overflow-x: scroll;
@@ -189,26 +192,41 @@ td.options{
 }
 
 @media screen and (max-width: 1px) {
+  .bg-light-red{
+    background-color: #ff726f;
+}
   td.codigos {
     display: none;
   }
 }
 @media screen and (max-width: 576px) {
+  .bg-light-red{
+    background-color: #ff726f;
+}
   td.codigos {
     display: none;
   }
 }
 @media screen and (max-width: 768px) {
+  .bg-light-red{
+    background-color: #ff726f;
+}
   td.codigos {
     display: none;
   }
 }
 @media screen and (max-width: 992px) {
+  .bg-light-red{
+    background-color: #ff726f;
+}
   td.codigos {
     display: none;
   }
 }
 @media screen and (max-width: 1200px) {
+  .bg-light-red{
+    background-color: #ff726f;
+}
   td.codigos {
     display: revert;
   }

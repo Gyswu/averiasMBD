@@ -241,6 +241,10 @@
         //            proveedor.textContent = Object.proveedor.nombre
                     cliente.textContent = Object.empresa.nombre
                     estado.textContent = Object.estado
+
+                    if (estado.textContent.toLowerCase().includes("out") || estado.textContent.toLowerCase().includes("desguace")){
+                    estado.parentElement.style.backgroundColor = "#ffcccb"
+                    }
                     //info.href = {$basePath . "/admin/maquinas/info/"} +Object.id
                     info.setAttribute('onclick', 'loadModalBy('+ Object.id +')')
 
@@ -373,7 +377,9 @@
                     estado.textContent = Object.estado
                     //info.href = {$basePath. "/admin/maquinas/info/"} + Object.id
                     info.setAttribute('onclick', 'loadModalBy('+ Object.id +')')
-
+                    if (estado.textContent.toLowerCase().includes("out") || estado.textContent.toLowerCase().includes("desguace")){
+                    estado.parentElement.style.backgroundColor = "#ffcccb"
+                    }
                     contentContainer.append(card)
 
                     return {

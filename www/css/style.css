@@ -14,7 +14,14 @@ td.options{
     width: 10%;
 }
 
+.bg-light-red{
+    background-color: #ff726f !important;
+}
+
 @media screen and (min-width: 1px) {
+    .bg-light-red{
+        background-color: #ff726f;
+    }
 
     .id{
         display: none;
@@ -79,6 +86,9 @@ td.options{
     }
 }
 @media screen and (min-width: 768px) {
+    .bg-light-red{
+        background-color: #ff726f;
+    }
     .id{
         display: none;
     }
@@ -111,6 +121,9 @@ td.options{
 }
 
 @media screen and (min-width: 992px) {
+    .bg-light-red{
+        background-color: #ff726f;
+    }
     .id{
         display: none;
     }
@@ -143,6 +156,9 @@ td.options{
 }
 
 @media screen and (min-width: 1200px) {
+    .bg-light-red{
+        background-color: #ff726f;
+    }
     .id{
         display: revert;
     }

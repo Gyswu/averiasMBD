@@ -50,6 +50,8 @@ class CopiasPresenter extends BaseAdminPresenter
 //            COPIAS BN 0
 //            COPIAS COLOR 1
 //            TRIPLE CONTADOR 2
+//            IMPRESORA BN 3
+//            IMPRESORA COLOR 4
             $this->template->copies = $this->orm->copias->findBy(['maquina' => $value])
                                                         ->orderBy('id', ICollection::DESC);
             $this->template->copias = $this->orm->maquinas->getById($value);
@@ -211,6 +213,17 @@ class CopiasPresenter extends BaseAdminPresenter
                     $this->orm->maquinas->persistAndFlush($maquina);
                     $this->flashMessage("Añadido de forma correcta", 'success');
 
+                } elseif ($maquina->tipocontador == 4) {
+
+                    $copies->copiasbn = $values->copiasbn;
+                    $copies->copiascl = $values->copiascl;
+                    $copies->escaneos = 0;
+                    $copies->fecha = $values->fecha;
+
+                    $maquina->copias->add($copies);
+                    $this->orm->maquinas->persistAndFlush($maquina);
+                    $this->flashMessage("Añadido de forma correcta", 'success');
+
                 } else {
                     $this->redirect('Copias:default');
                 }
@@ -262,6 +275,13 @@ class CopiasPresenter extends BaseAdminPresenter
             $copia->copiasl = $values->copiasl;
             $copia->copiasll = $values->copiasll;
             $copia->copiaslll = $values->copiaslll;
+            $copia->escaneos = $values->escaneos;
+        } elseif ($mode == 3) {
+            $copia->copiasbn = $values->copiasbn;
+            $copia->escaneos = $values->escaneos;
+        } elseif ($mode == 4) {
+            $copia->copiasbn = $values->copiasbn;
+            $copia->copiasl = $values->copiascl;
             $copia->escaneos = $values->escaneos;
         }
         $this->orm->copias->persistAndFlush($copia);

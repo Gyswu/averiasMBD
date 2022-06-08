@@ -109,7 +109,7 @@
                         <th class="fecha">
                             Fecha
                         </th>
-                        {if $copias->tipocontador == "1"}
+                        {if $copias->tipocontador == "1" || $copias->tipocontador == "4"}
                             <th class="copiasc">
                                 Copias C
                             </th>
@@ -134,9 +134,11 @@
                                 Copias L3
                             </th>
                         {/if}
+                        {if $copias->tipocontador <= "2"}
                         <th class="escaneos">
                             Escaneos
                         </th>
+                        {/if}
                         {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
                             <th>
                                 Opciones
@@ -353,7 +355,7 @@
                         <td class="fecha">
                             {$copia->fecha}
                         </td>
-                        {if $copias->tipocontador == "1"}
+                        {if $copias->tipocontador == "1" || $copias->tipocontador == "4"}
                             <td class="copiasc">
                                 {ifset $copia->copiascl}
                                     {$copia->copiascl}
@@ -398,6 +400,7 @@
                                 {/ifset}
                             </td>
                         {/if}
+                        {if $copias->tipocontador <= "2"}
                         <td class="escaneos">
                             {ifset $copia->escaneos}
                                 {$copia->escaneos}
@@ -405,6 +408,7 @@
                                 N/S
                             {/ifset}
                         </td>
+                        {/if}
                         {if $rol == "admin" || $rol == "gerente" || $rol == "miriam"}
                             <td>
                                 <a n:href="Copias:edit, $copia->id" class=""><i

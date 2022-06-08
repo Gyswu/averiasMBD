@@ -28,9 +28,9 @@
 
                     <tr>
 
-                        <th class="id" data-sort-id sortById="0"> ID</th>
+                <!--        <th class="id" data-sort-id sortById="0"> ID</th>
 
-                        <th class="nif" data-sort-nif sortByNif="0"> Nif</th>
+                        <th class="nif" data-sort-nif sortByNif="0"> Nif</th> -->
 
                         <th data-sort-name sortByName="0"> Nombre</th>
 
@@ -45,19 +45,26 @@
                     </thead>
                         <template class="table" data-client-template>
                         <tr id="card">
-                            <td class="id" data-identifier></td>
-                            <td class="nif" data-nif></td>
+                    <!--        <td class="id" data-identifier></td>
+                            <td class="nif" data-nif></td> -->
                             <td class="name" data-name></td>
                             <td class="telef"><a href="" class="text-decoration-none nounderline" data-tel></a></td>
                             <td class="dir"><a href="" class="text-decoration-none nounderline" data-dir></a></td>
                             <td class="options" data-options>
-                                <a href="" data-action-info><i class="bi bi-info-circle-fill"></i></a>
-                                <a href="" data-action-edit><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a href="" data-action-printers><i class="fa-solid fa-print"></i></a>
-                                <a href="" data-action-users><i class="fa-solid fa-user"></i></a>
-                                {if $usuarioDb->rol == "admin"}
-                                <a href="" data-action-remove class="text-danger"><i class="fa-solid fa-trash-can"></i></a>
-                                {/if}
+                            <div class="dropdown">
+                                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Opciones
+                            </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" data-action-info href="">Información</a>
+                                    <a class="dropdown-item" data-action-edit href="#">Editar</a>
+                                    <a class="dropdown-item" data-action-users href="#">Usuarios</a>
+                                    <a class="dropdown-item" data-action-printers href="#">Impresoras</a>
+                                    {if $usuarioDb->rol == "admin"}
+                                    <a class="dropdown-item" href="" data-action-remove class="text-danger">Eliminar</a>
+                                    {/if}
+                                </div>
+                            </div>
                             </td>
                         </tr>
                         </template>
@@ -85,8 +92,8 @@
         function writeClientCard(){
             datos.map(Object => {
                     const card = clientTemplate.content.cloneNode(true).children[0]
-                    const ide = card.querySelector("[data-identifier]")
-                    const nif = card.querySelector("[data-nif]")
+        //            const ide = card.querySelector("[data-identifier]")
+        //            const nif = card.querySelector("[data-nif]")
                     const name = card.querySelector("[data-name]")
                     const tel = card.querySelector("[data-tel]")
                     const dir = card.querySelector("[data-dir]")
@@ -98,8 +105,8 @@
                     {if $usuarioDb->rol == "admin"}
                     const remove = card.querySelector("[data-action-remove]")
                     {/if}
-                    ide.textContent = Object.identifier
-                    nif.textContent = Object.nif
+        //            ide.textContent = Object.identifier
+        //            nif.textContent = Object.nif
                     name.textContent = Object.name
                     tel.textContent = Object.tel
                     tel.href = "tel:" + Object.tel
@@ -118,49 +125,6 @@
                     contentContainer.append(card)
                 })
         }
-
-        /// Sort by ID
-        const sortById = document.querySelector("[data-sort-id]")
-        sortById.addEventListener("click", a => {
-            var e = contentContainer;
-            var child = contentContainer.lastElementChild;
-            while (child) {
-                e.removeChild(child);
-                child = e.lastElementChild;
-            }
-            if (sortById.getAttribute("sortById") == "0") {
-                datos.sort((a, b) => a.identifier - b.identifier);
-                writeClientCard();
-                sortById.setAttribute("sortById", 1);
-            } else {
-                datos.sort((a, b) => b.identifier - a.identifier);
-                writeClientCard();
-                sortById.setAttribute("sortById", 0);
-
-            }
-
-        })
-        ///Sort by Nif
-        const sortByNif = document.querySelector("[data-sort-nif]")
-        sortByNif.addEventListener("click", a => {
-            var e = contentContainer;
-            var child = contentContainer.lastElementChild;
-            while (child) {
-                e.removeChild(child);
-                child = e.lastElementChild;
-            }
-            if (sortByNif.getAttribute("sortByNif") == "0") {
-                datos.sort((a, b) => a.nif.localeCompare(b.nif));
-                writeClientCard();
-                sortByNif.setAttribute("sortByNif", 1);
-            } else {
-                datos.sort((a, b) => b.nif.localeCompare(a.nif));
-                writeClientCard();
-                sortByNif.setAttribute("sortByNif", 0);
-
-            }
-
-        })
         ///Sort by Name
         const sortByName = document.querySelector("[data-sort-name]")
         sortByName.addEventListener("click", a => {
@@ -198,8 +162,8 @@
             .then(data =>
                 datos = data.map(Object => {
                     const card = clientTemplate.content.cloneNode(true).children[0]
-                    const ide = card.querySelector("[data-identifier]")
-                    const nif = card.querySelector("[data-nif]")
+        //            const ide = card.querySelector("[data-identifier]")
+        //            const nif = card.querySelector("[data-nif]")
                     const name = card.querySelector("[data-name]")
                     const tel = card.querySelector("[data-tel]")
                     const dir = card.querySelector("[data-dir]")
@@ -211,8 +175,8 @@
                     {if $usuarioDb->rol == "admin"}
                         const remove = card.querySelector("[data-action-remove]")
                     {/if}
-                    ide.textContent = Object.id
-                    nif.textContent = Object.nif
+        //            ide.textContent = Object.id
+        //            nif.textContent = Object.nif
                     name.textContent = Object.nombre
                     tel.textContent = Object.telefono
                     tel.href = "tel:" + Object.telefono
@@ -231,8 +195,8 @@
                     contentContainer.append(card)
 
                     return {
-                        identifier: Object.id,
-                        nif: Object.nif,
+        //                identifier: Object.id,
+        //                nif: Object.nif,
                         name: Object.nombre,
                         tel: Object.telefono,
                         dir: Object.direccion,

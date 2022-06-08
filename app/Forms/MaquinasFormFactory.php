@@ -49,10 +49,6 @@ final class MaquinasFormFactory
 
           $form->addText('vfirmware', 'Firmware');
           $form->addSelect('empresa', 'Cliente: ', $empresas)->setDefaultValue(1)
-               //            ->setHtmlAttribute("class", "wrapper")
-               //            ->setHtmlAttribute("onfocus","this.zie=5")
-               //            ->setHtmlAttribute("onblur", "this.size=1")
-               //            ->setHtmlAttribute("this.size", "this.size=1 this.blur()")
                ->setHtmlAttribute("data-live-search", "true")
                ->setHtmlAttribute("class", "selectpicker");
           $form->addSelect('proveedor', 'Proveedor:', $proveedores)->setDefaultValue(1)
@@ -66,6 +62,7 @@ final class MaquinasFormFactory
                '1' => 'Color',
                '2' => 'Triple',
                '3' => 'Impresora BN',
+               '4' => 'Impresora COLOR'
           ]);
           $form->addSelect('estado', 'Estado', [
                '0' => 'Sin Preparar',
@@ -179,7 +176,8 @@ final class MaquinasFormFactory
                '0' => 'BN',
                '1' => 'Color',
                '2' => 'Triple',
-               '3' => 'Impresora BN'
+               '3' => 'Impresora BN',
+               '4' => 'Impresora COLOR'
           ]);
           $form->addSelect('estado', 'Estado', [
                '0' => 'Sin Preparar',

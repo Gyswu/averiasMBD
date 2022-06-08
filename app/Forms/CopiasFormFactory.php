@@ -36,7 +36,7 @@ final class CopiasFormFactory
             $form = $this->createTriple($idmaquina);
             return $form;
         } elseif ($mode == 3) {
-            $form = $this->createBn($idmaquina);
+            $form = $this->createPrinterBn($idmaquina);
             return $form;
         }
 
@@ -64,6 +64,30 @@ final class CopiasFormFactory
         ;
         $form->addHidden('idmaquina', 'ID MAQUINA')->setDefaultValue($idmaquina);
 
+
+        $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
+
+        return $form;
+    }
+    public function createPrinterBn($idmaquina): Form
+    {
+
+        $form = (new FormFactory())->create();
+
+        $form->addHidden('id', 'Copia ID');
+        $form->addText('fecha', 'FECHA DD/MM/YYYY')->setDefaultValue(date('d/m/Y'))
+             ->setHtmlAttribute("data-provide", "datepicker")
+             ->setHtmlAttribute("data-date-format", "dd/mm/yyyy")
+        ;
+        $form->addInteger('copiasbn', 'Copias BN')
+             ->setRequired()
+        ;
+        $form->addHidden('copiascl', '');
+        $form->addHidden('copiasl', '');
+        $form->addHidden('copiasll', '');
+        $form->addHidden('copiaslll', '');
+        $form->addHidden('escaneos', '');
+        $form->addHidden('idmaquina', 'ID MAQUINA')->setDefaultValue($idmaquina);
 
         $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 
@@ -146,7 +170,11 @@ final class CopiasFormFactory
         } elseif ($mode == 2) {
             $form = $this->createTriple($copia->maquina->id)->setDefaults($copia->toArray(2));
             return $form;
+        } elseif ($mode == 3) {
+            $form = $this->createPrinterBn($copia->maquina->id)->setDefaults($copia->toArray(2));
+            return $form;
         }
+
 
     }
 }

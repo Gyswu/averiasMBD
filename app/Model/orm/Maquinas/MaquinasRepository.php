@@ -20,4 +20,13 @@ class MaquinasRepository extends Repository
     {
         return $this->findBy(["token" => $token])->fetch();
     }
+
+    public function getConfiguredState()
+    {
+        return count($this->findBy(["confstate" => true]));
+    }
+
+    public function getNotBlankQuantity(){
+        return count($this->findBy(["modelo!=" => "blank"]));
+    }
 }

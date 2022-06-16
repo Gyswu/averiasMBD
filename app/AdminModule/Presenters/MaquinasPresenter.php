@@ -218,6 +218,7 @@ class MaquinasPresenter extends BaseAdminPresenter
             $maquina->token = md5("tfORiHix0@VHfKGNvG2y%FR&f5dI8LMK" . microtime()); //genera token único con salt
             $maquina->codegroups = $values->codegroups;
             $maquina->facturationgroup = $values->facturationgroup;
+            $maquina->confstate = $values->constate;
 
 //            if (!is_null($values->firmwarebackup)) {
 //                $firmware = $values->firmwarebackup;
@@ -292,6 +293,7 @@ class MaquinasPresenter extends BaseAdminPresenter
             $maquine->comentario = $values->comentario;
             $maquine->codegroups = $values->codegroups;
             $maquine->facturationgroup = $values->facturationgroup;
+            $maquine->confstate = $values->confstate;
             $proveedor = $this->orm->proveedor->getById($values->proveedor);
             $proveedor->maquinas->add($maquine);
             $empresa = $this->orm->empresa->getById($values->empresa);

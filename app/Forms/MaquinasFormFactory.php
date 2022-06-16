@@ -62,7 +62,7 @@ final class MaquinasFormFactory
                '1' => 'Color',
                '2' => 'Triple',
                '3' => 'Impresora BN',
-               '4' => 'Impresora COLOR'
+               '4' => 'Impresora COLOR',
           ]);
           $form->addSelect('estado', 'Estado', [
                '0' => 'Sin Preparar',
@@ -122,8 +122,11 @@ final class MaquinasFormFactory
               '1' => 'Primer mes',
               '2' => 'Segundo mes',
               '3' => 'Tercer mes',
+              '5' => 'Desconocido',
               '50' => 'Otro'
           ]);
+
+          $form->addCheckbox('confstate', 'Pagina de estado configurada?');
 
           $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 
@@ -235,8 +238,11 @@ final class MaquinasFormFactory
              '1' => 'Primer mes',
              '2' => 'Segundo mes',
              '3' => 'Tercer mes',
+             '5' => 'Desconocido',
              '50' => 'Otro'
          ]);
+
+          $form->addCheckbox('confstate', 'Pagina de estado configurada?');
 
           $form->addSubmit('send', 'Guardar')->setHtmlAttribute("class", 'btn btn-success');
 

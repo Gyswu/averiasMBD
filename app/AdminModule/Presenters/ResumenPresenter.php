@@ -40,6 +40,8 @@ class ResumenPresenter extends BaseAdminPresenter
         $this->template->datosMaquinasTotal = 100 / count($datosMaquinas);
         $this->template->porcentajeMaquinas = $porcentajesMaquinas;
         $this->template->borrar = "\.";
+        $this->template->quantityConfigState = $this->orm->maquinas->getConfiguredState();
+        $this->template->quantityMax = $this->orm->maquinas->getNotBlankQuantity();
         
         $copiesLastWeek = array();
 

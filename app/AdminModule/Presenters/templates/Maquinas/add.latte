@@ -24,13 +24,37 @@
     </div>
     <script>
         const modelInput = document.querySelector("#frm-addMaquinaForm-modelo");
+        const typeInput = document.querySelector("#frm-addMaquinaForm-tipocontador");
+        const codesInput = document.querySelector("#frm-addMaquinaForm-codegroups");
 
         modelInput.addEventListener("input", e=>{
+            console.log(typeInput.value)
             const value = e.target.value;
             if(value.includes("Taskalfa") || value.includes("Ecosys M") || value.includes("Ecosys P") || value.includes("Ecosys FS") || value.includes("DCC")){
-                modelInput.style.cssText = "background-color:hsla(120,100%,75%,0.3)"
+                modelInput.style.cssText = 'background-color:hsla(120,100%,75%,0.3)'
             } else {
-                modelInput.style.cssText = "background-color: hsla(0,100%,50%,0.3)"
+                modelInput.style.cssText = 'background-color: hsla(0,100%,50%,0.3)'
+            }
+            if(value.includes("Taskalfa") && !value.includes("ci")){
+                codesInput.textContent = ' [{"type": "copiasbn","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.1","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.1"]},{"type": "escaneos","codes": ["1.3.6.1.4.1.1347.42.3.1.3.1.1.2","1.3.6.1.4.1.1347.42.3.1.4.1.1.1"]}]'
+            }
+            if(value.includes("Taskalfa") && value.includes("ci")&& typeInput.value.includes !== "2"){
+                codesInput.textContent = ' [{"type": "copiasbn","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.1","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.1"]},{"type": "copiascl","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.3","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.3"]},{"type": "escaneos","codes": ["1.3.6.1.4.1.1347.42.3.1.3.1.1.2","1.3.6.1.4.1.1347.42.3.1.4.1.1.1"]}]'
+            }
+            if(value.includes("Taskalfa") && value.includes("ci") && typeInput.value == "2"){
+                codesInput.textContent = '[{"type": "copiasbn","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.1","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.1"]},{"type": "copiascl","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.3","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.3"]},{"type": "copiasl","codes": ["1.3.6.1.4.1.1347.42.2.4.1.1.1.1.2","1.3.6.1.4.1.1347.42.2.4.1.1.1.1.1"]},{"type": "copiasll","codes": ["1.3.6.1.4.1.1347.42.2.4.1.1.2.1.2","1.3.6.1.4.1.1347.42.2.4.1.1.2.1.1"]},{"type": "copiaslll","codes": ["1.3.6.1.4.1.1347.42.2.4.1.1.3.1.2","1.3.6.1.4.1.1347.42.2.4.1.1.3.1.1"]},{"type": "escaneos","codes": ["1.3.6.1.4.1.1347.42.3.1.3.1.1.2","1.3.6.1.4.1.1347.42.3.1.4.1.1.1"]}]'
+            }
+            if(value.includes("Ecosys M") && value.includes("cd")){
+                codesInput.textContent = ' [{"type": "copiasbn","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.1","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.1"]},{"type": "copiascl","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.2","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.2"]},{"type": "escaneos","codes": ["1.3.6.1.4.1.1347.42.3.1.3.1.1.2","1.3.6.1.4.1.1347.42.3.1.4.1.1.1"]}]'
+            }
+            if(value.includes("Ecosys P") && value.includes("cd")){
+                codesInput.textContent = '[{"type": "copiasbn","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.1","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.1"]},{"type": "copiascl","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.2","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.2"]}]'
+            }
+            if(value.includes("Ecosys M") && !value.includes("cd")){
+                codesInput.textContent= ' [{"type": "copiasbn","codes": ["1.3.6.1.4.1.1347.42.3.1.2.1.1.1.1", "1.3.6.1.4.1.1347.42.3.1.2.1.1.2.1"]},{"type": "escaneos","codes": ["1.3.6.1.4.1.1347.42.3.1.3.1.1.2","1.3.6.1.4.1.1347.42.3.1.4.1.1.1"]}]'
+            }
+            if(value.includes("Ecosys P") && !value.includes("cd")){
+                codesInput.textContent= ' [{"type": "copiasbn","codes": [ "1.3.6.1.4.1.1347.42.3.1.2.1.1.1.1","1.3.6.1.4.1.1347.42.3.1.2.1.1.2.1"]} ]'
             }
         })
     </script>

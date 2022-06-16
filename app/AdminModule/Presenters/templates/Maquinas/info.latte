@@ -313,6 +313,19 @@
                             {/if}
                         {/if}
                     {/if}
+                        <tr>
+                            <td>
+                                <h5>
+                                    Configurado Estado?
+                                </h5>
+                            </td>
+                            <td>
+                                {if $maquina->confstate}
+                                    SI
+                                    {else}
+                                    NO
+                                {/if}
+                        </tr>
                     </tbody>
                 </table>
             </div>

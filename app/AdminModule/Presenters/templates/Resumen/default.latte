@@ -44,9 +44,9 @@
 
             function drawChart() {
                 var data = google.visualization.arrayToDataTable([
-                ['Fecha', 'Entradas'],
+                ['Fecha', 'Entradas','Config', 'Max'],
                 {foreach $copiesLastWeek as $copiesDay}
-                [{key($copiesDay)}, {$copiesDay[key($copiesDay)]}],
+                [{key($copiesDay)}, {$copiesDay[key($copiesDay)]}, {$quantityConfigState}, {$quantityMax}],
                 {/foreach}
                 ]);
 

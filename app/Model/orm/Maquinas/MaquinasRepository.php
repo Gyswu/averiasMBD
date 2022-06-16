@@ -23,10 +23,10 @@ class MaquinasRepository extends Repository
 
     public function getConfiguredState()
     {
-        return count($this->findBy(["confstate" => true]));
+        return count($this->findBy(["confstate" => true, "estado" => "3"]));
     }
 
     public function getNotBlankQuantity(){
-        return count($this->findBy(["modelo!=" => "blank"]));
+        return count($this->findBy(["modelo!=" => "blank", "estado" => "3"]));
     }
 }

@@ -150,7 +150,7 @@
         searchInput.addEventListener( "input", e =>{
             const value = e.target.value.toLowerCase()
             datos.forEach(dato => {
-                const isVisible = dato.name.toLowerCase().includes(value) || dato.identifier.toString().includes(value) || dato.tel.toString().includes(value) || dato.dir.toLowerCase().includes(value) || dato.contact.toLowerCase().includes(value) || dato.nif.toLowerCase().includes(value)
+                const isVisible = dato.name.toLowerCase().includes(value) ||  dato.tel.toString().includes(value) || dato.dir.toLowerCase().includes(value) || dato.contact.toLowerCase().includes(value) || dato.nif.toLowerCase().includes(value)
                 dato.element.classList.toggle("d-none", !isVisible)
             })
         })
